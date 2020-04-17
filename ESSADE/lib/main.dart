@@ -32,30 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// class MyApp extends StatefulWidget {
-//   @override
-//   _MyAppState createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   bool _loggedIn = true;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//        theme: ThemeData(
-//          primarySwatch: primaryMaterialColor,
-//        ),
-//       routes: {
-//         '/': (BuildContext contex){
-//           if(_loggedIn){
-//             return ContainerPage();
-//           } else{
-//             return LoginPage();
-//           }
-//         }
-//       },
-//     );
-//   }
-// }

@@ -20,4 +20,3 @@ Map<int, Color> colorCodes = {
   800: Color.fromRGBO(130, 20, 45, .9),
   900: Color.fromRGBO(130, 20, 45, .1),
 };
-

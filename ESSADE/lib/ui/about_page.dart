@@ -1,5 +1,6 @@
-import 'package:essade/models/global.dart';
+import 'package:essade/auth/login_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -13,7 +14,12 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Index 5: About',style: essadeTitles,)
+      child: RaisedButton(
+          child: Text('Sign out'),
+          onPressed: (){
+            Provider.of<LoginState>(context, listen: false).logout();
+          }
+        ),
     );
   }
 }
