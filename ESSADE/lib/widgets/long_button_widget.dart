@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class LongButtonWidget extends StatelessWidget {
   final String text;
-  final Color textColor;
+  final Color boxColor, textColor;
   final VoidCallback onPressed;
 
   LongButtonWidget({
     @required this.text,
+    @required this.boxColor,
     @required this.textColor,
     @required this.onPressed
   });
@@ -16,7 +17,7 @@ class LongButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final btnStyle = TextStyle(
-      color: essadePrimaryColor,
+      color: boxColor,
       letterSpacing: 1.5,
       fontSize: 18.0,
       fontWeight: FontWeight.bold,

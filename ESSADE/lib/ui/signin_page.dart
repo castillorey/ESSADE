@@ -1,7 +1,9 @@
 import 'package:essade/models/global.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/switch_loged_signed_widget.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';
+import 'package:essade/widgets/or_log_sign_in_with_widget.dart';
 import 'package:essade/widgets/social_buttons_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,70 +16,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-
-  final sLabelStyle = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontFamily: 'Raleway',
-  );
-
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- O -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          'Registrarse con',
-          style: sLabelStyle,
-        ),
-      ],
-    );
-  }
-
-
-  Widget _buildLoginBtn() {
-    return GestureDetector(
-      onTap: (){ Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage())
-      );},
-      child: RichText(
-        text: TextSpan(
-          text: 'Iniciar sesión',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Raleway',
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAlreadySigned(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          'Ya tiene una cuenta? ',
-          style: TextStyle(
-            color: essadeGray,
-            fontFamily: 'Raleway',
-            fontSize: 16.0,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        _buildLoginBtn(),
-      ],
-    );
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,18 +83,31 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(height: 20.0),
                       LongButtonWidget(
                         text: 'Registro',
+                        boxColor: essadePrimaryColor,
                         textColor: Colors.white,
                         onPressed: () =>  print('Sign in pressed'),
                       ),
                       SizedBox(height: 10.0),
-                      _buildSignInWithText(),
+                      OrLogSignInWithWidget(
+                        text: 'Registrarse con',
+                        textColor: Colors.white,
+                      ),
                       SocialButtonWidget(
                         fbLogoPath: 'assets/logos/facebook.jpg',
                         onFbPressed: () => print('Facebook login pressed'),
                         gooLogoPath: 'assets/logos/google.jpg',
                         onGooPressed: () => print('Google login pressed'),
                       ),
-                      _buildAlreadySigned(),
+                      SwitchLoggedSignedWidget(
+                        guideText: '¿Ya tiene una cuenta? ',
+                        guideTextColor: essadeGray,
+                        actionText: 'Iniciar Sesión',
+                        actionTextColor: Colors.white,
+                        onTap: (){ Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginPage())
+                        );},
+                      ),
                     ],
                   ),
                 ),
