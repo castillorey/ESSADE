@@ -6,6 +6,8 @@ import 'package:essade/widgets/social_buttons_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'login_page.dart';
+
 class SignInPage extends StatefulWidget {
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -41,13 +43,17 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildLoginBtn() {
     return GestureDetector(
-      onTap: () => print('Login Up Button Pressed'),
+      onTap: (){ Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage())
+      );},
       child: RichText(
         text: TextSpan(
           text: 'Iniciar sesión',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 14.0,
+            fontFamily: 'Raleway',
+            fontSize: 16.0,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -57,13 +63,14 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildAlreadySigned(){
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
           'Ya tiene una cuenta? ',
           style: TextStyle(
             color: essadeGray,
-            fontFamily: 'Monserrat',
-            fontSize: 13.0,
+            fontFamily: 'Raleway',
+            fontSize: 16.0,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -135,11 +142,13 @@ class _SignInPageState extends State<SignInPage> {
                         boxColor: essadeGray.withOpacity(0.1),
                         placeholderColor: Colors.white54,
                       ),
+                      SizedBox(height: 20.0),
                       LongButtonWidget(
                         text: 'Registro',
                         textColor: Colors.white,
                         onPressed: () =>  print('Sign in pressed'),
                       ),
+                      SizedBox(height: 10.0),
                       _buildSignInWithText(),
                       SocialButtonWidget(
                         fbLogoPath: 'assets/logos/facebook.jpg',

@@ -38,18 +38,18 @@ class SocialButtonWidget extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
+      padding: EdgeInsets.symmetric(vertical: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-                () => onFbPressed,
+                () => onFbPressed(),
             AssetImage(
               fbLogoPath,
             ),
           ),
           _buildSocialBtn(
-                () => onGooPressed,
+                () => onGooPressed(),
             AssetImage(
               gooLogoPath,
             ),
