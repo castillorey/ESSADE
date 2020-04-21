@@ -1,26 +1,6 @@
 import 'package:flutter/material.dart';
 
-final kLabelStyle = TextStyle(
-  color: Colors.white,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'Raleway',
-);
-
-final kHintTextStyle = TextStyle(
-  color: Colors.white54,
-  fontFamily: 'Raleway',
-);
-
-final kBoxDecorationStyle = BoxDecoration(
-  color: Color(0xFF82142d),
-  borderRadius: BorderRadius.circular(10.0),
-  boxShadow: [
-    BoxShadow(
-      color: Colors.black12,
-      blurRadius: 6.0,
-      offset: Offset(0, 2),
-    ),
-  ],
-);
-
-Color _primaryColor = new Color(0xFF82142d);
+Color essadePrimaryColor = Color(0xFF82142d);
+Color essadeBlack = Color(0xFF262626);
+Color essadeDarkGray = Color(0xFF85878a);
+Color essadeGray = Color(0xFFa5a5aa);
