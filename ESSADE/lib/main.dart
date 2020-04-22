@@ -21,9 +21,13 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (BuildContext context) {
             var state = Provider.of<LoginState>(context);
+            print('Pasando por Main');
             if(state.isLoggedIn()){
+              print('Pasando por Main');
+              print('Abriendo Container Page!!');
               return ContainerPage();
             } else {
+              print('Abriendo Login Page!!');
               return LoginPage();
             }
           }

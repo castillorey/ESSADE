@@ -1,11 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SocialButtonWidget extends StatelessWidget {
-  final String fbLogoPath, gooLogoPath;
   final VoidCallback onFbPressed, onGooPressed;
   SocialButtonWidget({
-    @required this.fbLogoPath,
-    @required this.gooLogoPath,
     @required this.onFbPressed,
     @required this.onGooPressed
   });
@@ -45,13 +43,14 @@ class SocialButtonWidget extends StatelessWidget {
           _buildSocialBtn(
                 () => onFbPressed(),
             AssetImage(
-              fbLogoPath,
+              'assets/logos/facebook.jpg',
             ),
           ),
           _buildSocialBtn(
                 () => onGooPressed(),
             AssetImage(
-              gooLogoPath,
+              'assets/logos/google.jpg',
+
             ),
           ),
         ],
