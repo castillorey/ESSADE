@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/global.dart';
 import 'package:essade/ui/container_page.dart';
 import 'package:essade/ui/login_page.dart';
@@ -8,7 +9,25 @@ import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Firestore.instance
+        .collection('proyectos')
+        .snapshots()
+        .listen((data) =>
+        data.documents.forEach((doc) => print(doc["nombre"])));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

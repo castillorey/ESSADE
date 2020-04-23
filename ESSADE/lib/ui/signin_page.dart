@@ -21,6 +21,8 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: essadePrimaryColor,
+      resizeToAvoidBottomPadding: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Center(
@@ -37,17 +39,12 @@ class _SignInPageState extends State<SignInPage> {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      color: primaryColor,
-                    ),
-                    Container(
-                      height: double.infinity,
+                      color: essadePrimaryColor,
                       child: SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
                         padding: EdgeInsets.symmetric(
                           horizontal: 40.0,
-                          vertical: 50.0,
+                          vertical: 40.0,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,8 +91,8 @@ class _SignInPageState extends State<SignInPage> {
                             SizedBox(height: 20.0),
                             LongButtonWidget(
                               text: 'Registro',
-                              boxColor: essadePrimaryColor,
-                              textColor: Colors.white,
+                              boxColor: Colors.white,
+                              textColor: essadePrimaryColor,
                               onPressed: () =>  print('Sign in pressed'),
                             ),
                             SizedBox(height: 10.0),

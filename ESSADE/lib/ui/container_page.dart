@@ -3,6 +3,7 @@ import 'package:essade/ui/about_page.dart';
 import 'package:essade/ui/help_page.dart';
 import 'package:essade/ui/queries_page.dart';
 import 'package:essade/ui/quote_page.dart';
+import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
@@ -31,9 +32,6 @@ class _ContainerPageState extends State<ContainerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: const Text('Sample Code'),
-    ),
     body: Center(
       child: tabs.elementAt(_selectedIndex),
     ),
@@ -42,23 +40,23 @@ class _ContainerPageState extends State<ContainerPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Inicio'),
+            title: Text('Inicio', style: essadeParagraph),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.graphic_eq),
-            title: Text('Cotizar'),            
+            title: Text('Cotizar', style: essadeParagraph),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.zoom_in),
-            title: Text('Consultas'),
+            title: Text('Consultas', style: essadeParagraph),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.help),
-            title: Text('Ayuda'),
+            title: Text('Ayuda', style: essadeParagraph),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
-            title: Text('Empresa'),
+            title: Text('Empresa', style: essadeParagraph),
           ),
         ],
         currentIndex: _selectedIndex,

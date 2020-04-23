@@ -17,7 +17,7 @@ class LongButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final btnStyle = TextStyle(
-      color: boxColor,
+      color: textColor,
       letterSpacing: 1.5,
       fontSize: 18.0,
       fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class LongButtonWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: textColor,
+        color: boxColor,
         child: Text(
           text,
           style: btnStyle,

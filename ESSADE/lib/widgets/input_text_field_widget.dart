@@ -8,7 +8,7 @@ class InputTextFieldWidget extends StatelessWidget {
   final Color textColor, boxColor, placeholderColor;
 
   InputTextFieldWidget({
-    @required this.label,
+    this.label = '',
     @required this.inputType,
     @required this.icon,
     @required this.placeholder,
@@ -40,10 +40,11 @@ class InputTextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          label,
-          style: tfLabelStyle,
-        ),
+        if (label == '')
+          Text(
+            label,
+            style: tfLabelStyle,
+          ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,

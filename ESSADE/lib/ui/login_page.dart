@@ -1,4 +1,6 @@
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/ui/register_code_page.dart';
+import 'package:essade/ui/signin_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/or_log_sign_in_with_widget.dart';
 import 'package:essade/widgets/switch_loged_signed_widget.dart';
@@ -8,12 +10,12 @@ import 'package:essade/widgets/social_buttons_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:essade/ui/signin_page.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Center(
@@ -30,17 +32,10 @@ class LoginPage extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    height: double.infinity,
                     child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
                       padding: EdgeInsets.symmetric(
                         horizontal: 40.0,
-                        vertical: 60.0,
+                        vertical: 80.0,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +49,7 @@ class LoginPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 25.0),
+                          SizedBox(height: 30.0),
                           InputTextFieldWidget(
                             label: 'Correo',
                             inputType: TextInputType.emailAddress,
@@ -77,8 +72,8 @@ class LoginPage extends StatelessWidget {
                           SizedBox(height: 20.0),
                           LongButtonWidget(
                             text: 'Iniciar sesión',
-                            boxColor: Colors.white,
-                            textColor: essadePrimaryColor,
+                            boxColor: essadePrimaryColor,
+                            textColor: Colors.white,
                             onPressed: () =>  print('Sign in pressed'),
                           ),
                           SizedBox(height: 10.0),
@@ -91,22 +86,22 @@ class LoginPage extends StatelessWidget {
                             onGooPressed: () => Provider.of<LoginState>(context, listen: false).googleLogin(),
                           ),
                           SwitchLoggedSignedWidget(
-                            guideText: '¿Ya tiene cuenta? ',
+                            guideText: '¿Aún no tiene cuenta? ',
                             guideTextColor: essadeDarkGray,
                             actionText: 'Registrarme',
                             actionTextColor: essadePrimaryColor,
                             onTap: (){ Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignInPage())
+                                MaterialPageRoute(builder: (context) => RegisterCodePage())
                             );},
                           ),
                         ],
-                      ),
+                      )
                     ),
-                  )
+                  ),
                 ],
-              ),
-            ),
+              )
+            )
           ),
         ),
       ),

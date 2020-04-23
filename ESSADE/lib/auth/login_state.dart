@@ -8,21 +8,17 @@ class LoginState with ChangeNotifier {
   FirebaseUser _user;
   bool _loggedIn = false;
   bool _loading = false;
-  bool _authenticating = false;
 
   bool isLoggedIn() => _loggedIn;
   bool isLoading() => _loading;
   FirebaseUser currentUser() => _user;
-  bool isAuthenticating() => _authenticating;
 
   void googleLogin() async {
-    _authenticating = true;
     _loading = true;
     notifyListeners();
 
     _user = await _handleSignIn();
     _loading = false;
-    _authenticating = false;
     _loggedIn = _user != null ? true : false;
     print('Iniciando sesión');
     notifyListeners();
@@ -30,12 +26,10 @@ class LoginState with ChangeNotifier {
   }
 
   void logout(){
-    _authenticating = true;
-    _googleSignIn.signOut();
+    //_googleSignIn.signOut();
     print('Cerrando sesión');
     _loggedIn = false;
     notifyListeners();
-    _authenticating = false;
   }
 
   Future<FirebaseUser> _handleSignIn() async {
