@@ -32,73 +32,38 @@ class _ContainerPageState extends State<ContainerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body: Center(
-      child: tabs.elementAt(_selectedIndex),
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Inicio', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.graphic_eq),
-            title: Text('Cotizar', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.zoom_in),
-            title: Text('Consultas', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            title: Text('Ayuda', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            title: Text('Empresa', style: essadeParagraph),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        onTap: _onItemTapped,
+    body: Align(
+        alignment: Alignment.topCenter,
+        child: tabs.elementAt(_selectedIndex),
       ),
-  );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('ESSADE'),
-    //   ),
-    //   body: Center(
-    //     child: tabs.elementAt(_selectedIndex),
-    //   ),      
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     type: BottomNavigationBarType.fixed,
-    //     items: [
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.home),
-    //         title: Text('Inicio'),
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.graphic_eq),
-    //         title: Text('Cotizar'),            
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.zoom_in),
-    //         title: Text('Consultas'),
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.help),
-    //         title: Text('Ayuda'),
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.menu),
-    //         title: Text('Empresa'),
-    //       ),
-    //     ],
-    //     currentIndex: _selectedIndex,
-    //     selectedItemColor: primaryColor,
-    //     onTap: _onItemTapped,
-    //   ),   
-    // );
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Inicio', style: essadeParagraph),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.graphic_eq),
+              title: Text('Cotizar', style: essadeParagraph),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.zoom_in),
+              title: Text('Consultas', style: essadeParagraph),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.help),
+              title: Text('Ayuda', style: essadeParagraph),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              title: Text('Empresa', style: essadeParagraph),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          onTap: _onItemTapped,
+        ),
+    );
   }
 }

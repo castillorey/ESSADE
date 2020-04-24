@@ -17,9 +17,10 @@ class LoginState with ChangeNotifier {
     _loading = true;
     notifyListeners();
 
-    _user = await _handleSignIn();
+    //_user = await _handleSignIn();
     _loading = false;
-    _loggedIn = _user != null ? true : false;
+    //_loggedIn = _user != null ? true : false;
+    _loggedIn = true;
     print('Iniciando sesión');
     notifyListeners();
     
