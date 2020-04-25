@@ -1,4 +1,5 @@
 import 'package:essade/utilities/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SwitchLoggedSignedWidget extends StatelessWidget {
@@ -16,37 +17,25 @@ class SwitchLoggedSignedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Widget _buildLoginBtn() {
-      return GestureDetector(
-        onTap: () => onTap(),
-        child: RichText(
-          text: TextSpan(
-            text: actionText,
+    return Container(
+      child: RichText(
+        text: TextSpan(
+            text: guideText,
             style: TextStyle(
-              color: actionTextColor,
+              color: guideTextColor,
               fontFamily: 'Raleway',
               fontSize: 16.0,
-              fontWeight: FontWeight.bold,
             ),
-          ),
+            children: <TextSpan>[
+              TextSpan(
+                  text: actionText,
+                  style: essadeH4(actionTextColor),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => onTap()
+              )
+            ]
         ),
-      );
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          guideText,
-          style: TextStyle(
-            color: guideTextColor,
-            fontFamily: 'Raleway',
-            fontSize: 16.0,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        _buildLoginBtn(),
-      ],
+      ),
     );
   }
 }
