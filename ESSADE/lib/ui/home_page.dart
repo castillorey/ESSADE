@@ -353,92 +353,80 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: _query,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-          if(snapshot.hasData){
-            final documents = snapshot.data.documents;
-            List<Project> _projects = [];
-            documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
-            String _balance, _incomes, _outgoings, dp, pp;
-            if(thereIsProjectSelected){
-              _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].balance);
-              _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].income);
-              _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].outgoing);
+    return StreamBuilder<QuerySnapshot>(
+      stream: _query,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+        if(snapshot.hasData){
+          final documents = snapshot.data.documents;
+          List<Project> _projects = [];
+          documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
+          String _balance, _incomes, _outgoings, dp, pp;
 
-              final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
-              final _pendingPercentage = 1 - _donePercentage;
-              dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                  .format(_donePercentage);
-              pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                  .format(_pendingPercentage);
-            }
+          if(thereIsProjectSelected){
+            _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
+                .format(_projects[pickerSelectionConfirmed].balance);
+            _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
+                .format(_projects[pickerSelectionConfirmed].income);
+            _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
+                .format(_projects[pickerSelectionConfirmed].outgoing);
 
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30.0,
-                vertical: 30.0,
-              ),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.center,
-                      child: Image.asset('assets/logos/essade.png', height: 100),
-                    ),
-                    SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            height: 15,
-                            alignment: Alignment.topCenter,
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Text(
-                                'Cerrar sesión',
-                                style: essadeLightfont,
-                              )
-                          ),
-                          Container(
-                            height: 15,
-                            child: Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 13,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '¡Hola Kevin!',
-                        style: essadeH2(essadeBlack),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    _buildSelectableComponent(documents),
-                    SizedBox(height: 20),
-                    _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
-                  ],
-                ),
-              ),
-            );
-
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
+            final _pendingPercentage = 1 - _donePercentage;
+            dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                .format(_donePercentage);
+            pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                .format(_pendingPercentage);
           }
 
-        },
-      ),
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                /*GestureDetector(
+                  onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        height: 15,
+                        alignment: Alignment.topCenter,
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Text(
+                            'Cerrar sesión',
+                            style: essadeLightfont,
+                          )
+                      ),
+                      Container(
+                        height: 15,
+                        child: Icon(
+                          Icons.keyboard_arrow_right,
+                          size: 13,
+                        ),
+                      )
+                    ],
+                  ),
+                ),*/
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '¡Hola Kevin!',
+                    style: essadeH2(essadeBlack),
+                  ),
+                ),
+                SizedBox(height: 20),
+                _buildSelectableComponent(documents),
+                SizedBox(height: 20),
+                _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
+              ],
+            ),
+          );
+
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+      },
     );
   }
 }

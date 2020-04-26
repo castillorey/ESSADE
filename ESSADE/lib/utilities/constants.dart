@@ -26,6 +26,13 @@ final essadeLightfont = TextStyle(
   fontSize: 12.0,
 );
 
+final List<String> essadeServices = [
+  'Diseño',
+  'Construcción',
+  'Mantenimiento',
+  'Remodelación'
+];
+
 
 Color essadePrimaryColor = Color(0xFF82142d);
 Color essadeBlack = Color(0xFF262626);

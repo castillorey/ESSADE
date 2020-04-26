@@ -10,7 +10,7 @@ class InputTextFieldWidget extends StatelessWidget {
   InputTextFieldWidget({
     this.label = '',
     @required this.inputType,
-    @required this.icon,
+    this.icon = null,
     @required this.placeholder,
     @required this.textColor,
     @required this.boxColor,

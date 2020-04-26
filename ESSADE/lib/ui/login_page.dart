@@ -16,27 +16,26 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: SafeArea(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: Center(
-            child: Consumer<LoginState>(
-              builder: (BuildContext context, LoginState value, Widget child){
-                if(value.isLoading()){
-                  return CircularProgressIndicator();
-                } else {
-                  return child;
-                }
-              },
-              child: GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Center(
+          child: Consumer<LoginState>(
+            builder: (BuildContext context, LoginState value, Widget child){
+              if(value.isLoading()){
+                return CircularProgressIndicator();
+              } else {
+                return child;
+              }
+            },
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: SafeArea(
                       child: SingleChildScrollView(
                         padding: EdgeInsets.symmetric(
                           horizontal: 40.0,
-                          vertical: 80.0,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,10 +99,10 @@ class LoginPage extends StatelessWidget {
                         )
                       ),
                     ),
-                  ],
-                )
+                  ),
+                ],
               )
-            ),
+            )
           ),
         ),
       ),
