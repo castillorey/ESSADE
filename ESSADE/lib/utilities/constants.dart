@@ -46,3 +46,4 @@ Color essadePrimaryColor = Color(0xFF82142d);
 Color essadeBlack = Color(0xFF262626);
 Color essadeDarkGray = Color(0xFF85878a);
 Color essadeGray = Color(0xFFa5a5aa);
+Color essadeErrorColor = Color(0xFFED4337);

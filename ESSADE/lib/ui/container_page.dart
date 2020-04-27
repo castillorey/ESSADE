@@ -53,11 +53,11 @@ class _ContainerPageState extends State<ContainerPage> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30.0,
-                            vertical: 10.0
-                          ),
-                          child: tabs.elementAt(_selectedIndex)
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 30.0,
+                          vertical: 10.0
+                        ),
+                        child: tabs.elementAt(_selectedIndex)
                       )
                     ],
                   ),

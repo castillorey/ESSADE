@@ -214,6 +214,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   return null;
                 },
                 maxLines: 10,
+                keyboardType: TextInputType.text,
                 style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
                 decoration: InputDecoration(
                   hintText: 'Escriba sus comentarios',
@@ -221,8 +222,8 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   contentPadding: EdgeInsets.all(10.0),
                   enabledBorder: _myBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
                   focusedBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
-                  errorBorder: _myBorderErrorStyle(10.0, Colors.red.withOpacity(0.5)),
-                  focusedErrorBorder: _myBorderErrorStyle(10.0, Colors.red.withOpacity(0.5)),
+                  errorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
+                  focusedErrorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
                 ),
               ),
               SizedBox(height: 20),
@@ -231,12 +232,11 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   removeErrorValidation = false;
                   if(!isServiceSelected){
                     setState(() {
-                      selectableBorderColor = Colors.red.withOpacity(0.5);
-                      selectableIconColor = Colors.red.withOpacity(0.8);
+                      selectableBorderColor = essadeErrorColor;
+                      selectableIconColor = essadeErrorColor;
                     });
                   }
-                  if (_formKey.currentState.validate()){
-
+                  if (_formKey.currentState.validate() && isServiceSelected){
                       Firestore.instance.collection('cotizaciones').add({
                         'tipo_servicio': serviceSelected,
                         'comentario': commentInputController.text
