@@ -353,33 +353,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _query,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-        if(snapshot.hasData){
-          final documents = snapshot.data.documents;
-          List<Project> _projects = [];
-          documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
-          String _balance, _incomes, _outgoings, dp, pp;
+    return SingleChildScrollView(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _query,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(snapshot.hasData){
+            final documents = snapshot.data.documents;
+            List<Project> _projects = [];
+            documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
+            String _balance, _incomes, _outgoings, dp, pp;
 
-          if(thereIsProjectSelected){
-            _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(_projects[pickerSelectionConfirmed].balance);
-            _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(_projects[pickerSelectionConfirmed].income);
-            _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(_projects[pickerSelectionConfirmed].outgoing);
+            if(thereIsProjectSelected){
+              _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
+                  .format(_projects[pickerSelectionConfirmed].balance);
+              _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
+                  .format(_projects[pickerSelectionConfirmed].income);
+              _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
+                  .format(_projects[pickerSelectionConfirmed].outgoing);
 
-            final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
-            final _pendingPercentage = 1 - _donePercentage;
-            dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                .format(_donePercentage);
-            pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                .format(_pendingPercentage);
-          }
+              final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
+              final _pendingPercentage = 1 - _donePercentage;
+              dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                  .format(_donePercentage);
+              pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                  .format(_pendingPercentage);
+            }
 
-          return SingleChildScrollView(
-            child: Column(
+            return Column(
               children: <Widget>[
                 /*GestureDetector(
                   onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
@@ -417,16 +417,16 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 20),
                 _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
               ],
-            ),
-          );
+            );
 
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-      },
+        },
+      ),
     );
   }
 }

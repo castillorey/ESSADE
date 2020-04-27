@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/models/Quote.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,20 +14,31 @@ class QuoteFormWidget extends StatefulWidget {
 
 class _QuoteFormWidgetState extends State<QuoteFormWidget> {
   List<String> services;
-  String projectSelected;
+  String serviceSelected;
+  String quoteComment;
   int pickerSelection, pickerSelectionConfirmed;
-  bool serviceSelected;
+  bool isServiceSelected;
+  bool removeErrorValidation;
+  Quote quote;
+  Color selectableBorderColor;
+  Color selectableIconColor;
 
+  TextEditingController commentInputController;
+  
   @override
   void initState() {
     super.initState();
 
     services = essadeServices;
-    projectSelected = 'Seleccione un servicio...';
     pickerSelection = 0;
     pickerSelectionConfirmed = 0;
-    serviceSelected = false;
+    serviceSelected = 'Seleccione un servicio...';
+    isServiceSelected = false;
+    removeErrorValidation = false;
 
+    commentInputController = new TextEditingController();
+    selectableBorderColor = essadeGray.withOpacity(0.5);
+    selectableIconColor = essadeDarkGray;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -67,8 +80,10 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   onPressed: () {
                     setState(() {
                       pickerSelectionConfirmed = pickerSelection;
-                      projectSelected = services[pickerSelectionConfirmed];
-                      serviceSelected = true;
+                      serviceSelected = services[pickerSelectionConfirmed];
+                      isServiceSelected = true;
+                      selectableBorderColor = essadeGray.withOpacity(0.5);
+                      selectableIconColor = essadeDarkGray;
                     });
                     Navigator.of(context).pop();
                   },
@@ -110,13 +125,13 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
     Widget selectableWidget;
     if(Platform.isAndroid){
       selectableWidget = DropdownButton(
-          value: projectSelected,
+          value: serviceSelected,
           icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
           onChanged: (newValue) {
             this.setState(() {
-              projectSelected = newValue;
+              serviceSelected = newValue;
             });
           },
           items: services.map((value){
@@ -136,7 +151,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
-                    color: essadeGray.withOpacity(0.5),
+                    color: selectableBorderColor,
                     width: 1.0
                 )
             ),
@@ -145,11 +160,11 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
               children: <Widget>[
                 Icon(
                   Icons.work,
-                  color: essadeDarkGray,
+                  color: selectableIconColor,
                 ),
                 SizedBox(width: 10),
                 Text(
-                  projectSelected,
+                  serviceSelected,
                   style: essadeParagraph,
                 )
               ],
@@ -158,6 +173,13 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
       );
     }
     return selectableWidget;
+  }
+
+  InputBorder _myBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(borderRadius),
+      borderSide: BorderSide(color: color, width: width),
+    );
   }
 
   @override
@@ -177,20 +199,61 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
               _buildSelectableComponent(services),
               SizedBox(height: 20),
               TextFormField(
+                controller: commentInputController,
+                onChanged: (text){
+                  removeErrorValidation = true;
+                  _formKey.currentState.validate();
+                },
+                validator: (String value){
+                  if (removeErrorValidation)
+                    return null;
+
+                  if (value.isEmpty)
+                    return 'Escriba algún comentario';
+
+                  return null;
+                },
                 maxLines: 10,
                 style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
                 decoration: InputDecoration(
                   hintText: 'Escriba sus comentarios',
                   hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
                   contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: essadeGray.withOpacity(0.5), width: 1.0)
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: essadePrimaryColor, width: 1.0),
-                  )
+                  enabledBorder: _myBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
+                  focusedBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
+                  errorBorder: _myBorderErrorStyle(10.0, Colors.red.withOpacity(0.5)),
+                  focusedErrorBorder: _myBorderErrorStyle(10.0, Colors.red.withOpacity(0.5)),
+                ),
+              ),
+              SizedBox(height: 20),
+              RaisedButton(
+                onPressed: () {
+                  removeErrorValidation = false;
+                  if(!isServiceSelected){
+                    setState(() {
+                      selectableBorderColor = Colors.red.withOpacity(0.5);
+                      selectableIconColor = Colors.red.withOpacity(0.8);
+                    });
+                  }
+                  if (_formKey.currentState.validate()){
+
+                      Firestore.instance.collection('cotizaciones').add({
+                        'tipo_servicio': serviceSelected,
+                        'comentario': commentInputController.text
+                      }).then((result) => {
+                        setState(() { serviceSelected = 'Seleccione un servicio...';}),
+                        commentInputController.clear(),
+                      }).catchError((error) => print(error));
+                  }
+                },
+                padding: EdgeInsets.all(15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: essadePrimaryColor,
+                child: Text(
+                  'Enviar Cotización',
+                  style: btnFontStyle(Colors.white),
                 ),
               )
             ]

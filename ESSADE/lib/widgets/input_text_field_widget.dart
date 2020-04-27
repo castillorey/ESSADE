@@ -6,6 +6,7 @@ class InputTextFieldWidget extends StatelessWidget {
   final TextInputType inputType;
   final IconData icon;
   final Color textColor, boxColor, placeholderColor;
+  final BoxBorder border;
 
   InputTextFieldWidget({
     this.label = '',
@@ -15,6 +16,7 @@ class InputTextFieldWidget extends StatelessWidget {
     @required this.textColor,
     @required this.boxColor,
     @required this.placeholderColor,
+    this.border = null
 
   });
 
@@ -35,6 +37,7 @@ class InputTextFieldWidget extends StatelessWidget {
     final tfBoxDecorationStyle = BoxDecoration(
       color: boxColor,
       borderRadius: BorderRadius.circular(10.0),
+      border: border
     );
 
     return Column(
@@ -59,10 +62,7 @@ class InputTextFieldWidget extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                icon,
-                color: textColor,
-              ),
+              prefixIcon: Icon(icon),
               hintText: placeholder,
               hintStyle: tfHintTextStyle,
             ),

@@ -16,14 +16,6 @@ class LongButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final btnStyle = TextStyle(
-      color: textColor,
-      letterSpacing: 1.5,
-      fontSize: 18.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-    );
-
     return Container(
       width: double.infinity,
       child: RaisedButton(
@@ -36,7 +28,7 @@ class LongButtonWidget extends StatelessWidget {
         color: boxColor,
         child: Text(
           text,
-          style: btnStyle,
+          style: btnFontStyle(textColor),
         ),
       ),
     );

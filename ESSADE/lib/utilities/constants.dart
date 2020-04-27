@@ -33,6 +33,14 @@ final List<String> essadeServices = [
   'Remodelación'
 ];
 
+btnFontStyle(Color color) => TextStyle(
+  color: color,
+  letterSpacing: 1.5,
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'Raleway',
+);
+
 
 Color essadePrimaryColor = Color(0xFF82142d);
 Color essadeBlack = Color(0xFF262626);
