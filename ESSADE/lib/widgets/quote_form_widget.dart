@@ -165,7 +165,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                 SizedBox(width: 10),
                 Text(
                   serviceSelected,
-                  style: essadeParagraph,
+                  style: essadeParagraph(),
                 )
               ],
             )
@@ -223,37 +223,41 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   enabledBorder: _myBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
                   focusedBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
                   errorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
-                  focusedErrorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
+                  focusedErrorBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
                 ),
               ),
               SizedBox(height: 20),
-              RaisedButton(
-                onPressed: () {
-                  removeErrorValidation = false;
-                  if(!isServiceSelected){
-                    setState(() {
-                      selectableBorderColor = essadeErrorColor;
-                      selectableIconColor = essadeErrorColor;
-                    });
-                  }
-                  if (_formKey.currentState.validate() && isServiceSelected){
-                      Firestore.instance.collection('cotizaciones').add({
-                        'tipo_servicio': serviceSelected,
-                        'comentario': commentInputController.text
-                      }).then((result) => {
-                        setState(() { serviceSelected = 'Seleccione un servicio...';}),
-                        commentInputController.clear(),
-                      }).catchError((error) => print(error));
-                  }
-                },
-                padding: EdgeInsets.all(15.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                color: essadePrimaryColor,
-                child: Text(
-                  'Enviar Cotización',
-                  style: btnFontStyle(Colors.white),
+              Container(
+                width: double.infinity,
+                child: RaisedButton(
+                  onPressed: () {
+                    removeErrorValidation = false;
+                    if(!isServiceSelected){
+                      setState(() {
+                        selectableBorderColor = essadeErrorColor;
+                        selectableIconColor = essadeErrorColor;
+                      });
+                    }
+                    if (_formKey.currentState.validate() && isServiceSelected){
+                        Firestore.instance.collection('cotizaciones').add({
+                          'tipo_servicio': serviceSelected,
+                          'comentario': commentInputController.text
+                        }).then((result) => {
+                          setState(() { serviceSelected = 'Seleccione un servicio...';}),
+                          commentInputController.clear(),
+                        }).catchError((error) => print(error));
+                    }
+                  },
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  color: essadePrimaryColor,
+                  elevation: 0.0,
+                  child: Text(
+                    'Enviar Cotización',
+                    style: btnFontStyle(Colors.white),
+                  ),
                 ),
               )
             ]

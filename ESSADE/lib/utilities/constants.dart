@@ -14,8 +14,8 @@ essadeH4(color) => TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-final essadeParagraph = TextStyle(
-    color: essadeBlack,
+essadeParagraph( {Color color = essadeBlack}) => TextStyle(
+    color: color,
     fontFamily: 'Raleway',
     fontSize: 14.0,
 );
@@ -33,17 +33,21 @@ final List<String> essadeServices = [
   'Remodelación'
 ];
 
-btnFontStyle(Color color) => TextStyle(
+btnFontStyle(Color color, {bool bold: false}) => TextStyle(
   color: color,
   letterSpacing: 1.5,
-  fontSize: 18.0,
-  fontWeight: FontWeight.bold,
+  fontSize: 16.0,
+  fontWeight: bold ? FontWeight.bold : null,
   fontFamily: 'Raleway',
 );
 
+enum PlatformType {
+  iOS,
+  android
+}
 
-Color essadePrimaryColor = Color(0xFF82142d);
-Color essadeBlack = Color(0xFF262626);
-Color essadeDarkGray = Color(0xFF85878a);
-Color essadeGray = Color(0xFFa5a5aa);
-Color essadeErrorColor = Color(0xFFED4337);
+const Color essadePrimaryColor = Color(0xFF82142d);
+const Color essadeBlack = Color(0xFF262626);
+const Color essadeDarkGray = Color(0xFF85878a);
+const Color essadeGray = Color(0xFFa5a5aa);
+const Color essadeErrorColor = Color(0xFFED4337);

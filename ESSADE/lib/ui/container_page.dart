@@ -48,53 +48,51 @@ class _ContainerPageState extends State<ContainerPage> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
             child: Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 30.0,
-                          vertical: 10.0
-                        ),
-                        child: tabs.elementAt(_selectedIndex)
-                      )
-                    ],
-                  ),
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height - 130,
+                padding: EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 10.0
                 ),
-              ),
+                child: tabs.elementAt(_selectedIndex)
+              )
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        elevation: 5.0,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Inicio', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.graphic_eq),
-            title: Text('Cotizar', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.zoom_in),
-            title: Text('Consultas', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            title: Text('Ayuda', style: essadeParagraph),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            title: Text('Empresa', style: essadeParagraph),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        onTap: _onItemTapped,
+      bottomNavigationBar: SizedBox(
+        height: 60,
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          elevation: 5.0,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Inicio', style: essadeParagraph()),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.graphic_eq),
+              title: Text('Cotizar', style: essadeParagraph()),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.zoom_in),
+              title: Text('Consultas', style: essadeParagraph()),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.help),
+              title: Text('Ayuda', style: essadeParagraph()),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              title: Text('Empresa', style: essadeParagraph()),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          onTap: _onItemTapped,
+        ),
       ),
       backgroundColor: Colors.white,
     );

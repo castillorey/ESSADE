@@ -28,7 +28,7 @@ class LongButtonWidget extends StatelessWidget {
         color: boxColor,
         child: Text(
           text,
-          style: btnFontStyle(textColor),
+          style: btnFontStyle(textColor, bold: true),
         ),
       ),
     );

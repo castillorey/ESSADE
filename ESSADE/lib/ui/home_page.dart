@@ -5,6 +5,7 @@ import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/graph_widget.dart';
+import 'package:essade/widgets/selectable_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildExpandedItem(String name, String ciudad, String departamento){
     return ListTile(
-      title: Text(name, style: essadeParagraph),
+      title: Text(name, style: essadeParagraph()),
       subtitle: Text('$ciudad, $departamento', style: essadeLightfont,),
     );
   }
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   'Aprende los mejores tips para que tu cuarto se vea mucho más grande',
-                  style: essadeParagraph,
+                  style: essadeParagraph(),
                 )
               ),
               Icon(
@@ -232,7 +233,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 10),
               Text(
                 projectSelected,
-                style: essadeParagraph,
+                style: essadeParagraph(),
               )
             ],
           )
@@ -247,100 +248,89 @@ class _HomePageState extends State<HomePage> {
       return Column(
         children: <Widget>[
           _buildTotalBalance(_balance),
-          Column(
+          SizedBox(height: 20),
+          ExpansionTile(
+            leading: Icon(Icons.graphic_eq),
+            title: Text('Ingresos y egresos', style: essadeParagraph()),
             children: <Widget>[
-              SizedBox(height: 20),
-              ExpansionTile(
-                leading: Icon(Icons.graphic_eq),
-                title: Text('Ingresos y egresos', style: essadeParagraph),
-                children: <Widget>[
-                  Container(
-                    height: 250.0,
-                    child: GraphWidget(),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Saldo', style: essadeParagraph),
-                          Text(_balance, style: essadeParagraph)
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Ingresos', style: essadeParagraph),
-                          Text(_incomes, style: essadeParagraph)
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Egresos', style: essadeParagraph),
-                          Text(_outgoings, style: essadeParagraph)
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                ],
+              Container(
+                height: 250.0,
+                child: GraphWidget(),
               ),
-              SizedBox(height: 20),
-              ExpansionTile(
-                leading: Icon(Icons.business_center),
-                title: Text('Avance de obra', style: essadeParagraph),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    height: 250.0,
-                    child: GraphWidget(),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('% Ejecutado', style: essadeParagraph),
-                          Text(dp, style: essadeParagraph)
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('% Por ejecutar', style: essadeParagraph),
-                          Text(pp, style: essadeParagraph)
-                        ],
-                      )
+                      Text('Saldo', style: essadeParagraph()),
+                      Text(_balance, style: essadeParagraph())
                     ],
                   ),
-                  SizedBox(height: 10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Ingresos', style: essadeParagraph()),
+                      Text(_incomes, style: essadeParagraph())
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Egresos', style: essadeParagraph()),
+                      Text(_outgoings, style: essadeParagraph())
+                    ],
+                  )
                 ],
               ),
               SizedBox(height: 10),
-              Divider(
-                height: 20,
-                thickness: 2,
-                color: essadeGray.withOpacity(0.1),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
-              ),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem(),
-              _buildInfoItem()
             ],
-          )
+          ),
+          SizedBox(height: 20),
+          ExpansionTile(
+            leading: Icon(Icons.business_center),
+            title: Text('Avance de obra', style: essadeParagraph()),
+            children: <Widget>[
+              Container(
+                height: 250.0,
+                child: GraphWidget(),
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('% Ejecutado', style: essadeParagraph()),
+                      Text(dp, style: essadeParagraph())
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('% Por ejecutar', style: essadeParagraph()),
+                      Text(pp, style: essadeParagraph())
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
+          SizedBox(height: 10),
+          Divider(
+            height: 20,
+            thickness: 2,
+            color: essadeGray.withOpacity(0.1),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
+          ),
+          SizedBox(height: 10),
+          Placeholder()
         ],
       );
     } else {
@@ -348,7 +338,7 @@ class _HomePageState extends State<HomePage> {
         alignment: Alignment.center,
         child: Text(
           'Seleccione un proyecto para ver su información detallada',
-          style: essadeParagraph
+          style: essadeParagraph()
         ),
       );
     }
@@ -417,7 +407,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                _buildSelectableComponent(documents),
+                //_buildSelectableComponent(documents),
+                SelectableWidget(
+                  objectKey: 'nombre',
+                  documents: documents,
+                ),
                 SizedBox(height: 20),
                 _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
               ],
