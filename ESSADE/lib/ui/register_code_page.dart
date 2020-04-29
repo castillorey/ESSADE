@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';

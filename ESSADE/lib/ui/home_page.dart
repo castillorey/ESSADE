@@ -21,8 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _query;
-  String projectSelected;
-  int pickerSelection, pickerSelectionConfirmed;
+  int pickerSelectionConfirmed;
   bool thereIsProjectSelected;
 
   @override
@@ -32,8 +31,6 @@ class _HomePageState extends State<HomePage> {
         .collection('proyectos')
         .snapshots();
 
-    projectSelected = 'Seleccione un projecto...';
-    pickerSelection = 0;
     pickerSelectionConfirmed = 0;
     thereIsProjectSelected = false;
 
@@ -111,136 +108,6 @@ class _HomePageState extends State<HomePage> {
     });
     var result = percentDone/(project.activitiesNumber * 100);
     return result;
-  }
-
-  Future _myShowCupertinoModalPopup(List<DocumentSnapshot> documents){
-    pickerSelection = pickerSelectionConfirmed;
-    return showCupertinoModalPopup(context: context, builder: (context){
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xff999999),
-                  width: 0.0,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                CupertinoButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    setState(() {
-                      pickerSelection = pickerSelectionConfirmed;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 5.0,
-                  ),
-                ),
-                CupertinoButton(
-                  child: Text('Hecho'),
-                  onPressed: () {
-                    setState(() {
-                      pickerSelectionConfirmed = pickerSelection;
-                      projectSelected = documents[pickerSelectionConfirmed]['nombre'];
-                      thereIsProjectSelected = true;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 5.0,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: 320.0,
-            color: Color(0xfff7f7f7),
-            child: CupertinoPicker(
-              scrollController: FixedExtentScrollController(initialItem: pickerSelectionConfirmed),
-              onSelectedItemChanged: (val) {
-                setState(() {
-                  pickerSelection = val;
-                });
-              },
-              useMagnifier: true,
-              magnification: 1.2,
-              itemExtent: 30,
-              children: documents.map((project){
-                return Container(
-                  alignment: Alignment.center,
-                  child: Text(project['nombre']),
-                );
-              }).toList()
-            ),
-          )
-        ],
-      );
-    });
-  }
-
-  Widget _buildSelectableComponent(List<DocumentSnapshot> documents){
-    Widget selectableWidget;
-    if(Platform.isAndroid){
-      selectableWidget = DropdownButton(
-          value: projectSelected,
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          onChanged: (newValue) {
-            this.setState(() {
-              projectSelected = newValue;
-            });
-          },
-          items: documents.map((project){
-            return DropdownMenuItem(
-              value: project['nombre'],
-              child: Text(project['nombre']),
-            );
-          }).toList()
-      );
-    } else if (Platform.isIOS){
-      selectableWidget = GestureDetector(
-        onTap: () => _myShowCupertinoModalPopup(documents),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              color: essadeGray.withOpacity(0.2),
-              width: 1.0
-            )
-          ),
-          height: 60.0,
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.card_travel,
-                color: essadeDarkGray,
-              ),
-              SizedBox(width: 10),
-              Text(
-                projectSelected,
-                style: essadeParagraph(),
-              )
-            ],
-          )
-        ),
-      );
-    }
-    return selectableWidget;
   }
 
   Widget _buildProjectSelectedInfo(String _balance, String _incomes, String _outgoings, String dp, String pp){
@@ -345,6 +212,13 @@ class _HomePageState extends State<HomePage> {
 
   }
 
+  void isProjectSelectedCallback(bool wasProjectSelected, int pickerSelected){
+    setState(() {
+      thereIsProjectSelected = wasProjectSelected;
+      pickerSelectionConfirmed = pickerSelected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -375,30 +249,6 @@ class _HomePageState extends State<HomePage> {
 
             return Column(
               children: <Widget>[
-                /*GestureDetector(
-                  onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        height: 15,
-                        alignment: Alignment.topCenter,
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text(
-                            'Cerrar sesión',
-                            style: essadeLightfont,
-                          )
-                      ),
-                      Container(
-                        height: 15,
-                        child: Icon(
-                          Icons.keyboard_arrow_right,
-                          size: 13,
-                        ),
-                      )
-                    ],
-                  ),
-                ),*/
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -407,10 +257,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                //_buildSelectableComponent(documents),
                 SelectableWidget(
                   objectKey: 'nombre',
                   documents: documents,
+                  isProjectSelectedCallback: isProjectSelectedCallback,
                 ),
                 SizedBox(height: 20),
                 _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)

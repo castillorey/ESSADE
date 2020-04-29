@@ -5,16 +5,30 @@ import 'package:essade/utilities/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SelectableWidget extends StatelessWidget {
+class SelectableWidget extends StatefulWidget {
   final String objectKey;
   final List<DocumentSnapshot> documents;
+  Function isProjectSelectedCallback;
+
+  SelectableWidget({Key key, this.objectKey, this.documents, this.isProjectSelectedCallback}) : super(key: key);
+
+  @override
+  _SelectableWidgetState createState() => _SelectableWidgetState();
+}
+
+class _SelectableWidgetState extends State<SelectableWidget> {
   String projectSelected;
   int pickerSelection, pickerSelectionConfirmed;
-  bool thereIsProjectSelected;
 
-  SelectableWidget({Key key, this.objectKey, this.documents}) : super(key: key);
 
-  get context => null;
+  @override
+  void initState() {
+    super.initState();
+    projectSelected = 'Seleccione un proyecto...';
+    pickerSelection = 0;
+    pickerSelectionConfirmed = 0;
+
+  }
 
 
   Future _myShowCupertinoModalPopup(List<DocumentSnapshot> documents){
@@ -39,7 +53,9 @@ class SelectableWidget extends StatelessWidget {
                 CupertinoButton(
                   child: Text('Cancel'),
                   onPressed: () {
-                    pickerSelection = pickerSelectionConfirmed;
+                    setState(() {
+                      pickerSelection = pickerSelectionConfirmed;
+                    });
                     Navigator.of(context).pop();
                   },
                   padding: const EdgeInsets.symmetric(
@@ -50,9 +66,11 @@ class SelectableWidget extends StatelessWidget {
                 CupertinoButton(
                   child: Text('Hecho'),
                   onPressed: () {
+                    setState(() {
                       pickerSelectionConfirmed = pickerSelection;
-                      projectSelected = documents[pickerSelectionConfirmed][objectKey];
-                      thereIsProjectSelected = true;
+                      projectSelected = documents[pickerSelectionConfirmed][widget.objectKey];
+                      this.widget.isProjectSelectedCallback(true, pickerSelectionConfirmed);
+                    });
                     Navigator.of(context).pop();
                   },
                   padding: const EdgeInsets.symmetric(
@@ -69,7 +87,9 @@ class SelectableWidget extends StatelessWidget {
             child: CupertinoPicker(
                 scrollController: FixedExtentScrollController(initialItem: pickerSelectionConfirmed),
                 onSelectedItemChanged: (val) {
+                  setState(() {
                     pickerSelection = val;
+                  });
                 },
                 useMagnifier: true,
                 magnification: 1.2,
@@ -77,7 +97,7 @@ class SelectableWidget extends StatelessWidget {
                 children: documents.map((object){
                   return Container(
                     alignment: Alignment.center,
-                    child: Text(object[objectKey]),
+                    child: Text(object[widget.objectKey]),
                   );
                 }).toList()
             ),
@@ -100,8 +120,8 @@ class SelectableWidget extends StatelessWidget {
           },
           items: documents.map((project){
             return DropdownMenuItem(
-              value: project[objectKey],
-              child: Text(project[objectKey]),
+              value: project[widget.objectKey],
+              child: Text(project[widget.objectKey]),
             );
           }).toList()
       );
@@ -141,7 +161,7 @@ class SelectableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return _buildSelectableComponent(widget.documents);
   }
 }
 

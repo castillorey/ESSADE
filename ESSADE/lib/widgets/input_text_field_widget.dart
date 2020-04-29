@@ -62,7 +62,7 @@ class InputTextFieldWidget extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(icon),
+              prefixIcon: Icon(icon, color: textColor,),
               hintText: placeholder,
               hintStyle: tfHintTextStyle,
             ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/Project.dart';
+import 'package:essade/ui/project_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ class QueriesPage extends StatefulWidget {
   @override
   _QueriesPageState createState() => _QueriesPageState();
 }
-
 
 
 class _QueriesPageState extends State<QueriesPage> {
@@ -52,16 +52,19 @@ class _QueriesPageState extends State<QueriesPage> {
               SizedBox(height: 20),
               ExpansionTile(
                 leading: Icon(Icons.work),
-                title: Text(projectSelected == null ? 'Seleccione un projecto...' : projectSelected.name, style: essadeParagraph()),
+                title: Text('Mis proyectos', style: essadeParagraph(),),
                 children: projects.map((p){
                   return ListTile(
                     onTap: (){
-                      setState(() {
-                        projectSelected = p;
-                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                          builder: (context) => ProjectDetailPage(project: p))
+                      );
                     },
                     title: Text(p.name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
                     subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont),
+                    trailing: Icon(Icons.keyboard_arrow_right),
                   );
                 }).toList()
               ),
