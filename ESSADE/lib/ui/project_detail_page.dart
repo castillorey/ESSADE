@@ -11,13 +11,12 @@ class ProjectDetailPage extends StatelessWidget {
 
   ProjectDetailPage({Key key, this.project}) : super(key: key);
 
-  PageController controller = PageController();
+  PageController controller = PageController(
+    initialPage: 0
+  );
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
-    ));
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -34,7 +33,7 @@ class ProjectDetailPage extends StatelessWidget {
           controller: controller,
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            ProjectValuesSubpage(),
+            ProjectValuesSubpage(project: project),
             ProjectActivitiesSubpage(),
             ProjectMovementsSubpage()
           ],

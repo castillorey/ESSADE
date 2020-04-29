@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
               style: essadeH4(essadeBlack),
             ),
             Text(
-              thereIsProjectSelected == true ? '$balance': '----',
+              '$balance',
               style: essadeH2(essadePrimaryColor),
             )
           ],
@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
 
             if(thereIsProjectSelected){
               _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].balance);
+                  .format(_projects[pickerSelectionConfirmed].price);
               _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
                   .format(_projects[pickerSelectionConfirmed].income);
               _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)

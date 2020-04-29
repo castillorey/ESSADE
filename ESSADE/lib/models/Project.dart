@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Project {
   final String name, city, state;
-  final int income, outgoing, activitiesNumber, balance;
+  final int income, outgoing, activitiesNumber, price;
   final Map<String, dynamic> tasksPercentage;
   //final DocumentReference reference;
   Project(
@@ -12,7 +12,7 @@ class Project {
       this.income,
       this.outgoing,
       this.activitiesNumber,
-      this.balance,
+      this.price,
       this.tasksPercentage
       );
 
@@ -23,7 +23,7 @@ class Project {
         this.income = map['ingreso'],
         this.outgoing = map['egreso'],
         this.activitiesNumber = map['no_actividades'],
-        this.balance = map['valor_total'],
+        this.price = map['valor_total'],
         this.tasksPercentage = map['tareas_porcentaje'];
 
   Project.fromSnapshot(DocumentSnapshot snapshot)
@@ -31,7 +31,7 @@ class Project {
 
   @override
   String toString() {
-    return 'Project{name: $name, city: $city, state: $state, income: $income, outgoing: $outgoing, activitiesNumber: $activitiesNumber, balance: $balance, tasksPercentage: $tasksPercentage}';
+    return 'Project{name: $name, city: $city, state: $state, income: $income, outgoing: $outgoing, activitiesNumber: $activitiesNumber, price: $price, tasksPercentage: $tasksPercentage}';
   }
 
 
