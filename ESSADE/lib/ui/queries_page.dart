@@ -45,7 +45,7 @@ class _QueriesPageState extends State<QueriesPage> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Cotizar',
+                  'Consultar',
                   style: essadeH2(essadeBlack),
                 ),
               ),

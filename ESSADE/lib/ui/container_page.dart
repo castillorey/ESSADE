@@ -42,19 +42,22 @@ class _ContainerPageState extends State<ContainerPage> {
           elevation: _selectedIndex == 0 ? 0.0 : 0.5,
         ),
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height - 130,
-              padding: EdgeInsets.symmetric(
-                  horizontal: 30.0,
-                  vertical: 10.0
-              ),
-              child: tabs.elementAt(_selectedIndex)
-            )
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height - 130,
+                padding: EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 10.0
+                ),
+                child: tabs.elementAt(_selectedIndex)
+              )
+            ),
           ),
         ),
       ),

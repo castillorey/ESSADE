@@ -24,6 +24,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
   Color selectableIconColor;
 
   TextEditingController commentInputController;
+  bool quoteIsLoading = true;
   
   @override
   void initState() {
@@ -182,6 +183,34 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
     );
   }
 
+   Widget myQuoteSentWidget(String message) {
+    return Dialog(
+      child: Container(
+        width: 100,
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(message, style: essadeH4(essadeBlack),),
+            Icon(Icons.accessibility, color: essadePrimaryColor,)
+          ],
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+      ),
+    );
+
+  }
+
+  Future fetchStr() async {
+    await new Future.delayed(const Duration(seconds: 5), () {
+    });
+    return 'Hello World';
+  }
+
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -230,7 +259,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
               Container(
                 width: double.infinity,
                 child: RaisedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     removeErrorValidation = false;
                     if(!isServiceSelected){
                       setState(() {
@@ -239,13 +268,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                       });
                     }
                     if (_formKey.currentState.validate() && isServiceSelected){
-                        Firestore.instance.collection('cotizaciones').add({
-                          'tipo_servicio': serviceSelected,
-                          'comentario': commentInputController.text
-                        }).then((result) => {
-                          setState(() { serviceSelected = 'Seleccione un servicio...';}),
-                          commentInputController.clear(),
-                        }).catchError((error) => print(error));
+                      _handleQuoteSubmit(context);
                     }
                   },
                   padding: EdgeInsets.all(15.0),
@@ -264,4 +287,53 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
         )
     );
   }
+
+  Future<void> _handleQuoteSubmit(BuildContext context) async {
+    try {
+      showLoadingDialog(context, _keyLoader);
+      DocumentReference ref = await Firestore.instance.collection('cotizaciones').add({
+        'tipo_servicio': serviceSelected,
+        'comentario': commentInputController.text
+      });
+      Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close the dialoge
+      showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.of(context).pop(true);
+            });
+            return myQuoteSentWidget('Cotización enviada con exito');
+          }
+      );
+      setState(() { serviceSelected = 'Seleccione un servicio...';});
+      commentInputController.clear();
+    } catch (error) {
+      print(error);
+      showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context).pop(true);
+            });
+            return myQuoteSentWidget('Lo sentimos ha ocurrido un error :(');
+          }
+      );
+    }
+  }
+
+  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: Center(
+                key: key,
+                child: CircularProgressIndicator(),
+              )
+          );
+        });
+  }
 }
+
