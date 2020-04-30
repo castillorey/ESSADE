@@ -52,7 +52,8 @@ class ProjectDetailPage extends StatelessWidget {
           elevation: 0.0,
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          //color: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Column(
             children: <Widget>[
               _title(),
@@ -65,7 +66,7 @@ class ProjectDetailPage extends StatelessWidget {
                     children: <Widget>[
                       ProjectValuesSubpage(project: project),
                       ProjectActivitiesSubpage(project: project),
-                      ProjectMovementsSubpage()
+                      ProjectMovementsSubpage(project: project,)
                     ],
                   ),
                 ),

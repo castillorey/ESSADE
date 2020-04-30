@@ -35,7 +35,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Essade App',
         theme: ThemeData(
-          primarySwatch: primaryMaterialColor
+          primarySwatch: primaryMaterialColor,
+          canvasColor: Colors.transparent,
+          scaffoldBackgroundColor: Colors.white
         ),
         routes: {
           '/': (BuildContext context) {
