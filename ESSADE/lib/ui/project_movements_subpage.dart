@@ -5,7 +5,7 @@ class ProjectMovementsSubpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _title(),
+        //_title(),
         _activitiesList(),
       ],
     );

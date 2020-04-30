@@ -20,14 +20,14 @@ class HomePage extends StatefulWidget {
 
 
 class _HomePageState extends State<HomePage> {
-  Stream<QuerySnapshot> _query;
+  Stream<QuerySnapshot> _projectsQuery;
   int pickerSelectionConfirmed;
   bool thereIsProjectSelected;
 
   @override
   void initState() {
     super.initState();
-    _query = Firestore.instance
+    _projectsQuery = Firestore.instance
         .collection('proyectos')
         .snapshots();
 
@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: StreamBuilder<QuerySnapshot>(
-        stream: _query,
+        stream: _projectsQuery,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if(snapshot.hasData){
             final documents = snapshot.data.documents;

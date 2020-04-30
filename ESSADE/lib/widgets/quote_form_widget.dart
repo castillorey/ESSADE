@@ -203,11 +203,6 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
 
   }
 
-  Future fetchStr() async {
-    await new Future.delayed(const Duration(seconds: 5), () {
-    });
-    return 'Hello World';
-  }
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 

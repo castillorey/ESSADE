@@ -15,6 +15,28 @@ class ProjectDetailPage extends StatelessWidget {
     initialPage: 0
   );
 
+  Widget _title() {
+    return Align(
+      child: Container(
+        alignment: Alignment.topLeft,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              project.name,
+              style: essadeH2(essadePrimaryColor),
+            ),
+            Text(
+              '${project.city}, ${project.state}',
+              style: essadeH4(essadeBlack),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -29,14 +51,27 @@ class ProjectDetailPage extends StatelessWidget {
           brightness: Brightness.light,
           elevation: 0.0,
         ),
-        body: PageView(
-          controller: controller,
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            ProjectValuesSubpage(project: project),
-            ProjectActivitiesSubpage(),
-            ProjectMovementsSubpage()
-          ],
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+            children: <Widget>[
+              _title(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PageView(
+                    controller: controller,
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      ProjectValuesSubpage(project: project),
+                      ProjectActivitiesSubpage(project: project),
+                      ProjectMovementsSubpage()
+                    ],
+                  ),
+                ),
+              ),
+            ]
+          ),
         ),
       ),
     );
