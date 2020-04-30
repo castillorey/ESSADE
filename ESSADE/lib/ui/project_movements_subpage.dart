@@ -17,40 +17,6 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   Stream<QuerySnapshot> _movementsQuery;
   List<Movement> movements;
 
-  _showMovementModalBottomSheet(context, Movement movement){
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context){
-          var date = DateFormat.yMMMd('en_US').format(movement.startDate.toDate());
-          return Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    movement.name,
-                    style: essadeH2(essadePrimaryColor),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Detalle de la actividad',
-                    style: essadeH4(essadeDarkGray),
-                  ),
-                  SizedBox(height: 20),
-                  _detailsItem('Fecha de movimiento:', date),
-                  _detailsItem('Tipo de Movimiento:', movement.type),
-                  _detailsItem('Descripción:', movement.description),
-                ],
-              ),
-            ),
-          );
-        });
-  }
 
   @override
   void initState() {
@@ -63,12 +29,9 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text('Movimientos', style: essadeH4(essadeDarkGray)),
-          ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text('Movimientos', style: essadeH4(essadeDarkGray)),
         ),
         StreamBuilder<QuerySnapshot>(
           stream: _movementsQuery,
@@ -110,7 +73,40 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
       ],
     );
   }
-
+  _showMovementModalBottomSheet(context, Movement movement){
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context){
+          var date = DateFormat.yMMMd('en_US').format(movement.startDate.toDate());
+          return Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    movement.name,
+                    style: essadeH2(essadePrimaryColor),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Detalle de la actividad',
+                    style: essadeH4(essadeDarkGray),
+                  ),
+                  SizedBox(height: 20),
+                  _detailsItem('Fecha de movimiento:', date),
+                  _detailsItem('Tipo de Movimiento:', movement.type),
+                  _detailsItem('Descripción:', movement.description),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   Widget _detailsItem(String label, String value){
 
@@ -139,8 +135,8 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
           boxShadow: [
             BoxShadow(
-                offset: Offset(0,1),
-                color: Color(0x20000000),
+                offset: Offset(0,0),
+                color: movement.type == 'Ingreso' ? Color(0xFF85BB65) : essadeErrorColor,
                 blurRadius: 5
             )
           ]
@@ -148,7 +144,7 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
       child: Icon(
         Icons.fiber_manual_record,
         size: 20,
-        color: movement.type == 'Ingreso' ? Color(0xFF85BB65) : essadePrimaryColor,
+        color: movement.type == 'Ingreso' ? Color(0xFF85BB65) : essadeErrorColor,
       ),
     );
   }
