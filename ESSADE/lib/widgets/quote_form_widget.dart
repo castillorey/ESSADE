@@ -192,7 +192,8 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(message, style: essadeH4(essadeBlack),),
-            Icon(Icons.accessibility, color: essadePrimaryColor,)
+            SizedBox(height: 10),
+            Icon(Icons.done, color: essadePrimaryColor,)
           ],
         ),
       ),

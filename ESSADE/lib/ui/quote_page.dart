@@ -11,6 +11,8 @@ class _QuotePageState extends State<QuotePage> {
 
   @override
   Widget build(BuildContext context) {
-    return QuoteFormWidget();
+    return SingleChildScrollView(
+        child: QuoteFormWidget()
+    );
   }
 }
