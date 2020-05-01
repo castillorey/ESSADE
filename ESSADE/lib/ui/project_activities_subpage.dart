@@ -6,6 +6,7 @@ import 'package:essade/models/Project.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ProjectActivitiesSubpage extends StatefulWidget {
   final Project project;
@@ -26,6 +27,11 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
     _activitiesQuery = Firestore.instance
         .collection('actividades')
         .where('id_proyecto', isEqualTo: widget.project.id).snapshots();
+    Future image = FirebaseStorage.instance.ref()
+        .child('images/Cimentacion.jpg').getDownloadURL()
+        .then((image){
+
+    });
   }
 
   @override
@@ -103,10 +109,32 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                     style: essadeH4(essadeDarkGray),
                   ),
                   SizedBox(height: 20),
-                  _detailsItem('Fecha de actividad', date),
-                  _detailsItem('Descripción', activity.description),
                   Expanded(
-                    child: Placeholder(),
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        _detailsItem('Fecha de actividad', date),
+                        _detailsItem('Descripción', activity.description),
+                        Container(
+                          height:200,
+                          child: Image.network(
+                            activity.image_path,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                              if (loadingProgress == null)
+                                return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                      : null,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -114,6 +142,17 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
           );
         });
   }
+
+  /*Future<Widget> _getImage(BuildContext context, String image) async {
+    Image m;
+    await FireStorageService.loadFromStorage(context, image).then((downloadUrl) {
+      m = Image.network(
+        downloadUrl.toString(),
+        fit: BoxFit.scaleDown,
+      );
+    });
+    return m;
+  }*/
 
   Widget _detailsItem(String label, String value){
 
