@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                     style: essadeLightfont
                 )
               ),
-              Icon(Icons.play_circle_filled)
+              Icon(Icons.play_circle_filled, size: 15,)
             ],
           )
         ],
@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
             child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
           ),
           SizedBox(height: 10),
-          Placeholder()
+          _buildInfoItem()
         ],
       );
     } else {

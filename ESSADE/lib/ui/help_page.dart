@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/global.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/card_item_widget.dart';
+import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 
 class HelpPage extends StatefulWidget {
@@ -28,15 +30,15 @@ class _HelpPageState extends State<HelpPage> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _title(),
+          TitleWidget(text: 'Ayuda', color: essadeBlack, alignment: Alignment.center,),
           SizedBox(height: 20),
           _guideParahraph(),
           SizedBox(height: 20),
-          _customCardItem('Chat', Icons.smartphone),
+          CardItemWidget(text: 'Chat', icon: Icons.smartphone),
           SizedBox(height: 20),
-          _customCardItem('Contácto telefono', Icons.phone),
+          CardItemWidget(text: 'Contácto telefono', icon: Icons.phone),
           SizedBox(height: 20),
-          _customCardItem('Preguntas frecuentes', Icons.help_outline),
+          CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline),
           SizedBox(height: 20),
           Divider(
             height: 20,
@@ -51,59 +53,12 @@ class _HelpPageState extends State<HelpPage> {
     );
   }
 
-  Widget _title(){
-    return Align(
-      alignment: Alignment.center,
-      child: Text(
-        'Ayuda',
-        style: essadeH2(essadeBlack),
-      ),
-    );
-  }
 
   Widget _guideParahraph(){
     return Text(
       'Si tienes alguna inquietud por favor'
       ' comuniquese con nostros  a tráves de:',
       style: essadeH4(essadeDarkGray),
-    );
-  }
-
-  Widget _customCardItem(String text, IconData icon){
-    return Container(
-      height: 60,
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0x20000000),
-                blurRadius: 5,
-                offset: Offset(0, 3)
-            )
-          ]
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Icon(
-            icon,
-            color: essadeDarkGray,
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: essadeParagraph(color: essadeBlack),
-            ),
-          ),
-          Icon(
-            Icons.keyboard_arrow_right,
-            color: essadeDarkGray,
-          )
-        ],
-      )
     );
   }
 

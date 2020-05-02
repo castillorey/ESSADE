@@ -24,14 +24,13 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   @override
   void initState() {
     super.initState();
-    _activitiesQuery = Firestore.instance
+    /*_activitiesQuery = Firestore.instance
         .collection('actividades')
-        .where('id_proyecto', isEqualTo: widget.project.id).snapshots();
-    Future image = FirebaseStorage.instance.ref()
-        .child('images/Cimentacion.jpg').getDownloadURL()
-        .then((image){
+        .where('id_proyecto', isEqualTo: widget.project.id).snapshots();*/
 
-    });
+    _activitiesQuery = Firestore.instance
+        .collection('proyectos').document(widget.project.id)
+        .collection('actividades').snapshots();
   }
 
   @override
@@ -95,7 +94,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
             ),
             child: Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -111,7 +110,6 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                   SizedBox(height: 20),
                   Expanded(
                     child: ListView(
-                      shrinkWrap: true,
                       children: <Widget>[
                         _detailsItem('Fecha de actividad', date),
                         _detailsItem('Descripción', activity.description),
@@ -132,10 +130,11 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                               );
                             },
                           ),
-                        )
+                        ),
+                        SizedBox(height: 20),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
