@@ -15,6 +15,7 @@ dependencies:
   provider: ^4.0.5
   intl: ^0.16.1
   charts_flutter: ^0.9.0
+  font_awesome_flutter: ^8.8.1
   
 
   cupertino_icons: ^0.1.2

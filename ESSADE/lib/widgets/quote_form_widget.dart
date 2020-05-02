@@ -183,7 +183,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
     );
   }
 
-   Widget myQuoteSentWidget(String message) {
+   Widget myQuoteSentWidget(String message, IconData icon) {
     return Dialog(
       child: Container(
         width: 100,
@@ -193,7 +193,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
           children: <Widget>[
             Text(message, style: essadeH4(essadeBlack),),
             SizedBox(height: 10),
-            Icon(Icons.done, color: essadePrimaryColor,)
+            Icon(icon, color: essadePrimaryColor,)
           ],
         ),
       ),
@@ -201,7 +201,6 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
           borderRadius: BorderRadius.circular(10)
       ),
     );
-
   }
 
 
@@ -298,7 +297,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Cotización enviada con exito');
+            return myQuoteSentWidget('Cotización enviada con exito', Icons.done);
           }
       );
       setState(() { serviceSelected = 'Seleccione un servicio...';});
@@ -311,7 +310,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Lo sentimos ha ocurrido un error :(');
+            return myQuoteSentWidget('Lo sentimos ha ocurrido un error :(', Icons.error);
           }
       );
     }

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:essade/models/global.dart';
+import 'package:essade/ui/detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HelpPage extends StatefulWidget {
   @override
@@ -34,11 +35,23 @@ class _HelpPageState extends State<HelpPage> {
           SizedBox(height: 20),
           _guideParahraph(),
           SizedBox(height: 20),
-          CardItemWidget(text: 'Chat', icon: Icons.smartphone),
+          CardItemWidget(text: 'Chat', icon: Icons.smartphone, onTap: (){ _chatInfoDialog(context); }),
           SizedBox(height: 20),
-          CardItemWidget(text: 'Contácto telefono', icon: Icons.phone),
+          CardItemWidget(text: 'Contácto telefono', icon: Icons.phone, onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
+            );
+          }),
           SizedBox(height: 20),
-          CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline),
+          CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline,  onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailPage(pageType: DetailPageType.FAQ,))
+            );
+          }),
           SizedBox(height: 20),
           Divider(
             height: 20,
@@ -46,13 +59,59 @@ class _HelpPageState extends State<HelpPage> {
             color: essadeGray.withOpacity(0.3),
           ),
           SizedBox(height: 20),
-          _suggestions(),
+          _suggestionsForm(),
 
         ],
       ),
     );
   }
 
+  Widget _chatInfoDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Stack(
+                    alignment: AlignmentDirectional.topCenter,
+                    children: <Widget>[
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Icon(
+                          Icons.close,
+                          color: essadeBlack,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Column(
+                          children: <Widget>[
+                            FaIcon(FontAwesomeIcons.whatsapp, color: essadeDarkGray, size: 30),
+                            SizedBox(height: 10),
+                            Text(
+                              'Puedes escribirnos a nuestro Whatsapp: 3003938174',
+                              style: essadeH4(essadeBlack)
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)
+            ),
+          );
+        }
+    );
+  }
 
   Widget _guideParahraph(){
     return Text(
@@ -69,7 +128,7 @@ class _HelpPageState extends State<HelpPage> {
     );
   }
 
-  Widget _suggestions(){
+  Widget _suggestionsForm(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -150,7 +209,7 @@ class _HelpPageState extends State<HelpPage> {
         });
   }
 
-  Widget myQuoteSentWidget(String message) {
+  Widget mySuggestionSentWidget(String message) {
     return Dialog(
       child: Container(
         width: 100,
@@ -184,7 +243,7 @@ class _HelpPageState extends State<HelpPage> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Sugerencia enviada');
+            return mySuggestionSentWidget('Sugerencia enviada');
           }
       );
       commentInputController.clear();
@@ -196,7 +255,7 @@ class _HelpPageState extends State<HelpPage> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Lo sentimos ha ocurrido un error :(');
+            return mySuggestionSentWidget('Lo sentimos ha ocurrido un error :(');
           }
       );
     }

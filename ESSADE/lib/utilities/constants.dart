@@ -45,6 +45,17 @@ enum PlatformType {
   iOS,
   android
 }
+enum DetailPageType {
+  Chat,
+  TelephoneDirectory,
+  FAQ,
+  About,
+  MisionVision,
+  Values,
+  Principles,
+  Policy
+
+}
 
 const Color essadePrimaryColor = Color(0xFF82142d);
 const Color essadeBlack = Color(0xFF262626);
