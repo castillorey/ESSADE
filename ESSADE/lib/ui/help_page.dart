@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/ui/detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
+import 'package:essade/widgets/subtitle_guide_text_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,7 +34,10 @@ class _HelpPageState extends State<HelpPage> {
         children: <Widget>[
           TitleWidget(text: 'Ayuda', color: essadeBlack, alignment: Alignment.center,),
           SizedBox(height: 20),
-          _guideParahraph(),
+          SubtitleGuideTextWidget(
+            text: 'Si tienes alguna inquietud'
+                'por favor comuniquese con nosotros a través de:',
+          ),
           SizedBox(height: 20),
           CardItemWidget(text: 'Chat', icon: Icons.smartphone, onTap: (){ _chatInfoDialog(context); }),
           SizedBox(height: 20),
@@ -110,14 +114,6 @@ class _HelpPageState extends State<HelpPage> {
             ),
           );
         }
-    );
-  }
-
-  Widget _guideParahraph(){
-    return Text(
-      'Si tienes alguna inquietud por favor'
-      ' comuniquese con nostros  a tráves de:',
-      style: essadeH4(essadeDarkGray),
     );
   }
 
