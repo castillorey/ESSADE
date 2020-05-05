@@ -6,6 +6,7 @@ import 'package:essade/widgets/subtitle_guide_text_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class HelpPage extends StatefulWidget {
 class _HelpPageState extends State<HelpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController commentInputController;
+  GlobalKey stickyKey = GlobalKey();
 
   @override
   void initState() {
@@ -29,92 +31,58 @@ class _HelpPageState extends State<HelpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          TitleWidget(text: 'Ayuda', color: essadeBlack, alignment: Alignment.center,),
-          SizedBox(height: 20),
-          SubtitleGuideTextWidget(
-            text: 'Si tienes alguna inquietud'
-                'por favor comuniquese con nosotros a través de:',
-          ),
-          SizedBox(height: 20),
-          CardItemWidget(text: 'Chat', icon: Icons.smartphone, onTap: (){ _chatInfoDialog(context); }),
-          SizedBox(height: 20),
-          CardItemWidget(text: 'Contácto telefono', icon: Icons.phone, onTap: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
-            );
-          }),
-          SizedBox(height: 20),
-          CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline,  onTap: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailPage(pageType: DetailPageType.FAQ,))
-            );
-          }),
-          SizedBox(height: 20),
-          Divider(
-            height: 20,
-            thickness: 2,
-            color: essadeGray.withOpacity(0.3),
-          ),
-          SizedBox(height: 20),
-          _suggestionsForm(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TitleWidget(text: 'Ayuda', color: essadeBlack, alignment: Alignment.center,),
+            SizedBox(height: 20),
+            SubtitleGuideTextWidget(
+              text: 'Si tienes alguna inquietud'
+                  'por favor comuniquese con nosotros a través de:',
+            ),
+            SizedBox(height: 20),
+            CardItemWidget(text: 'Chat', icon: null, onTap: () => _launchWhatsAppURL()) ,
+            SizedBox(height: 20),
+            CardItemWidget(text: 'Contácto telefónico', icon: Icons.phone, onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
+              );
+            }),
+            SizedBox(height: 20),
+            CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline,  onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailPage(pageType: DetailPageType.FAQ,))
+              );
+            }),
+            SizedBox(height: 20),
+            Divider(
+              height: 20,
+              thickness: 2,
+              color: essadeGray.withOpacity(0.3),
+            ),
+            SizedBox(height: 20),
+            _suggestionsForm(),
 
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _chatInfoDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Stack(
-                    alignment: AlignmentDirectional.topCenter,
-                    children: <Widget>[
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Icon(
-                          Icons.close,
-                          color: essadeBlack,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Column(
-                          children: <Widget>[
-                            FaIcon(FontAwesomeIcons.whatsapp, color: essadeDarkGray, size: 30),
-                            SizedBox(height: 10),
-                            Text(
-                              'Puedes escribirnos a nuestro Whatsapp: 3003938174',
-                              style: essadeH4(essadeBlack)
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)
-            ),
-          );
-        }
-    );
+
+  _launchWhatsAppURL() async {
+    const url = 'http://api.whatsapp.com/send?phone=573003938174';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   InputBorder _myBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){

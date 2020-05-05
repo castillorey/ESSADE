@@ -1,5 +1,6 @@
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CardItemWidget extends StatelessWidget {
   final String text;
@@ -31,10 +32,10 @@ class CardItemWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(
-                icon,
-                color: essadeDarkGray,
-              ),
+              if(icon != null)
+                Icon(icon, color: essadeDarkGray,)
+              else
+                FaIcon(FontAwesomeIcons.whatsapp, color: Color(0xFF25D366), size: 30),
               SizedBox(width: 10),
               Expanded(
                 child: Text(

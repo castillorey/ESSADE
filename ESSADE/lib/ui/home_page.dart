@@ -36,23 +36,85 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  Widget _buildTotalBalance(var balance){
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Saldo total',
-              style: essadeH4(essadeBlack),
-            ),
-            Text(
-              '$balance',
-              style: essadeH2(essadePrimaryColor),
-            )
-          ],
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: SingleChildScrollView(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _projectsQuery,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+            if(snapshot.hasData){
+              final documents = snapshot.data.documents;
+              List<Project> _projects = [];
+              documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
+              String _balance, _incomes, _outgoings, dp, pp;
+
+              if(thereIsProjectSelected){
+                _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
+                    .format(_projects[pickerSelectionConfirmed].price);
+                _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
+                    .format(_projects[pickerSelectionConfirmed].income);
+                _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
+                    .format(_projects[pickerSelectionConfirmed].outgoing);
+
+                final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
+                final _pendingPercentage = 1 - _donePercentage;
+                dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                    .format(_donePercentage);
+                pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                    .format(_pendingPercentage);
+              }
+
+              return Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '¡Hola Kevin!',
+                      style: essadeH2(essadeBlack),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SelectableWidget(
+                    objectKey: 'nombre',
+                    documents: documents,
+                    isProjectSelectedCallback: isProjectSelectedCallback,
+                  ),
+                  SizedBox(height: 20),
+                  _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
+                ],
+              );
+
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+          },
         ),
-      );
+      ),
+    );
+  }
+
+  Widget _buildTotalBalance(var balance){
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Saldo total',
+            style: essadeH4(essadeBlack),
+          ),
+          Text(
+            '$balance',
+            style: essadeH2(essadePrimaryColor),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildExpandedItem(String name, String ciudad, String departamento){
@@ -70,12 +132,12 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: <Widget>[
               Container(
-                width: 200,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  'Aprende los mejores tips para que tu cuarto se vea mucho más grande',
-                  style: essadeParagraph(),
-                )
+                  width: 200,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Aprende los mejores tips para que tu cuarto se vea mucho más grande',
+                    style: essadeParagraph(),
+                  )
               ),
               Icon(
                 Icons.home,
@@ -87,11 +149,11 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                    'Conoce más',
-                    style: essadeLightfont
-                )
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                      'Conoce más',
+                      style: essadeLightfont
+                  )
               ),
               Icon(Icons.play_circle_filled, size: 15,)
             ],
@@ -204,8 +266,8 @@ class _HomePageState extends State<HomePage> {
       return Align(
         alignment: Alignment.center,
         child: Text(
-          'Seleccione un proyecto para ver su información detallada',
-          style: essadeParagraph()
+            'Seleccione un proyecto para ver su información detallada',
+            style: essadeParagraph()
         ),
       );
     }
@@ -217,64 +279,5 @@ class _HomePageState extends State<HomePage> {
       thereIsProjectSelected = wasProjectSelected;
       pickerSelectionConfirmed = pickerSelected;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: _projectsQuery,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-          if(snapshot.hasData){
-            final documents = snapshot.data.documents;
-            List<Project> _projects = [];
-            documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
-            String _balance, _incomes, _outgoings, dp, pp;
-
-            if(thereIsProjectSelected){
-              _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].price);
-              _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].income);
-              _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
-                  .format(_projects[pickerSelectionConfirmed].outgoing);
-
-              final _donePercentage = _getActivitiesDonePercentage(_projects[pickerSelectionConfirmed]);
-              final _pendingPercentage = 1 - _donePercentage;
-              dp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                  .format(_donePercentage);
-              pp = NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                  .format(_pendingPercentage);
-            }
-
-            return Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '¡Hola Kevin!',
-                    style: essadeH2(essadeBlack),
-                  ),
-                ),
-                SizedBox(height: 20),
-                SelectableWidget(
-                  objectKey: 'nombre',
-                  documents: documents,
-                  isProjectSelectedCallback: isProjectSelectedCallback,
-                ),
-                SizedBox(height: 20),
-                _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
-              ],
-            );
-
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-        },
-      ),
-    );
   }
 }
