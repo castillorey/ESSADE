@@ -53,7 +53,7 @@ class TelDirectoryDetailPage extends StatelessWidget {
         children: <Widget>[
           Icon(
             Icons.phone,
-            color: essadeDarkGray,
+            color: essadePrimaryColor,
           ),
           SizedBox(width: 20),
           Expanded(

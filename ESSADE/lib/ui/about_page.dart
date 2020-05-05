@@ -38,8 +38,27 @@ class _AboutPageState extends State<AboutPage> {
           _mvParagraphs('Mision', _missionP),
           SizedBox(height: 10),
           _mvParagraphs('Vision', _visionP),
-          SizedBox(height: 20),
-          _values()
+          SizedBox(height: 30),
+          _values(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image(
+                image: AssetImage('assets/images/4785.jpg')
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _externalInfoItem('Echale un vistaso a nuestras Políticas'),
+              _externalInfoItem('Conóce nuestros Principios')
+            ],
+          ),
+          Divider(
+            height: 5,
+            thickness: 0.2,
+            color: essadeBlack,
+          ),
+          _logout()
 
 
         ],
@@ -47,51 +66,113 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
+  Widget _logout(){
+    return Container(
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Icon(Icons.exit_to_app, color: essadeErrorColor, size: 20,),
+                  ),
+                  Text(
+                      'Cerrar sesión',
+                      style: essadeParagraph(color: essadeErrorColor)
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  Widget _externalInfoItem(String text){
+    return GestureDetector(
+      onTap: () => print('Opening PDF'),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              text,
+              style: essadeParagraph(color: essadeDarkGray),
+            ),
+            SizedBox(width: 10),
+            Icon(Icons.keyboard_arrow_right, color: essadeGray, size: 15,),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _values(){
     return Container(
       color: essadePrimaryColor,
-      /*decoration: BoxDecoration(
-          color: essadePrimaryColor,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0x20000000),
-                blurRadius: 5,
-                offset: Offset(0, 3)
-            )
-          ]
-      ),*/
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'Nuestros Valores',
-              style: essadeH2(Colors.white),
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            'Nuestros Valores',
+            style: essadeH2(Colors.white),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top:10.0, bottom: 5.0),
+            child: Divider(
+              height: 5,
+              thickness: 2,
+              color: Colors.white,
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _valueItem('Pasión', 'Amamos lo que hacemos', FontAwesomeIcons.heart),
-                  _valueItem('Integridad', 'Somos diferentes', FontAwesomeIcons.balanceScale)
-                ],
-              ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _valueItem('Pasión', 'Amamos lo que hacemos', FontAwesomeIcons.solidHeart),
+                _valueItem('Integridad', 'Somos diferentes', FontAwesomeIcons.balanceScale)
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _valueItem('Excelencia', 'No nos conformamos', FontAwesomeIcons.certificate),
-                  _valueItem('Calidad', 'Nos importa cada detalle', FontAwesomeIcons.crown)
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _valueItem('Excelencia', 'No nos conformamos', FontAwesomeIcons.certificate),
+                _valueItem('Calidad', 'Nos importa cada detalle', FontAwesomeIcons.crown)
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _valueItem('Liderazgo', 'Vamos un paso adelante', FontAwesomeIcons.users),
+                _valueItem('Trasparencia', 'Generamos confianza', FontAwesomeIcons.search)
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _valueItem('Compromiso', 'Planificamos con tus necesidades', FontAwesomeIcons.handsHelping),
+                _valueItem('Servicio', 'Eres nuestra prioridad', FontAwesomeIcons.peopleCarry)
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -106,7 +187,7 @@ class _AboutPageState extends State<AboutPage> {
             color: Colors.white,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
             child: Text(
               title,
               textAlign: TextAlign.center,
@@ -239,6 +320,7 @@ class _AboutPageState extends State<AboutPage> {
       ),
     );
   }
+
   Widget _buid1(){
     return Column(
       children: <Widget>[

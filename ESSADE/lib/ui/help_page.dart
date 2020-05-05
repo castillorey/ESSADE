@@ -43,17 +43,26 @@ class _HelpPageState extends State<HelpPage> {
                   'por favor comuniquese con nosotros a través de:',
             ),
             SizedBox(height: 20),
-            CardItemWidget(text: 'Chat', icon: null, onTap: () => _launchWhatsAppURL()) ,
+            CardItemWidget(
+                text: 'Chat',
+                icon: FontAwesomeIcons.whatsapp,
+                iconColor: Color(0xFF25D366),
+                iconSize: 25,
+                onTap: () => _launchWhatsAppURL()) ,
             SizedBox(height: 20),
-            CardItemWidget(text: 'Contácto telefónico', icon: Icons.phone, onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
-              );
+            CardItemWidget(
+                text: 'Contácto telefónico',
+                icon: FontAwesomeIcons.phoneAlt,
+                iconColor: essadePrimaryColor,
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
+                  );
             }),
             SizedBox(height: 20),
-            CardItemWidget(text: 'Preguntas frecuentes', icon: Icons.help_outline,  onTap: (){
+            CardItemWidget(text: 'Preguntas frecuentes', icon: FontAwesomeIcons.question,  onTap: (){
               Navigator.push(
                   context,
                   MaterialPageRoute(
