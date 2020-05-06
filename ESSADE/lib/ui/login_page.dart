@@ -1,7 +1,8 @@
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/ui/register_code_page.dart';
-import 'package:essade/ui/signin_page.dart';
+import 'package:essade/ui/signup_page.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/long_social_button_widget.dart';
 import 'package:essade/widgets/or_log_sign_in_with_widget.dart';
 import 'package:essade/widgets/switch_loged_signed_widget.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
@@ -40,16 +41,19 @@ class LoginPage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              'Iniciar sesión',
-                              style: TextStyle(
-                                color: essadePrimaryColor,
-                                fontFamily: 'Monserrat',
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(
+                                'HOLA, BIENVENIDO',
+                                style: TextStyle(
+                                  color: essadePrimaryColor,
+                                  fontFamily: 'Monserrat',
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
                             InputTextFieldWidget(
                               label: 'Correo',
                               inputType: TextInputType.emailAddress,
@@ -71,29 +75,40 @@ class LoginPage extends StatelessWidget {
                             ),
                             SizedBox(height: 20.0),
                             LongButtonWidget(
-                              text: 'Iniciar sesión',
-                              boxColor: essadePrimaryColor,
+                              text: 'Iniciar',
+                              backgroundColor: essadePrimaryColor,
                               textColor: Colors.white,
                               onPressed: () =>  print('Sign in pressed'),
                             ),
                             SizedBox(height: 10.0),
-                            OrLogSignInWithWidget(
-                              text: 'Iniciar con',
-                              textColor: essadeGray,
+                            OrLogSignInWithWidget(color: essadeGray,),
+                            LongSocialButtonWidget(
+                              onPressed: () {
+                                Provider.of<LoginState>(context, listen: false).googleLogin();
+                                Navigator.of(context).pop();
+                              },
+                              text: 'Registro con Google',
+                              textColor: Colors.white,
+                              backgroundColor: Color(0xFF4c8bf5),
                             ),
-                            SocialButtonWidget(
+                            SizedBox(height: 20),
+                            /*SocialButtonWidget(
                               onFbPressed: () => print('Facbook pressed'),
                               onGooPressed: () => Provider.of<LoginState>(context, listen: false).googleLogin(),
-                            ),
+                            ),*/
                             SwitchLoggedSignedWidget(
                               guideText: '¿Aún no tiene cuenta? ',
                               guideTextColor: essadeDarkGray,
                               actionText: 'Registrarme',
                               actionTextColor: essadePrimaryColor,
-                              onTap: (){ Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => RegisterCodePage())
-                              );},
+                              onTap: (){
+                                final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();
+                                Widget registerPage = isRegisterDone ? SignUpPage() : RegisterCodePage();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => registerPage)
+                                );
+                              },
                             ),
                           ],
                         )

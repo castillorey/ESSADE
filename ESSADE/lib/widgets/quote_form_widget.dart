@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/Quote.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -176,12 +177,6 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
     return selectableWidget;
   }
 
-  InputBorder _myBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(borderRadius),
-      borderSide: BorderSide(color: color, width: width),
-    );
-  }
 
    Widget myQuoteSentWidget(String message, IconData icon) {
     return Dialog(
@@ -244,10 +239,10 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   hintText: 'Escriba sus comentarios',
                   hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
                   contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: _myBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
-                  focusedBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
-                  errorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
-                  focusedErrorBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
+                  enabledBorder: essadeBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
+                  focusedBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
+                  errorBorder: essadeBorderErrorStyle(10.0, essadeErrorColor),
+                  focusedErrorBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
                 ),
               ),
               SizedBox(height: 20),
@@ -290,7 +285,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
         'tipo_servicio': serviceSelected,
         'comentario': commentInputController.text
       });
-      Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close the dialoge
+      Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close loadingCircle
       showDialog(
           context: context,
           builder: (context) {
@@ -310,7 +305,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Lo sentimos ha ocurrido un error :(', Icons.error);
+            return InfoDialog(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error);
           }
       );
     }

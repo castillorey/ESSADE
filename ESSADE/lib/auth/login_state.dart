@@ -7,10 +7,12 @@ class LoginState with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser _user;
   bool _loggedIn = false;
+  bool _registerCodeDone = false;
   bool _loading = false;
 
   bool isLoggedIn() => _loggedIn;
   bool isLoading() => _loading;
+  bool isRegisterCodeDone() => _registerCodeDone;
   FirebaseUser currentUser() => _user;
 
   void googleLogin() async {
@@ -30,6 +32,11 @@ class LoginState with ChangeNotifier {
     //_googleSignIn.signOut();
     print('Cerrando sesión');
     _loggedIn = false;
+    notifyListeners();
+  }
+
+  void codeRegistered(){
+    _registerCodeDone = true;
     notifyListeners();
   }
 

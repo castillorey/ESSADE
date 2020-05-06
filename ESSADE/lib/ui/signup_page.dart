@@ -1,6 +1,7 @@
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/global.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/long_social_button_widget.dart';
 import 'package:essade/widgets/switch_loged_signed_widget.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';
@@ -10,42 +11,98 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'login_page.dart';
-
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: essadePrimaryColor,
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            backgroundColor: Colors.transparent,
+            brightness: Brightness.light,
+            elevation: 0.0,
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  child: Text(
+                    '¿LISTO PARA CREAR TU CUENTA?',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30.0),
+                LongSocialButtonWidget(
+                  onPressed: () {
+                    Provider.of<LoginState>(context, listen: false).googleLogin();
+                    Navigator.of(context).pop();
+                  },
+                  text: 'Registro con Google',
+                  textColor: Colors.white,
+                  backgroundColor: Color(0xFF4c8bf5),
+                ),
+                OrLogSignInWithWidget(color: Colors.white),
+                LongButtonWidget(
+                  text: 'Registro con Email',
+                  textColor: essadePrimaryColor,
+                  backgroundColor: Colors.white,
+                  icon: Icons.email,
+                )
+              ],
+            )
+          )
+      ),
+    );
+  }
+
+  Widget _build_1(){
+    Scaffold(
       backgroundColor: essadePrimaryColor,
       resizeToAvoidBottomPadding: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Center(
-            child: Consumer<LoginState>(
-              builder: (BuildContext context, LoginState value, Widget child){
-                if(value.isLoading()){
-                  return CircularProgressIndicator();
-                } else {
-                  return child;
-                }
-              },
-              child: GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      color: essadePrimaryColor,
-                      child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40.0,
-                          vertical: 40.0,
-                        ),
+          child: Consumer<LoginState>(
+            builder: (BuildContext context, LoginState value, Widget child){
+              if(value.isLoading()){
+                return CircularProgressIndicator();
+              } else {
+                return child;
+              }
+            },
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    color: essadePrimaryColor,
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40.0,
+                        vertical: 40.0,
+                      ),
+                      child: Form(
+                        key: _formKey,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -91,15 +148,12 @@ class _SignInPageState extends State<SignInPage> {
                             SizedBox(height: 20.0),
                             LongButtonWidget(
                               text: 'Registro',
-                              boxColor: Colors.white,
+                              backgroundColor: Colors.white,
                               textColor: essadePrimaryColor,
                               onPressed: () =>  print('Sign in pressed'),
                             ),
                             SizedBox(height: 10.0),
-                            OrLogSignInWithWidget(
-                              text: 'Registrarse con',
-                              textColor: Colors.white,
-                            ),
+                            OrLogSignInWithWidget(),
                             SocialButtonWidget(
                               onFbPressed: () => print('Facebook login pressed'),
                               onGooPressed: () => Provider.of<LoginState>(context, listen: false).googleLogin(),
@@ -114,20 +168,14 @@ class _SignInPageState extends State<SignInPage> {
                           ],
                         ),
                       ),
-                    )
-                  ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
         ),
       ),
     );
-
-
-
-
-
-
-
   }
 }

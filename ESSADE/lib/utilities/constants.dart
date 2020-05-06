@@ -41,6 +41,13 @@ btnFontStyle(Color color, {bool bold: false}) => TextStyle(
   fontFamily: 'Raleway',
 );
 
+essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(borderRadius),
+    borderSide: BorderSide(color: color, width: width),
+  );
+}
+
 enum PlatformType {
   iOS,
   android

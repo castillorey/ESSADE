@@ -245,10 +245,11 @@ class _AboutPageState extends State<AboutPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image(
-                image: AssetImage('assets/images/4775.jpg')
+                image: AssetImage('assets/images/juntos.png')
             ),
           ),
           Container(
+            margin: EdgeInsets.only(top: 20),
             child: Column(
               children: <Widget>[
                 Text(
@@ -256,6 +257,7 @@ class _AboutPageState extends State<AboutPage> {
                   textAlign: TextAlign.justify,
                   style: essadeParagraph(),
                 ),
+                SizedBox(height: 5.0),
                 Text(
                   _whoWeAreP2,
                   textAlign: TextAlign.justify,
