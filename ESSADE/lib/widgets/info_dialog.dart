@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class InfoDialogWidget extends StatelessWidget {
   final String message;
   final IconData icon;
+  final TextAlign textAlign;
 
-  const InfoDialogWidget({Key key, this.message, this.icon}) : super(key: key);
+  const InfoDialogWidget({Key key, this.message, this.icon, this.textAlign = TextAlign.left}) : super(key: key);
 
 
   @override
@@ -19,8 +20,8 @@ class InfoDialogWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(icon, color: essadePrimaryColor),
-            SizedBox(height: 15),
-            Text(message, style: essadeH4(essadeBlack), textAlign: TextAlign.left,),
+            SizedBox(height: 10),
+            Text(message, style: essadeH4(essadeBlack), textAlign: textAlign,),
           ],
         ),
       ),

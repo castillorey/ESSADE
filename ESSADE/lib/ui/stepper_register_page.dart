@@ -27,6 +27,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   String password;
 
   LoginState _auth = LoginState();
+  int currentPageValue;
 
   void _nextFormStep() {
     _formsPageViewController.nextPage(
@@ -40,6 +41,12 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
       duration: Duration(milliseconds: 300),
       curve: Curves.ease,
     );
+  }
+
+  void getChangedPage(int page) {
+    setState(() {
+      currentPageValue = page;
+    });
   }
 
   bool onWillPop() {
@@ -70,6 +77,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
         child: Step2Container(context),
       ),
     ];
+
+    currentPageValue = 0;
 
     name = '';
     lastname = '' ;
@@ -120,6 +129,9 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return _formSteps[index];
+              },
+              onPageChanged: (int page){
+                getChangedPage(page);
               },
             ),
           ),
@@ -192,6 +204,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
             ),
             SimpleTextFormFieldWidget(
               obscureText: true,
+              validateNewPassword: true,
               inputType: TextInputType.visiblePassword,
               editingController: passwordInputController,
               onChanged: () => _formKey.currentState.validate(),
@@ -242,7 +255,6 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                       email = emailInputController.text;
                       password = passwordInputController.text;
                     });
-
                   }
                 })
               ],
@@ -256,7 +268,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   Future<void> _handleRegisterSubmit(BuildContext context) async {
     try{
       showLoadingProgressCircle(context, _keyLoader);
-      dynamic result = await _auth.registerWithEmailAndPassword(email, password, name, lastname, mobile);
+      dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
       Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close showLoadingProgressCircle
       Navigator.popUntil(context, ModalRoute.withName('/'));
 
@@ -393,7 +405,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
       ),
       color: essadePrimaryColor,
       child: Text(
-        'Siguiente',
+        currentPageValue == _formSteps.length ? 'Enviar' : 'Siguiente',
         style: essadeH4(Colors.white),
       ),
     );
