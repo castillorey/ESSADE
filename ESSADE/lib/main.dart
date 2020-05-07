@@ -32,27 +32,36 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => LoginState(),
-      child: MaterialApp(
-        title: 'Essade App',
-        theme: ThemeData(
-          primarySwatch: primaryMaterialColor,
-          canvasColor: Colors.transparent,
-          scaffoldBackgroundColor: Colors.white
-        ),
-        routes: {
-          '/': (BuildContext context) {
-            var state = Provider.of<LoginState>(context);
-            print('Pasando por Main');
-            if(state.isLoggedIn()){
-              print('Pasando por Main');
-              print('Abriendo Container Page!!');
-              return ContainerPage();
-            } else {
-              print('Abriendo Login Page!!');
-              return LoginPage();
-            }
+      child: GestureDetector(
+        onTap:  () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
           }
         },
+        child: MaterialApp(
+          title: 'Essade App',
+          theme: ThemeData(
+            primarySwatch: primaryMaterialColor,
+            canvasColor: Colors.transparent,
+            scaffoldBackgroundColor: Colors.white
+          ),
+          routes: {
+            '/': (BuildContext context) {
+              var state = Provider.of<LoginState>(context);
+              print('Pasando por Main');
+              if(state.isLoggedIn()){
+                print('Pasando por Main');
+                print('Abriendo Container Page!!');
+                return ContainerPage();
+              } else {
+                print('Abriendo Login Page!!');
+                return LoginPage();
+              }
+            }
+          },
+        ),
       ),
     );
   }

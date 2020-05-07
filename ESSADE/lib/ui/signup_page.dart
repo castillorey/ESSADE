@@ -1,5 +1,6 @@
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/global.dart';
+import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/long_social_button_widget.dart';
 import 'package:essade/widgets/switch_loged_signed_widget.dart';
@@ -35,42 +36,46 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           body: Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.5,
-                  child: Text(
-                    '¿LISTO PARA CREAR TU CUENTA?',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30.0),
-                LongSocialButtonWidget(
-                  onPressed: () {
-                    Provider.of<LoginState>(context, listen: false).googleLogin();
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Registro con Google',
-                  textColor: Colors.white,
-                  backgroundColor: Color(0xFF4c8bf5),
-                ),
-                OrLogSignInWithWidget(color: Colors.white),
-                LongButtonWidget(
-                  text: 'Registro con Email',
-                  textColor: essadePrimaryColor,
-                  backgroundColor: Colors.white,
-                  icon: Icons.email,
-                )
-              ],
-            )
+            child: _buildBody()
           )
       ),
+    );
+  }
+
+  Widget _buildBody(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width / 1.5,
+          child: Text(
+            '¿LISTO PARA CREAR TU CUENTA?',
+            style: essadeTitle(Colors.white),
+          ),
+        ),
+        SizedBox(height: 30.0),
+        LongSocialButtonWidget(
+          onPressed: () {
+            //Provider.of<LoginState>(context, listen: false).googleLogin();
+            Navigator.of(context).pop();
+          },
+          text: 'Registro con Google',
+          textColor: Colors.white,
+          backgroundColor: Color(0xFF4c8bf5),
+        ),
+        OrLogSignInWithWidget(color: Colors.white),
+        LongButtonWidget(
+          text: 'Registro con Email',
+          backgroundColor: Colors.white,
+          textColor: essadePrimaryColor,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StepperRegisterPage())
+            );
+          },
+        ),
+      ],
     );
   }
 

@@ -28,95 +28,87 @@ class LoginPage extends StatelessWidget {
                 return child;
               }
             },
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    child: SafeArea(
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40.0,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.5,
-                              child: Text(
-                                'HOLA, BIENVENIDO',
-                                style: TextStyle(
-                                  color: essadePrimaryColor,
-                                  fontFamily: 'Monserrat',
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20.0),
-                            InputTextFieldWidget(
-                              label: 'Correo',
-                              inputType: TextInputType.emailAddress,
-                              icon: Icons.email,
-                              placeholder: 'Ingrese su correo',
-                              textColor: essadeDarkGray,
-                              boxColor: essadeGray.withOpacity(0.1),
-                              placeholderColor: essadeGray,
-                            ),
-                            SizedBox(height: 20.0,),
-                            InputTextFieldWidget(
-                              label: 'Contraseña',
-                              inputType: TextInputType.emailAddress,
-                              icon: Icons.lock,
-                              placeholder: 'Ingrese una contraseña',
-                              textColor: essadeDarkGray,
-                              boxColor: essadeGray.withOpacity(0.1),
-                              placeholderColor: essadeGray,
-                            ),
-                            SizedBox(height: 20.0),
-                            LongButtonWidget(
-                              text: 'Iniciar',
-                              backgroundColor: essadePrimaryColor,
-                              textColor: Colors.white,
-                              onPressed: () =>  print('Sign in pressed'),
-                            ),
-                            SizedBox(height: 10.0),
-                            OrLogSignInWithWidget(color: essadeGray,),
-                            LongSocialButtonWidget(
-                              onPressed: () {
-                                Provider.of<LoginState>(context, listen: false).googleLogin();
-                                Navigator.of(context).pop();
-                              },
-                              text: 'Registro con Google',
-                              textColor: Colors.white,
-                              backgroundColor: Color(0xFF4c8bf5),
-                            ),
-                            SizedBox(height: 20),
-                            /*SocialButtonWidget(
-                              onFbPressed: () => print('Facbook pressed'),
-                              onGooPressed: () => Provider.of<LoginState>(context, listen: false).googleLogin(),
-                            ),*/
-                            SwitchLoggedSignedWidget(
-                              guideText: '¿Aún no tiene cuenta? ',
-                              guideTextColor: essadeDarkGray,
-                              actionText: 'Registrarme',
-                              actionTextColor: essadePrimaryColor,
-                              onTap: (){
-                                final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();
-                                Widget registerPage = isRegisterDone ? SignUpPage() : RegisterCodePage();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => registerPage)
-                                );
-                              },
-                            ),
-                          ],
-                        )
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40.0,
                       ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 1.5,
+                            child: Text(
+                              'HOLA, BIENVENIDO',
+                              style: essadeTitle(essadePrimaryColor),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          InputTextFieldWidget(
+                            label: 'Correo',
+                            inputType: TextInputType.emailAddress,
+                            icon: Icons.email,
+                            placeholder: 'Ingrese su correo',
+                            textColor: essadeDarkGray,
+                            boxColor: essadeGray.withOpacity(0.1),
+                            placeholderColor: essadeGray,
+                          ),
+                          SizedBox(height: 20.0,),
+                          InputTextFieldWidget(
+                            label: 'Contraseña',
+                            inputType: TextInputType.emailAddress,
+                            icon: Icons.lock,
+                            placeholder: 'Ingrese una contraseña',
+                            textColor: essadeDarkGray,
+                            boxColor: essadeGray.withOpacity(0.1),
+                            placeholderColor: essadeGray,
+                          ),
+                          SizedBox(height: 20.0),
+                          LongButtonWidget(
+                            text: 'Iniciar',
+                            backgroundColor: essadePrimaryColor,
+                            textColor: Colors.white,
+                            onPressed: () =>  print('Sign in pressed'),
+                          ),
+                          SizedBox(height: 10.0),
+                          OrLogSignInWithWidget(color: essadeGray,),
+                          LongSocialButtonWidget(
+                            onPressed: () {
+                              Provider.of<LoginState>(context, listen: false).googleLogin();
+                              Navigator.of(context).pop();
+                            },
+                            text: 'Iniciar con Google',
+                            textColor: Colors.white,
+                            backgroundColor: Color(0xFF4c8bf5),
+                          ),
+                          SizedBox(height: 30),
+                          /*SocialButtonWidget(
+                            onFbPressed: () => print('Facbook pressed'),
+                            onGooPressed: () => Provider.of<LoginState>(context, listen: false).googleLogin(),
+                          ),*/
+                          SwitchLoggedSignedWidget(
+                            guideText: '¿Aún no tiene cuenta? ',
+                            guideTextColor: essadeDarkGray,
+                            actionText: 'Registrarme',
+                            actionTextColor: essadePrimaryColor,
+                            onTap: (){
+                              final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();
+                              Widget registerPage = isRegisterDone ? SignUpPage() : RegisterCodePage();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => registerPage)
+                              );
+                            },
+                          ),
+                        ],
+                      )
                     ),
                   ),
-                ],
-              )
+                ),
+              ],
             )
           ),
         ),

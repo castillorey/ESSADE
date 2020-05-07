@@ -1,11 +1,11 @@
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
-class InfoDialog extends StatelessWidget {
+class InfoDialogWidget extends StatelessWidget {
   final String message;
   final IconData icon;
 
-  const InfoDialog({Key key, this.message, this.icon}) : super(key: key);
+  const InfoDialogWidget({Key key, this.message, this.icon}) : super(key: key);
 
 
   @override

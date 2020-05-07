@@ -45,6 +45,85 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: _formKey,
+        child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Cotizar',
+                  style: essadeH2(essadeBlack),
+                ),
+              ),
+              SizedBox(height: 20),
+              _buildSelectableComponent(services),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: commentInputController,
+                onChanged: (text){
+                  removeErrorValidation = true;
+                  _formKey.currentState.validate();
+                },
+                validator: (String value){
+                  if (removeErrorValidation)
+                    return null;
+
+                  if (value.isEmpty)
+                    return 'Escriba algún comentario';
+
+                  return null;
+                },
+                maxLines: 10,
+                keyboardType: TextInputType.text,
+                style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
+                decoration: InputDecoration(
+                  hintText: 'Escriba sus comentarios',
+                  hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
+                  contentPadding: EdgeInsets.all(10.0),
+                  enabledBorder: essadeBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
+                  focusedBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
+                  errorBorder: essadeBorderErrorStyle(10.0, essadeErrorColor),
+                  focusedErrorBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                child: RaisedButton(
+                  onPressed: () async {
+                    removeErrorValidation = false;
+                    if(!isServiceSelected){
+                      setState(() {
+                        selectableBorderColor = essadeErrorColor;
+                        selectableIconColor = essadeErrorColor;
+                      });
+                    }
+                    if (_formKey.currentState.validate() && isServiceSelected){
+                      _handleQuoteSubmit(context);
+                    }
+                  },
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  color: essadePrimaryColor,
+                  elevation: 0.0,
+                  child: Text(
+                    'Enviar Cotización',
+                    style: btnFontStyle(Colors.white),
+                  ),
+                ),
+              )
+            ]
+        )
+    );
+  }
+
   Future _buildCupertinoModalPopup(List<String> services){
     pickerSelection = pickerSelectionConfirmed;
     return showCupertinoModalPopup(context: context, builder: (context){
@@ -178,7 +257,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
   }
 
 
-   Widget myQuoteSentWidget(String message, IconData icon) {
+  Widget myQuoteSentWidget(String message, IconData icon) {
     return Dialog(
       child: Container(
         width: 100,
@@ -195,86 +274,6 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)
       ),
-    );
-  }
-
-
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Cotizar',
-                  style: essadeH2(essadeBlack),
-                ),
-              ),
-              SizedBox(height: 20),
-              _buildSelectableComponent(services),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: commentInputController,
-                onChanged: (text){
-                  removeErrorValidation = true;
-                  _formKey.currentState.validate();
-                },
-                validator: (String value){
-                  if (removeErrorValidation)
-                    return null;
-
-                  if (value.isEmpty)
-                    return 'Escriba algún comentario';
-
-                  return null;
-                },
-                maxLines: 10,
-                keyboardType: TextInputType.text,
-                style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
-                decoration: InputDecoration(
-                  hintText: 'Escriba sus comentarios',
-                  hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
-                  contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: essadeBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
-                  focusedBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
-                  errorBorder: essadeBorderErrorStyle(10.0, essadeErrorColor),
-                  focusedErrorBorder: essadeBorderErrorStyle(10.0, essadePrimaryColor),
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                child: RaisedButton(
-                  onPressed: () async {
-                    removeErrorValidation = false;
-                    if(!isServiceSelected){
-                      setState(() {
-                        selectableBorderColor = essadeErrorColor;
-                        selectableIconColor = essadeErrorColor;
-                      });
-                    }
-                    if (_formKey.currentState.validate() && isServiceSelected){
-                      _handleQuoteSubmit(context);
-                    }
-                  },
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  color: essadePrimaryColor,
-                  elevation: 0.0,
-                  child: Text(
-                    'Enviar Cotización',
-                    style: btnFontStyle(Colors.white),
-                  ),
-                ),
-              )
-            ]
-        )
     );
   }
 
@@ -305,7 +304,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
-            return InfoDialog(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error);
+            return InfoDialogWidget(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error);
           }
       );
     }

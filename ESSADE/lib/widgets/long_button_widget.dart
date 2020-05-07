@@ -17,7 +17,6 @@ class LongButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: double.infinity,
       child: RaisedButton(

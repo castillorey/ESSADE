@@ -89,18 +89,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                           ),
                         ],
                       ),
-                      /*Visibility(
-                        visible: currentPageValue == pagesWidgetList().length - 1
-                            ? true
-                            : false,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                          },
-                          shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(26))),
-                          child: Icon(Icons.arrow_forward),
-                        ),
-                      )*/
                     ],
                   ),
                 ),

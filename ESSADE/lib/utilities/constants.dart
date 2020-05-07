@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
 
-essadeH2(color) => TextStyle(
+
+essadeTitle(Color color) => TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+    color: color
+);
+
+essadeH3(Color color) => TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+    color: color
+);
+
+
+essadeH2(Color color) => TextStyle(
   color: color,
   fontFamily: 'Montserrat',
   fontSize: 30.0,
   fontWeight: FontWeight.bold
 );
 
-essadeH4(color) => TextStyle(
+essadeH4(Color color) => TextStyle(
   color: color,
   fontFamily: 'Raleway',
   fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+);
+
+essadeH5(Color color) => TextStyle(
+  color: color,
+  fontFamily: 'Raleway',
+  fontSize: 16.0,
   fontWeight: FontWeight.bold,
 );
 

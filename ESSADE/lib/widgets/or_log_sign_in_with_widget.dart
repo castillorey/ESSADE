@@ -9,11 +9,11 @@ class OrLogSignInWithWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 15),
       child: Row(
         children: <Widget>[
           Text(
-            'O INCIAR CON',
+            'O',
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w400,

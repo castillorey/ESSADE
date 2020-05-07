@@ -96,7 +96,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                   SizedBox(height: 30,),
                   LongButtonWidget(
                     textColor: essadePrimaryColor,
-                    text: 'Registrar',
+                    text: 'Validar',
                     onPressed: () {
                       if (_formKey.currentState.validate()){
                         _handleSubmit(context);
@@ -146,7 +146,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context).pop(true);
               });
-              return InfoDialog(message: 'El código ingresado no es valido', icon: Icons.error);
+              return InfoDialogWidget(message: 'El código ingresado no es valido', icon: Icons.error);
             }
         );
       }
@@ -159,7 +159,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
-            return InfoDialog(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error_outline);
+            return InfoDialogWidget(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error_outline);
           }
       );
     }
