@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
                           Container(
                             width: MediaQuery.of(context).size.width / 1.5,
                             child: Text(
-                              'HOLA, BIENVENIDO',
+                              'HOLA,\nBIENVENIDO',
                               style: essadeTitle(essadePrimaryColor),
                             ),
                           ),
@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                             label: 'Contraseña',
                             inputType: TextInputType.emailAddress,
                             icon: Icons.lock,
-                            placeholder: 'Ingrese una contraseña',
+                            placeholder: 'Ingrese su contraseña',
                             textColor: essadeDarkGray,
                             boxColor: essadeGray.withOpacity(0.1),
                             placeholderColor: essadeGray,
@@ -92,7 +92,7 @@ class LoginPage extends StatelessWidget {
                           SwitchLoggedSignedWidget(
                             guideText: '¿Aún no tiene cuenta? ',
                             guideTextColor: essadeDarkGray,
-                            actionText: 'Registrarme',
+                            actionText: 'Registrarse',
                             actionTextColor: essadePrimaryColor,
                             onTap: (){
                               final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();

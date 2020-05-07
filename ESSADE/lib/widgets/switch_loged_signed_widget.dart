@@ -14,6 +14,12 @@ class SwitchLoggedSignedWidget extends StatelessWidget {
     @required this.actionText,
     @required this.onTap
   });
+
+  _myGuideTextStyle(Color color) => TextStyle(
+    color: color,
+    fontFamily: 'Raleway',
+    fontSize: 16.0,
+  );
   @override
   Widget build(BuildContext context) {
 
@@ -21,15 +27,11 @@ class SwitchLoggedSignedWidget extends StatelessWidget {
       child: RichText(
         text: TextSpan(
             text: guideText,
-            style: TextStyle(
-              color: guideTextColor,
-              fontFamily: 'Raleway',
-              fontSize: 16.0,
-            ),
+            style: _myGuideTextStyle(essadeDarkGray),
             children: <TextSpan>[
               TextSpan(
                   text: actionText,
-                  style: essadeH4(actionTextColor),
+                  style: _myGuideTextStyle(essadePrimaryColor),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onTap()
               )

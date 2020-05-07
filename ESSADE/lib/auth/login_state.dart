@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -5,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 class LoginState with ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore db = Firestore.instance;
+  
   FirebaseUser _user;
   bool _loggedIn = false;
   bool _registerCodeDone = false;
@@ -26,6 +30,12 @@ class LoginState with ChangeNotifier {
     print('Iniciando sesión');
     notifyListeners();
     
+  }
+
+  void emailAndPasswordSignUp() {
+    _loggedIn = true;
+    print('Iniciando sesión');
+    notifyListeners();
   }
 
   void logout(){
@@ -61,4 +71,21 @@ class LoginState with ChangeNotifier {
     }
     return null;
   }
+
+  Future registerWithEmailAndPassword(String email, String password, String name, String lastname, String mobile) async {
+    try{
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      User newUser = User(uid: user.uid, name: name, lastname: lastname, mobile: mobile);
+      Future ref = db.collection('usuarios').document(user.uid).setData(newUser.toJson());
+      emailAndPasswordSignUp();
+      return newUser;
+
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+
+  }
+
 }

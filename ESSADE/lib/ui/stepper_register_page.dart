@@ -1,8 +1,10 @@
+import 'package:essade/auth/login_state.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class StepperRegisterPage extends StatefulWidget {
   @override
@@ -23,6 +25,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   String email;
   String mobile;
   String password;
+
+  LoginState _auth = LoginState();
 
   void _nextFormStep() {
     _formsPageViewController.nextPage(
@@ -74,6 +78,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     password = '';
 
   }
+
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +174,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                             Navigator.of(context).pop(true);
                           });
                           return InfoDialogWidget(
-                              message: 'La contraseña debe:\n'
-                                  '* Tener al menos 8 caractéres\n'
+                              message: 'La contraseña debe tener:\n'
+                                  '* Al menos 8 caractéres\n'
                                   '* Al menos una letra\n'
                                   '* Y al menos un número\n',
                               icon: Icons.warning
@@ -230,15 +236,14 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _backButton(),
-                _nextButton(() {
+                _nextButton(() async {
                   if(_formKey.currentState.validate()){
                     setState(() {
                       email = emailInputController.text;
                       password = passwordInputController.text;
                     });
-                    /*Hacer petición para registrar usuario*/
-                  }
 
+                  }
                 })
               ],
             )
@@ -246,6 +251,45 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleRegisterSubmit(BuildContext context) async {
+    try{
+      showLoadingProgressCircle(context, _keyLoader);
+      dynamic result = await _auth.registerWithEmailAndPassword(email, password, name, lastname, mobile);
+      Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close showLoadingProgressCircle
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+
+    } catch(error){
+      print(error);
+      showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 7), () {
+              Navigator.of(context).pop(true);
+            });
+            return InfoDialogWidget(
+                message: 'Lo sentimos, ha ocurrido un error.',
+                icon: Icons.error_outline
+            );
+          }
+      );
+    }
+  }
+
+  static Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: Center(
+                key: key,
+                child: CircularProgressIndicator(),
+              )
+          );
+        });
   }
 
   Widget Step1Container(BuildContext context){

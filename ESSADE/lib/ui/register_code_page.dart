@@ -33,6 +33,15 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: essadePrimaryColor,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          backgroundColor: Colors.transparent,
+          brightness: Brightness.light,
+          elevation: 0.0,
+        ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(

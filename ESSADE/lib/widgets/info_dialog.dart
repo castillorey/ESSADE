@@ -14,12 +14,13 @@ class InfoDialogWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(25),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(icon, color: essadePrimaryColor),
             SizedBox(height: 15),
-            Text(message, style: essadeH4(essadeBlack), textAlign: TextAlign.center,),
+            Text(message, style: essadeH4(essadeBlack), textAlign: TextAlign.left,),
           ],
         ),
       ),
