@@ -14,16 +14,16 @@ class StepperRegisterPage extends StatefulWidget {
 class _StepperRegisterPageState extends State<StepperRegisterPage> {
   PageController _formsPageViewController = PageController();
   TextEditingController nameInputController = TextEditingController();
-  TextEditingController lastnameInputController = TextEditingController();
+  //TextEditingController lastnameInputController = TextEditingController();
   TextEditingController emailInputController = TextEditingController();
-  TextEditingController mobileInputController = TextEditingController();
+  //TextEditingController mobileInputController = TextEditingController();
   TextEditingController passwordInputController = TextEditingController();
   TextEditingController repeatPasswordInputController = TextEditingController();
-  List _formSteps;
+  List _formSteps = [];
   String name;
-  String lastname;
+  //String lastname;
   String email;
-  String mobile;
+  //String mobile;
   String password;
 
   LoginState _auth = LoginState();
@@ -81,9 +81,9 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     currentPageValue = 0;
 
     name = '';
-    lastname = '' ;
+    //lastname = '' ;
     email= '';
-    mobile = '';
+    //mobile = '';
     password = '';
 
   }
@@ -121,6 +121,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height - appBarHeight - 10,
@@ -136,6 +137,88 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget Step1Container(BuildContext context){
+    final _formKey = GlobalKey<FormState>();
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              //width: MediaQuery.of(context).size.width / 1.5,
+              child: Text(
+                'EMPECEMOS CON TUS DATOS PERSONALES',
+                style: essadeH3(essadeBlack),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            SimpleTextFormFieldWidget(
+              label: '¿Cuál es su nombre?',
+              inputType: TextInputType.text,
+              editingController: nameInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su nombre',
+              hintText: 'Su nombre',
+            ),
+            SizedBox(height: 5.0),
+            SimpleTextFormFieldWidget(
+              label: 'Correo electrónico',
+              inputType: TextInputType.emailAddress,
+              editingController: emailInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su correo electrónico',
+              hintText: 'Su correo electrónico',
+            ),
+            /*
+            Text(
+              '¿Y su apellido?',
+              style: essadeH5(essadePrimaryColor),
+            ),
+            SimpleTextFormFieldWidget(
+              inputType: TextInputType.text,
+              editingController: lastnameInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su apellido',
+              hintText: 'Su apellido',
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              'No. móvil',
+              style: essadeH5(essadePrimaryColor),
+            ),
+            SimpleTextFormFieldWidget(
+              inputType: TextInputType.number,
+              editingController: mobileInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su número móvil',
+              hintText: 'Su número móvil',
+            ),*/
+            SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                _nextButton(() {
+                  FocusScope.of(context).unfocus();
+                  if(_formKey.currentState.validate()){
+                    setState(() {
+                      name = nameInputController.text;
+                      email = emailInputController.text;
+                    });
+                    _nextFormStep();
+                  }
+                })
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -158,25 +241,13 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               ),
             ),
             SizedBox(height: 10.0),
-            Text(
-              'Correo electrónico',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.emailAddress,
-              editingController: emailInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su correo electrónico',
-              hintText: 'Su correo electrónico',
-            ),
-            SizedBox(height: 5.0),
             Row(
               children: <Widget>[
                 Text(
                   'Crea tu contraseña',
                   style: essadeH5(essadePrimaryColor),
                 ),
-                SizedBox(width: 10.0),
+                SizedBox(width: 5.0),
                 GestureDetector(
                   onTap: (){
                     showDialog(
@@ -252,15 +323,44 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 _nextButton(() async {
                   if(_formKey.currentState.validate()){
                     setState(() {
-                      email = emailInputController.text;
                       password = passwordInputController.text;
                     });
+
                   }
                 })
               ],
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _backButton(){
+    return GestureDetector(
+      onTap: () => _previousFormStep(),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
+        child: Text(
+          'Atrás',
+          style: essadeH4(essadePrimaryColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _nextButton(Function onPressed){
+    return RaisedButton(
+      elevation: 5.0,
+      onPressed: onPressed,
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0),
+      ),
+      color: essadePrimaryColor,
+      child: Text(
+        currentPageValue == _formSteps.length ? 'Enviar' : 'Siguiente',
+        style: essadeH4(Colors.white),
       ),
     );
   }
@@ -302,112 +402,5 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               )
           );
         });
-  }
-
-  Widget Step1Container(BuildContext context){
-    final _formKey = GlobalKey<FormState>();
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              //width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(
-                'EMPECEMOS CON TUS DATOS PERSONALES',
-                style: essadeH3(essadeBlack),
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              '¿Cuál es su nombre?',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.text,
-              editingController: nameInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su nombre',
-              hintText: 'Su nombre',
-            ),
-            SizedBox(height: 5.0),
-            Text(
-              '¿Y su apellido?',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.text,
-              editingController: lastnameInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su apellido',
-              hintText: 'Su apellido',
-            ),
-            SizedBox(height: 5.0),
-            Text(
-              'No. móvil',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.number,
-              editingController: mobileInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su número móvil',
-              hintText: 'Su número móvil',
-            ),
-            SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                _nextButton(() {
-                  FocusScope.of(context).unfocus();
-                  if(_formKey.currentState.validate()){
-                    setState(() {
-                      name = nameInputController.text;
-                      lastname = lastnameInputController.text;
-                      mobile = mobileInputController.text;
-                    });
-                    _nextFormStep();
-                  }
-
-                })
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _backButton(){
-    return GestureDetector(
-      onTap: () => _previousFormStep(),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
-        child: Text(
-          'Atrás',
-          style: essadeH4(essadePrimaryColor),
-        ),
-      ),
-    );
-  }
-
-  Widget _nextButton(Function onPressed){
-    return RaisedButton(
-      elevation: 5.0,
-      onPressed: onPressed,
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      color: essadePrimaryColor,
-      child: Text(
-        currentPageValue == _formSteps.length ? 'Enviar' : 'Siguiente',
-        style: essadeH4(Colors.white),
-      ),
-    );
   }
 }

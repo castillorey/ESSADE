@@ -7,31 +7,45 @@ import 'package:flutter/material.dart';
 
 class SelectableWidget extends StatefulWidget {
   final String objectKey;
-  final List<DocumentSnapshot> documents;
-  Function isProjectSelectedCallback;
+  final String initialText;
+  final List documents;
+  final IconData icon;
+  final borderColor;
+  final Color textColor;
 
-  SelectableWidget({Key key, this.objectKey, this.documents, this.isProjectSelectedCallback}) : super(key: key);
+  final Function(int) onItemSelected;
+
+  SelectableWidget({
+    Key key,
+    this.objectKey,
+    this.documents,
+    this.initialText,
+    this.icon,
+    this.onItemSelected,
+    this.borderColor,
+    this.textColor = essadeBlack
+  }) : super(key: key);
 
   @override
   _SelectableWidgetState createState() => _SelectableWidgetState();
 }
 
 class _SelectableWidgetState extends State<SelectableWidget> {
-  String projectSelected;
+  String itemSelected;
   int pickerSelection, pickerSelectionConfirmed;
 
 
   @override
   void initState() {
     super.initState();
-    projectSelected = 'Seleccione un proyecto...';
+    itemSelected = widget.initialText;
     pickerSelection = 0;
     pickerSelectionConfirmed = 0;
 
   }
 
 
-  Future _myShowCupertinoModalPopup(List<DocumentSnapshot> documents){
+  Future _myShowCupertinoModalPopup(List documents){
     pickerSelection = pickerSelectionConfirmed;
     return showCupertinoModalPopup(context: context, builder: (context){
       return Column(
@@ -68,8 +82,8 @@ class _SelectableWidgetState extends State<SelectableWidget> {
                   onPressed: () {
                     setState(() {
                       pickerSelectionConfirmed = pickerSelection;
-                      projectSelected = documents[pickerSelectionConfirmed][widget.objectKey];
-                      this.widget.isProjectSelectedCallback(true, pickerSelectionConfirmed);
+                      widget.onItemSelected(pickerSelectionConfirmed);
+                      itemSelected = documents[pickerSelectionConfirmed];
                     });
                     Navigator.of(context).pop();
                   },
@@ -94,10 +108,10 @@ class _SelectableWidgetState extends State<SelectableWidget> {
                 useMagnifier: true,
                 magnification: 1.2,
                 itemExtent: 30,
-                children: documents.map((object){
+                children: documents.map((value){
                   return Container(
                     alignment: Alignment.center,
-                    child: Text(object[widget.objectKey]),
+                    child: Text(value),
                   );
                 }).toList()
             ),
@@ -107,21 +121,21 @@ class _SelectableWidgetState extends State<SelectableWidget> {
     });
   }
 
-  Widget _buildSelectableComponent(List<DocumentSnapshot> documents){
+  Widget _buildSelectableComponent(List documents){
     Widget selectableWidget;
     if(Platform.isAndroid){
       selectableWidget = DropdownButton(
-          value: projectSelected,
+          value: itemSelected,
           icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
           onChanged: (newValue) {
-            projectSelected = newValue;
+            itemSelected = newValue;
           },
-          items: documents.map((project){
+          items: documents.map((value){
             return DropdownMenuItem(
-              value: project[widget.objectKey],
-              child: Text(project[widget.objectKey]),
+              value: value,
+              child: Text(value),
             );
           }).toList()
       );
@@ -132,10 +146,10 @@ class _SelectableWidgetState extends State<SelectableWidget> {
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white54,
                 borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
-                    color: essadeGray.withOpacity(0.2),
+                    color: widget.borderColor,
                     width: 1.0
                 )
             ),
@@ -143,13 +157,13 @@ class _SelectableWidgetState extends State<SelectableWidget> {
             child: Row(
               children: <Widget>[
                 Icon(
-                  Icons.card_travel,
+                  widget.icon,
                   color: essadeDarkGray,
                 ),
                 SizedBox(width: 10),
                 Text(
-                  projectSelected,
-                  style: essadeParagraph(),
+                  itemSelected,
+                  style: essadeParagraph(color: widget.textColor),
                 )
               ],
             )

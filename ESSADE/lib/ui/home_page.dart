@@ -46,8 +46,10 @@ class _HomePageState extends State<HomePage> {
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
             if(snapshot.hasData){
               final documents = snapshot.data.documents;
-              List<Project> _projects = [];
+              List _projects = [];
+              List _projectsName = [];
               documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
+              documents.forEach((snapshot) => _projectsName.add(Project.fromSnapshot(snapshot).name));
               String _balance, _incomes, _outgoings, dp, pp;
 
               if(thereIsProjectSelected){
@@ -78,8 +80,17 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 20),
                   SelectableWidget(
                     objectKey: 'nombre',
-                    documents: documents,
-                    isProjectSelectedCallback: isProjectSelectedCallback,
+                    documents: _projectsName,
+                    //isItemSelectedCallback: isProjectSelectedCallback,
+                    initialText: 'Seleccione un proyecto...',
+                    icon: Icons.card_travel,
+                    borderColor: essadeGray.withOpacity(0.2),
+                    onItemSelected: (item){
+                      setState(() {
+                        thereIsProjectSelected = item != null;
+                        pickerSelectionConfirmed = item;
+                      });
+                    },
                   ),
                   SizedBox(height: 20),
                   _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)

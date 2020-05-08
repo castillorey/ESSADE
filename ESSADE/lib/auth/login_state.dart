@@ -85,7 +85,6 @@ class LoginState with ChangeNotifier {
   }
 
   Future<User> _handleSignIn(String email, String password) async {
-
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
 
@@ -127,6 +126,7 @@ class LoginState with ChangeNotifier {
 
   Future registerWithEmailAndPassword(String email, String password, String name) async {
     try{
+      /* Need to pass de Document id from register code and find that user and set info*/
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       User newUser = User(uid: user.uid, name: name);

@@ -4,6 +4,8 @@ import 'package:essade/ui/signup_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/long_button_widget.dart';
+import 'package:essade/widgets/selectable_widget.dart';
+import 'package:essade/widgets/simple_text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,14 +16,19 @@ class RegisterCodePage extends StatefulWidget {
 }
 
 class _RegisterCodePageState extends State<RegisterCodePage> {
-  TextEditingController registerCodeController;
+  TextEditingController documentIdController;
+  bool isDocumentSelected;
+  String itemSelected;
+  List<String> idTypes = ['NIT', 'CC'];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    registerCodeController = new TextEditingController();
+    itemSelected = '----';
+    documentIdController = new TextEditingController();
+    isDocumentSelected = false;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -42,82 +49,106 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
           brightness: Brightness.light,
           elevation: 0.0,
         ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Container(
-            color: essadePrimaryColor,
-            padding: EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 40
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Codigo de Registro',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Monserrat',
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: registerCodeController,
-                    onChanged: (text){
-                      _formKey.currentState.validate();
-                    },
-                    validator: (String value){
-                      if (value.isEmpty)
-                         return 'Ingrese su código proporcionado';
-
-                      return null;
-                    },
-                    cursorColor: Colors.white,
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(color: Colors.white, fontFamily: 'Raleway'),
-                    decoration: InputDecoration(
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(width: 0, style: BorderStyle.none),
-                      ),
-                      fillColor: essadeGray.withOpacity(0.3),
-                      prefixIcon: Icon(Icons.confirmation_number, color: Colors.white54),
-                      hintText: 'Ingrese su código',
-                      hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Raleway'),
-                      contentPadding: EdgeInsets.all(20.0),
-                      errorBorder: essadeBorderErrorStyle(10.0, essadeErrorColor),
-                      focusedErrorBorder: essadeBorderErrorStyle(10.0, essadeErrorColor),
-                    ),
-                  ),
-                  /*InputTextFieldWidget(
-                    icon: Icons.confirmation_number,
-                    boxColor: essadeDarkGray.withOpacity(0.1),
-                    textColor: Colors.white,
-                    placeholder: 'Ingrese código',
-                    inputType: TextInputType.text,
-                    placeholderColor: Colors.white54,
-                  ),*/
-                  SizedBox(height: 30,),
-                  LongButtonWidget(
-                    textColor: essadePrimaryColor,
-                    text: 'Validar',
-                    onPressed: () {
-                      if (_formKey.currentState.validate()){
-                        _handleSubmit(context);
-                      }
-                    },
-                    backgroundColor: Colors.white,
-                  )
-                ],
+        body: SingleChildScrollView(
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Container(
+              color: essadePrimaryColor,
+              padding: EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 40
               ),
-            ),
-          )
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'NECESITAMOS VALIDAR QUE ERES NESTRO CLIENTE',
+                      style: essadeTitle(Colors.white),
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      'Tipo de documento',
+                      style: essadeH5(Colors.white),
+                    ),
+                    SizedBox(height: 10.0),
+                    SelectableWidget(
+                      objectKey: 'nombre',
+                      documents: idTypes,
+                      initialText: 'Tipo de documento',
+                      textColor: Colors.white,
+                      onItemSelected: (item){
+                        if(item != null)
+                          setState(() {
+                            itemSelected = idTypes[item];
+                            isDocumentSelected = true;
+                          });
+                      },
+                      borderColor: isDocumentSelected ? essadeGray.withOpacity(0.2): Colors.white,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'No. id',
+                      style: essadeH5(Colors.white),
+                    ),
+                    SizedBox(height: 10.0),
+                    _myTextFormField(),
+                    SizedBox(height: 30),
+                    LongButtonWidget(
+                      textColor: essadePrimaryColor,
+                      text: 'Validar',
+                      onPressed: () {
+                        if (_formKey.currentState.validate()){
+                          _handleSubmit(context);
+                        }
+                      },
+                      backgroundColor: Colors.white,
+                    )
+                  ],
+                ),
+              ),
+            )
+          ),
         ),
+      ),
+    );
+  }
+
+  void onDocumentSelectedCallback(){
+    setState(() {
+      isDocumentSelected = true;
+    });
+  }
+  Widget _myTextFormField(){
+    return TextFormField(
+      controller: documentIdController,
+      onChanged: (text){
+        _formKey.currentState.validate();
+      },
+      validator: (String value){
+        if (value.isEmpty)
+          return 'Ingrese su código proporcionado';
+
+        return null;
+      },
+      cursorColor: Colors.white,
+      keyboardType: TextInputType.text,
+      style: TextStyle(color: Colors.white, fontFamily: 'Raleway'),
+      decoration: InputDecoration(
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(width: 0, style: BorderStyle.none),
+          ),
+          fillColor: essadeGray.withOpacity(0.3),
+          hintText: 'Ingrese su No. de id',
+          hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Raleway'),
+          contentPadding: EdgeInsets.all(20.0),
+          errorBorder: essadeBorderErrorStyle(10.0, Colors.white),
+          focusedErrorBorder: essadeBorderErrorStyle(10.0, Colors.white),
+          errorStyle: TextStyle(color: Colors.white)
       ),
     );
   }
@@ -140,7 +171,10 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
   Future<void> _handleSubmit(BuildContext context) async {
     try {
       showLoading(context, _keyLoader);
-      QuerySnapshot _query = await Firestore.instance.collection('codigos_registro').where('codigo', isEqualTo: registerCodeController.text).getDocuments();
+      QuerySnapshot _query = await Firestore.instance
+          .collection('documentos_id')
+          .where('no_id', isEqualTo: documentIdController.text)
+          .where('tipo_id', isEqualTo: itemSelected).getDocuments();
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close loadingCircle
       if(_query.documents.length != 0){
         Provider.of<LoginState>(context, listen: false).codeRegistered();
@@ -159,7 +193,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
             }
         );
       }
-      registerCodeController.clear();
+      documentIdController.clear();
     } catch (error) {
       print(error);
       showDialog(

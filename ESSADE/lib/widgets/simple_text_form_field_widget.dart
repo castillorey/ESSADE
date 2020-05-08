@@ -21,11 +21,7 @@ class SimpleTextFormFieldWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if(label != '')
-            Text(
-              label,
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SizedBox(height: 10.0),
+            _label(),
           TextFormField(
             obscureText: obscureText,
             controller: editingController,
@@ -60,6 +56,16 @@ class SimpleTextFormFieldWidget extends StatelessWidget {
       ),
     );
   }
+
+  _label() => Column(
+    children: <Widget>[
+      Text(
+        label,
+        style: essadeH5(essadePrimaryColor),
+      ),
+      SizedBox(height: 10.0),
+    ],
+  );
 
   bool validateEmail(String value) {
     Pattern pattern =
