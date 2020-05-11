@@ -179,7 +179,11 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context).pop(true);
               });
-              return InfoDialogWidget(message: 'El No. Id ingresado no se encuetra registrado.', icon: Icons.error);
+              return InfoDialogWidget(
+                message: 'El No. Id ingresado no se encuentra registrado.',
+                icon: Icons.error,
+                textAlign: TextAlign.center,
+              );
             }
         );
       }

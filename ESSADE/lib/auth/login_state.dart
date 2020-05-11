@@ -101,7 +101,6 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 
-
   void emailAndPasswordSignUp() {
     _loggedIn = true;
     print('Iniciando sesión');
@@ -164,9 +163,7 @@ class LoginState with ChangeNotifier {
 
       User newUser = User(noId: noId, name: name, email: email, idTypE: fireUser['tipo_id']);
       db.collection('usuarios').document(ref.documents[0].documentID).updateData(newUser.toJson());
-      emailAndPasswordSignUp();
       return newUser;
-
     } catch(e){
       print(e.toString());
       return null;

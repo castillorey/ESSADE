@@ -52,9 +52,8 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/': (BuildContext context) {
               var state = Provider.of<LoginState>(context);
-              print('Pasando por Main');
+              print(state.isLoggedIn());
               if(state.isLoggedIn()){
-                print('Pasando por Main');
                 print('Abriendo Container Page!!');
                 return ContainerPage();
               } else {
@@ -62,8 +61,8 @@ class _MyAppState extends State<MyApp> {
                 return LoginPage();
               }
             },
-            '/RegisterId': (BuildContext context) => new RegisterCodePage(),
-            '/StepperForm': (BuildContext context) => new StepperRegisterPage()
+            '/RegisterId': (BuildContext context) => RegisterCodePage(),
+            '/StepperForm': (BuildContext context) => StepperRegisterPage()
           },
         ),
       ),

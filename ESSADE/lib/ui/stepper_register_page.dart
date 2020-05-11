@@ -30,7 +30,6 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   String _password;
   String _noId;
 
-  LoginState _auth = LoginState();
   int currentPageValue;
 
   void _nextFormStep() {
@@ -97,7 +96,6 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('Aqui probando en build ${widget.noId}');
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -182,30 +180,6 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               validationText: 'Ingrese su correo electrónico',
               hintText: 'Su correo electrónico',
             ),
-            /*
-            Text(
-              '¿Y su apellido?',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.text,
-              editingController: lastnameInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su apellido',
-              hintText: 'Su apellido',
-            ),
-            SizedBox(height: 5.0),
-            Text(
-              'No. móvil',
-              style: essadeH5(essadePrimaryColor),
-            ),
-            SimpleTextFormFieldWidget(
-              inputType: TextInputType.number,
-              editingController: mobileInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su número móvil',
-              hintText: 'Su número móvil',
-            ),*/
             SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -373,12 +347,12 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   Future<void> _handleRegisterSubmit(BuildContext context) async {
     try{
       showLoadingProgressCircle(context, _keyLoader);
-      print('Id que voy pasando: $_noId');
-      dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, _name, _noId);
-      Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close showLoadingProgressCircle
+      dynamic result = await Provider.of<LoginState>(context, listen: false).registerWithEmailAndPassword(_email, _password, _name, _noId);
+      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close showLoadingProgressCircle
       if(result == null)
         return null;
-      Navigator.popUntil(context, ModalRoute.withName('/RegisterId'));
+      Provider.of<LoginState>(context, listen: false).emailAndPasswordSignUp();
+      Navigator.of(context).popUntil((route) => route.isFirst);
 
     } catch(error){
       print(error);
