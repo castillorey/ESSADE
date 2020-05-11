@@ -69,10 +69,10 @@ class _SignUpPageState extends State<SignUpPage> {
           backgroundColor: Colors.white,
           textColor: essadePrimaryColor,
           onPressed: () {
-            Navigator.push(
+            /*Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StepperRegisterPage())
-            );
+              MaterialPageRoute(builder: (context) => StepperRegisterPage(''))
+            );*/
           },
         ),
       ],

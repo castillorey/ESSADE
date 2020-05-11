@@ -1,20 +1,23 @@
 class User {
-  final String uid;
+  final String noId;
   final String name;
   final String idTypE;
+  final String email;
 
-  User({this.idTypE, this.uid, this.name,});
+  User({this.email, this.idTypE, this.noId, this.name,});
 
   User.fromMap(Map<String, dynamic> map)
       : this.idTypE = map['tipo_id'],
-        this.uid = map['id'],
-        this.name = map['nombre'];
+        this.noId= map['no_id'],
+        this.name = map['nombre'],
+        this.email = map['correo'];
 
 
   Map<String, dynamic> toJson() =>
       {
         'tipo_id' : idTypE,
-        'id' : uid,
-        'nombre' : name
+        'no_id' : noId,
+        'nombre' : name,
+        'correo' : email
       };
 }

@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class StepperRegisterPage extends StatefulWidget {
+  final String noId;
+
+  const StepperRegisterPage({Key key, this.noId}) : super(key: key);
   @override
   _StepperRegisterPageState createState() => _StepperRegisterPageState();
 }
@@ -20,11 +23,12 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   TextEditingController passwordInputController = TextEditingController();
   TextEditingController repeatPasswordInputController = TextEditingController();
   List _formSteps = [];
-  String name;
+  String _name;
   //String lastname;
-  String email;
+  String _email;
   //String mobile;
-  String password;
+  String _password;
+  String _noId;
 
   LoginState _auth = LoginState();
   int currentPageValue;
@@ -80,11 +84,12 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
 
     currentPageValue = 0;
 
-    name = '';
+    _name = '';
     //lastname = '' ;
-    email= '';
+    _email= '';
     //mobile = '';
-    password = '';
+    _password = '';
+    _noId = widget.noId;
 
   }
 
@@ -92,7 +97,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    print('Aqui probando en build ${widget.noId}');
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -209,8 +214,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                   FocusScope.of(context).unfocus();
                   if(_formKey.currentState.validate()){
                     setState(() {
-                      name = nameInputController.text;
-                      email = emailInputController.text;
+                      _name = nameInputController.text;
+                      _email = emailInputController.text;
                     });
                     _nextFormStep();
                   }
@@ -323,9 +328,9 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 _nextButton(() async {
                   if(_formKey.currentState.validate()){
                     setState(() {
-                      password = passwordInputController.text;
+                      _password = passwordInputController.text;
                     });
-
+                    _handleRegisterSubmit(context);
                   }
                 })
               ],
@@ -368,9 +373,12 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   Future<void> _handleRegisterSubmit(BuildContext context) async {
     try{
       showLoadingProgressCircle(context, _keyLoader);
-      dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
+      print('Id que voy pasando: $_noId');
+      dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, _name, _noId);
       Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close showLoadingProgressCircle
-      Navigator.popUntil(context, ModalRoute.withName('/'));
+      if(result == null)
+        return null;
+      Navigator.popUntil(context, ModalRoute.withName('/RegisterId'));
 
     } catch(error){
       print(error);
@@ -387,20 +395,5 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
           }
       );
     }
-  }
-
-  static Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: Center(
-                key: key,
-                child: CircularProgressIndicator(),
-              )
-          );
-        });
   }
 }

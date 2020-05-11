@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/global.dart';
 import 'package:essade/ui/container_page.dart';
 import 'package:essade/ui/login_page.dart';
+import 'package:essade/ui/register_code_page.dart';
+import 'package:essade/ui/stepper_register_page.dart';
 import 'package:flutter/material.dart';
 import 'models/global.dart';
 import 'auth/login_state.dart';
@@ -59,7 +61,9 @@ class _MyAppState extends State<MyApp> {
                 print('Abriendo Login Page!!');
                 return LoginPage();
               }
-            }
+            },
+            '/RegisterId': (BuildContext context) => new RegisterCodePage(),
+            '/StepperForm': (BuildContext context) => new StepperRegisterPage()
           },
         ),
       ),

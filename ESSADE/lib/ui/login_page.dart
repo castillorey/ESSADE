@@ -1,6 +1,7 @@
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/ui/register_code_page.dart';
 import 'package:essade/ui/signup_page.dart';
+import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/long_social_button_widget.dart';
@@ -71,15 +72,6 @@ class _LoginPageState extends State<LoginPage> {
                               validationText: 'Ingrese su correo electrónico',
                               hintText: 'Su correo electrónico',
                             ),
-                            /*InputTextFieldWidget(
-                              label: 'Correo',
-                              inputType: TextInputType.emailAddress,
-                              icon: Icons.email,
-                              placeholder: 'Ingrese su correo',
-                              textColor: essadeDarkGray,
-                              boxColor: essadeGray.withOpacity(0.1),
-                              placeholderColor: essadeGray,
-                            ),*/
                             SimpleTextFormFieldWidget(
                               label: 'Contraseña',
                               obscureText: true,
@@ -90,15 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                               hintText: 'Su contraseña',
                             ),
                             SizedBox(height: 10.0,),
-                            /*InputTextFieldWidget(
-                              label: 'Contraseña',
-                              inputType: TextInputType.emailAddress,
-                              icon: Icons.lock,
-                              placeholder: 'Ingrese su contraseña',
-                              textColor: essadeDarkGray,
-                              boxColor: essadeGray.withOpacity(0.1),
-                              placeholderColor: essadeGray,
-                            ),*/
                             SizedBox(height: 20.0),
                             LongButtonWidget(
                               text: 'Iniciar',
@@ -110,17 +93,6 @@ class _LoginPageState extends State<LoginPage> {
                                       .login(context, emailInputController.text, passwordInputController.text);
                               }
                             ),
-                            /*SizedBox(height: 10.0),
-                            OrLogSignInWithWidget(color: essadeGray,),
-                            LongSocialButtonWidget(
-                              onPressed: () {
-                                Provider.of<LoginState>(context, listen: false).googleLogin();
-                                Navigator.of(context).pop();
-                              },
-                              text: 'Iniciar con Google',
-                              textColor: Colors.white,
-                              backgroundColor: Color(0xFF4c8bf5),
-                            ),*/
                             SizedBox(height: 30),
                             SwitchLoggedSignedWidget(
                               guideText: '¿Aún no tienes cuenta? ',
@@ -128,12 +100,13 @@ class _LoginPageState extends State<LoginPage> {
                               actionText: 'Registrate aquí',
                               actionTextColor: essadePrimaryColor,
                               onTap: (){
-                                final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();
-                                Widget registerPage = isRegisterDone ? SignUpPage() : RegisterCodePage();
+                                //final isRegisterDone = Provider.of<LoginState>(context, listen: false).isRegisterCodeDone();
+                                //Widget registerPage = isRegisterDone ? StepperRegisterPage() : RegisterCodePage();
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => registerPage)
+                                    MaterialPageRoute(builder: (context) => RegisterCodePage())
                                 );
+
                               },
                             ),
                           ],

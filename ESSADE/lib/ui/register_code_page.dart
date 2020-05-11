@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/ui/signup_page.dart';
+import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/long_button_widget.dart';
@@ -20,6 +21,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
   bool isDocumentSelected;
   String itemSelected;
   List<String> idTypes = ['NIT', 'CC'];
+  String documentId;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     itemSelected = '----';
     documentIdController = new TextEditingController();
     isDocumentSelected = false;
+    documentId = '';
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -99,8 +102,11 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                     LongButtonWidget(
                       textColor: essadePrimaryColor,
                       text: 'Validar',
-                      onPressed: () {
-                        if (_formKey.currentState.validate()){
+                      onPressed: () async {
+                        if (_formKey.currentState.validate() && itemSelected != '----'){
+                          setState(() {
+                            documentId = documentIdController.text;
+                          });
                           _handleSubmit(context);
                         }
                       },
@@ -153,34 +159,18 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     );
   }
 
-  static Future<void> showLoading(BuildContext context, GlobalKey key) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: Center(
-                key: key,
-                child: CircularProgressIndicator(),
-              )
-          );
-        });
-  }
-
   Future<void> _handleSubmit(BuildContext context) async {
     try {
-      showLoading(context, _keyLoader);
-      QuerySnapshot _query = await Firestore.instance
-          .collection('documentos_id')
-          .where('no_id', isEqualTo: documentIdController.text)
-          .where('tipo_id', isEqualTo: itemSelected).getDocuments();
+      showLoadingProgressCircle(context, _keyLoader);
+      bool result = await Provider.of<LoginState>(context, listen: false)
+          .handleDocumentIdValidation(itemSelected, documentId);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close loadingCircle
-      if(_query.documents.length != 0){
-        Provider.of<LoginState>(context, listen: false).codeRegistered();
-        Navigator.pushReplacement(
+      if(result){
+        Provider.of<LoginState>(context, listen: false).documentIdRegistered();
+        print(documentIdController.text);
+        Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SignUpPage())
+            MaterialPageRoute(builder: (context) => StepperRegisterPage(noId: documentId,))
         );
       } else {
         showDialog(
@@ -189,7 +179,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context).pop(true);
               });
-              return InfoDialogWidget(message: 'El código ingresado no es valido', icon: Icons.error);
+              return InfoDialogWidget(message: 'El No. Id ingresado no se encuetra registrado.', icon: Icons.error);
             }
         );
       }

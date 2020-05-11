@@ -72,6 +72,21 @@ essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
   );
 }
 
+Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return new WillPopScope(
+            onWillPop: () async => false,
+            child: Center(
+              key: key,
+              child: CircularProgressIndicator(),
+            )
+        );
+      });
+}
+
 enum PlatformType {
   iOS,
   android
@@ -88,6 +103,12 @@ enum DetailPageType {
 
 }
 
+enum MainAppPages {
+  SignIn,
+  RegisterId,
+  StepperRegister,
+  Container
+}
 const Color essadePrimaryColor = Color(0xFF82142d);
 const Color essadeBlack = Color(0xFF262626);
 const Color essadeDarkGray = Color(0xFF85878a);
