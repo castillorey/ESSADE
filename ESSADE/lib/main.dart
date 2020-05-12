@@ -67,8 +67,6 @@ class _MyAppState extends State<MyApp> {
                 return LoginPage();
               }
             },
-            '/RegisterId': (BuildContext context) => RegisterCodePage(),
-            '/StepperForm': (BuildContext context) => StepperRegisterPage()
           },
         ),
       ),

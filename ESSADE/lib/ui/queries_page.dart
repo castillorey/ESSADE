@@ -4,6 +4,7 @@ import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/ui/project_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/not_projects_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -45,36 +46,41 @@ class _QueriesPageState extends State<QueriesPage> {
             documents.forEach((project){
               projects.add(Project.fromSnapshot(project));
             });
-            return Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Consultar',
-                    style: essadeH2(essadeBlack),
+
+            if(projects.length == 0){
+             return NotProjectsWidget();
+            } else {
+              return Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Consultar',
+                      style: essadeH2(essadeBlack),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                ExpansionTile(
-                  leading: Icon(Icons.work),
-                  title: Text('Mis proyectos', style: essadeParagraph(),),
-                  children: projects.map((p){
-                    return ListTile(
-                      onTap: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) => ProjectDetailPage(project: p))
+                  SizedBox(height: 20),
+                  ExpansionTile(
+                      leading: Icon(Icons.work),
+                      title: Text('Mis proyectos', style: essadeParagraph(),),
+                      children: projects.map((p){
+                        return ListTile(
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProjectDetailPage(project: p))
+                            );
+                          },
+                          title: Text(p.name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
+                          subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont),
+                          trailing: Icon(Icons.keyboard_arrow_right),
                         );
-                      },
-                      title: Text(p.name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
-                      subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont),
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                    );
-                  }).toList()
-                ),
-              ],
-            );
+                      }).toList()
+                  ),
+                ],
+              );
+            }
 
           } else {
             return Center(

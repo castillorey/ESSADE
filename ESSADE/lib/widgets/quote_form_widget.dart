@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Quote.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class QuoteFormWidget extends StatefulWidget {
   @override
@@ -123,7 +126,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
         )
     );
   }
-
+  // TODO: Refactor this to SelectableWidget
   Future _buildCupertinoModalPopup(List<String> services){
     pickerSelection = pickerSelectionConfirmed;
     return showCupertinoModalPopup(context: context, builder: (context){
@@ -256,34 +259,18 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
     return selectableWidget;
   }
 
-
-  Widget myQuoteSentWidget(String message, IconData icon) {
-    return Dialog(
-      child: Container(
-        width: 100,
-        height: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(message, style: essadeH4(essadeBlack),),
-            SizedBox(height: 10),
-            Icon(icon, color: essadePrimaryColor,)
-          ],
-        ),
-      ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-      ),
-    );
-  }
-
   Future<void> _handleQuoteSubmit(BuildContext context) async {
     try {
-      showLoadingDialog(context, _keyLoader);
-      DocumentReference ref = await Firestore.instance.collection('cotizaciones').add({
+      showLoadingProgressCircle(context, _keyLoader);
+      User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+      DocumentReference ref = await Firestore.instance.collection('usuarios')
+          .document(currentUser.documentID).collection('cotizaciones').add({
         'tipo_servicio': serviceSelected,
         'comentario': commentInputController.text
       });
+      if(ref == null)
+        return null;
+
       print(ref);
       Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close loadingCircle
       showDialog(
@@ -292,7 +279,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return myQuoteSentWidget('Cotización enviada con exito', Icons.done);
+            return InfoDialogWidget(message: 'Cotización enviada', icon: Icons.done);
           }
       );
       setState(() { serviceSelected = 'Seleccione un servicio...';});
@@ -309,21 +296,6 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
           }
       );
     }
-  }
-
-  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: Center(
-                key: key,
-                child: CircularProgressIndicator(),
-              )
-          );
-        });
   }
 }
 

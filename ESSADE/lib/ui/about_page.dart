@@ -244,9 +244,7 @@ class _AboutPageState extends State<AboutPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image(
-                image: AssetImage('assets/images/juntos.png')
-            ),
+            child: Image.asset('assets/images/juntos.png', height: 200)
           ),
           Container(
             margin: EdgeInsets.only(top: 20),
@@ -297,9 +295,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image(
-                    image: AssetImage('assets/images/4775.jpg')
-                ),
+                child: Image.asset('assets/images/4775.jpg', height: 200)
               ),
               Container(
                 child: Column(

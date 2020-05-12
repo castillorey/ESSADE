@@ -22,6 +22,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
   String itemSelected;
   List<String> idTypes = ['NIT', 'CC'];
   String documentId;
+  Color selectableBorderColor;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     documentIdController = new TextEditingController();
     isDocumentSelected = false;
     documentId = '';
+    selectableBorderColor = essadeGray.withOpacity(0.2);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -89,7 +91,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                             isDocumentSelected = true;
                           });
                       },
-                      borderColor: isDocumentSelected ? essadeGray.withOpacity(0.2): Colors.white,
+                      borderColor: selectableBorderColor,
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -103,6 +105,11 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                       textColor: essadePrimaryColor,
                       text: 'Validar',
                       onPressed: () async {
+                        if(!isDocumentSelected){
+                          setState(() {
+                            selectableBorderColor = Colors.white;
+                          });
+                        }
                         if (_formKey.currentState.validate() && itemSelected != '----'){
                           setState(() {
                             documentId = documentIdController.text;

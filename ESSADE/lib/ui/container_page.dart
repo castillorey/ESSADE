@@ -46,15 +46,12 @@ class _ContainerPageState extends State<ContainerPage> {
         value: SystemUiOverlayStyle.dark,
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height - 130,
-              padding: EdgeInsets.symmetric(
-                  vertical: 10.0
-              ),
-              child: tabs.elementAt(_selectedIndex)
-            )
+          child: Container(
+            height: MediaQuery.of(context).size.height - 130,
+            padding: EdgeInsets.symmetric(
+                vertical: 10.0
+            ),
+            child: tabs.elementAt(_selectedIndex)
           ),
         ),
       ),

@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/auth/login_state.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/ui/detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
+import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/subtitle_guide_text_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpPage extends StatefulWidget {
@@ -167,48 +171,16 @@ class _HelpPageState extends State<HelpPage> {
     );
   }
 
-  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: Center(
-                key: key,
-                child: CircularProgressIndicator(),
-              )
-          );
-        });
-  }
-
-  Widget mySuggestionSentWidget(String message) {
-    return Dialog(
-      child: Container(
-        width: 100,
-        height: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(message, style: essadeH4(essadeBlack),),
-            SizedBox(height: 10),
-            Icon(Icons.done, color: essadePrimaryColor,)
-          ],
-        ),
-      ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-      ),
-    );
-
-  }
-
   Future<void> _handleSuggestionSubmit(BuildContext context) async {
     try {
-      showLoadingDialog(context, _keyLoader);
-      DocumentReference ref = await Firestore.instance.collection('sugerencias').add({
+      showLoadingProgressCircle(context, _keyLoader);
+      User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+      DocumentReference ref = await Firestore.instance.collection('usuarios')
+          .document(currentUser.documentID).collection('sugerencias').add({
         'comentario': commentInputController.text
       });
+      if(ref == null)
+        return null;
       Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close the dialoge
       showDialog(
           context: context,
@@ -216,7 +188,7 @@ class _HelpPageState extends State<HelpPage> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return mySuggestionSentWidget('Sugerencia enviada');
+            return InfoDialogWidget(message: 'Sugerencia enviada', icon: Icons.done);
           }
       );
       commentInputController.clear();
@@ -228,7 +200,7 @@ class _HelpPageState extends State<HelpPage> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.of(context).pop(true);
             });
-            return mySuggestionSentWidget('Lo sentimos ha ocurrido un error :(');
+            return InfoDialogWidget(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error);
           }
       );
     }

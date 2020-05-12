@@ -6,6 +6,7 @@ import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/graph_widget.dart';
+import 'package:essade/widgets/not_projects_widget.dart';
 import 'package:essade/widgets/selectable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,17 +45,20 @@ class _HomePageState extends State<HomePage> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: SingleChildScrollView(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: _projectsQuery,
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-            if(snapshot.hasData){
-              final documents = snapshot.data.documents;
-              List _projects = [];
-              List _projectsName = [];
-              documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
-              documents.forEach((snapshot) => _projectsName.add(Project.fromSnapshot(snapshot).name));
-              String _balance, _incomes, _outgoings, dp, pp;
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _projectsQuery,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(snapshot.hasData){
+            final documents = snapshot.data.documents;
+            List _projects = [];
+            List _projectsName = [];
+            documents.forEach((snapshot) => _projects.add(Project.fromSnapshot(snapshot)));
+            documents.forEach((snapshot) => _projectsName.add(Project.fromSnapshot(snapshot).name));
+            String _balance, _incomes, _outgoings, dp, pp;
+
+            if(_projects.length == 0){
+              return NotProjectsWidget();
+            } else {
 
               if(thereIsProjectSelected){
                 _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
@@ -96,18 +100,24 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   SizedBox(height: 20),
-                  _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
+                  Flexible(
+                    child: ListView(
+                      children: <Widget>[
+                        _buildProjectSelectedInfo(_balance, _incomes, _outgoings, dp, pp)
+                      ],
+                    ),
+                  )
                 ],
-              );
-
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
               );
             }
 
-          },
-        ),
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+        },
       ),
     );
   }
