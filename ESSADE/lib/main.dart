@@ -29,7 +29,13 @@ class _MyAppState extends State<MyApp> {
         data.documents.forEach((doc) => print(doc["nombre"])));
   }
 
-
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    precacheImage(AssetImage('assets/images/juntos.png'), context);
+    precacheImage(AssetImage('assets/images/4775.jpg'), context);
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
