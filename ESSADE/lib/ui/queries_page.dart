@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Project.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/ui/project_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class QueriesPage extends StatefulWidget {
   @override
@@ -22,15 +25,15 @@ class _QueriesPageState extends State<QueriesPage> {
   void initState() {
     super.initState();
 
-    _query = Firestore.instance
-        .collection('proyectos')
-        .snapshots();
     indexProjectSelected = 0;
     thereIsProjectSelected = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _query = Firestore.instance
+        .collection('usuarios').document(currentUser.documentID).collection('proyectos').snapshots();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: StreamBuilder<QuerySnapshot>(

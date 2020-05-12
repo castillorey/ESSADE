@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Project.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/graph_widget.dart';
 import 'package:essade/widgets/selectable_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,14 +25,11 @@ class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _projectsQuery;
   int pickerSelectionConfirmed;
   bool thereIsProjectSelected;
+  FirebaseAuth currentUser;
 
   @override
   void initState() {
     super.initState();
-    _projectsQuery = Firestore.instance
-        .collection('proyectos')
-        .snapshots();
-
     pickerSelectionConfirmed = 0;
     thereIsProjectSelected = false;
 
@@ -38,6 +37,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _projectsQuery = Firestore.instance
+        .collection('usuarios').document(currentUser.documentID).collection('proyectos').snapshots();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: SingleChildScrollView(
@@ -73,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      '¡Hola Kevin!',
+                      '¡Hola ${capitalize(currentUser.name)}!',
                       style: essadeH2(essadeBlack),
                     ),
                   ),
@@ -81,7 +85,6 @@ class _HomePageState extends State<HomePage> {
                   SelectableWidget(
                     objectKey: 'nombre',
                     documents: _projectsName,
-                    //isItemSelectedCallback: isProjectSelectedCallback,
                     initialText: 'Seleccione un proyecto...',
                     icon: Icons.card_travel,
                     borderColor: essadeGray.withOpacity(0.2),

@@ -1,12 +1,15 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Activity.dart';
 import 'package:essade/models/Project.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:provider/provider.dart';
 
 class ProjectActivitiesSubpage extends StatefulWidget {
   final Project project;
@@ -24,9 +27,6 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   @override
   void initState() {
     super.initState();
-    /*_activitiesQuery = Firestore.instance
-        .collection('actividades')
-        .where('id_proyecto', isEqualTo: widget.project.id).snapshots();*/
 
     _activitiesQuery = Firestore.instance
         .collection('proyectos').document(widget.project.id)
@@ -35,6 +35,12 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _activitiesQuery = Firestore.instance
+        .collection('usuarios').document(currentUser.documentID)
+        .collection('proyectos').document(widget.project.id)
+        .collection('actividades').snapshots();
+
     return Column(
       children: <Widget>[
         Align(
@@ -114,7 +120,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                         _detailsItem('Fecha de actividad', date),
                         _detailsItem('Descripción', activity.description),
                         Container(
-                          height:200,
+                          height: 200,
                           child: Image.network(
                             activity.image_path,
                             fit: BoxFit.cover,

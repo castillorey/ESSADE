@@ -347,11 +347,11 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   Future<void> _handleRegisterSubmit(BuildContext context) async {
     try{
       showLoadingProgressCircle(context, _keyLoader);
-      dynamic result = await Provider.of<LoginState>(context, listen: false).registerWithEmailAndPassword(_email, _password, _name, _noId);
+      dynamic result = await Provider.of<LoginState>(context, listen: false)
+          .registerWithEmailAndPassword(_email, _password, _name, _noId);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close showLoadingProgressCircle
       if(result == null)
         return null;
-      Provider.of<LoginState>(context, listen: false).emailAndPasswordSignUp();
       Navigator.of(context).popUntil((route) => route.isFirst);
 
     } catch(error){

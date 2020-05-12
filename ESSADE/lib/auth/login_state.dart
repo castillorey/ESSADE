@@ -15,13 +15,11 @@ class LoginState with ChangeNotifier {
   bool _loggedIn = false;
   bool _registerIdDone = false;
   bool _loading = false;
-  MainAppPages _pageToLoad = MainAppPages.SignIn;
 
   bool isLoggedIn() => _loggedIn;
   bool isLoading() => _loading;
   bool isRegisterCodeDone() => _registerIdDone;
   User currentUser() => _user;
-  MainAppPages whichPageToLoad() => _pageToLoad;
 
   void googleLogin() async {
     _loading = true;
@@ -45,7 +43,6 @@ class LoginState with ChangeNotifier {
 
     if(_user != null){
       _loggedIn = true;
-      _pageToLoad = MainAppPages.Container;
     }
     else{
       showDialog(
@@ -67,10 +64,6 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 
-  void goToPage(MainAppPages page){
-    _pageToLoad = page;
-    notifyListeners();
-  }
 
   void validateDocumentId(BuildContext context, String idType, String noId) async {
     _loading = true;
@@ -81,7 +74,6 @@ class LoginState with ChangeNotifier {
 
     if(_registerIdDone){
       documentIdRegistered();
-      _pageToLoad = MainAppPages.StepperRegister;
     } else {
       showDialog(
           context: context,
@@ -101,7 +93,8 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 
-  void emailAndPasswordSignUp() {
+  void emailAndPasswordSignUp(User user) {
+    _user = user;
     _loggedIn = true;
     print('Iniciando sesión');
     notifyListeners();
@@ -116,7 +109,6 @@ class LoginState with ChangeNotifier {
     });
 
     _loggedIn = false;
-    _pageToLoad = MainAppPages.SignIn;
     notifyListeners();
   }
 
@@ -132,11 +124,14 @@ class LoginState with ChangeNotifier {
       if(result == null)
         return null;
 
+      print('Hasta ahora aquí vamos bien');
       User user = User();
       FirebaseUser firebaseUser = result.user;
-      QuerySnapshot _query = await db.collection('usuarios').where('email', isEqualTo: firebaseUser.email).getDocuments();
-      if(_query.documents.length != 0)
-        user = User.fromMap(_query.documents[0].data);
+      QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: firebaseUser.email).getDocuments();
+      if(_query.documents.length == 0)
+        return null;
+
+      user = User.fromSnapshot(_query.documents[0]);
 
       return user;
     } catch(error){
@@ -149,20 +144,24 @@ class LoginState with ChangeNotifier {
     try{
       
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      //FirebaseUser user = result.user;
+
       if(result == null)
         return null;
-      print('NO. id: $noId');
+
       QuerySnapshot ref = await db.collection('usuarios').where('no_id', isEqualTo: noId).getDocuments();
       print(ref.documents);
       if(ref.documents.length == 0)
         return null;
 
-      Map fireUser = ref.documents[0].data;
-      print(fireUser.toString());
 
-      User newUser = User(noId: noId, name: name, email: email, idTypE: fireUser['tipo_id']);
-      db.collection('usuarios').document(ref.documents[0].documentID).updateData(newUser.toJson());
+      User newUser = User.fromSnapshot(ref.documents[0]);
+      newUser.setName = name;
+      newUser.setEmail = email;
+      newUser.setIsRegistered = true;
+
+      db.collection('usuarios').document(newUser.documentID).updateData(newUser.toJson());
+      emailAndPasswordSignUp(newUser);
+
       return newUser;
     } catch(e){
       print(e.toString());
@@ -176,7 +175,7 @@ class LoginState with ChangeNotifier {
       QuerySnapshot _query = await db
           .collection('usuarios')
           .where('no_id', isEqualTo: noId)
-          .where('tipo_id', isEqualTo: idType).getDocuments();
+          .where('tipo_id', isEqualTo: idType).where('registrado', isEqualTo: false).getDocuments();
       if(_query.documents.length != 0)
         return true;
 

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Movement.dart';
 import 'package:essade/models/Project.dart';
+import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProjectMovementsSubpage extends StatefulWidget {
   final Project project;
@@ -27,6 +30,13 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   }
   @override
   Widget build(BuildContext context) {
+
+    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _movementsQuery = Firestore.instance
+        .collection('usuarios').document(currentUser.documentID)
+        .collection('proyectos').document(widget.project.id)
+        .collection('movimientos').snapshots();
+
     return Column(
       children: <Widget>[
         Align(
@@ -98,9 +108,15 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
                     style: essadeH4(essadeDarkGray),
                   ),
                   SizedBox(height: 20),
-                  _detailsItem('Fecha de movimiento:', date),
-                  _detailsItem('Tipo de Movimiento:', movement.type),
-                  _detailsItem('Descripción:', movement.description),
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        _detailsItem('Fecha de movimiento:', date),
+                        _detailsItem('Tipo de Movimiento:', movement.type),
+                        _detailsItem('Descripción:', movement.description),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
