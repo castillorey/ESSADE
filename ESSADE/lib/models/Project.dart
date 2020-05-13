@@ -4,7 +4,7 @@ class Project {
   final String name, city, state;
   final int income, outgoing, activitiesNumber, price;
   final Map<String, dynamic> tasksPercentage;
-  final String id;
+  final String documentID;
 
   /*Project(
       this.name,
@@ -17,7 +17,7 @@ class Project {
       this.tasksPercentage, this.reference
       );*/
 
-  Project.fromMap(Map<String, dynamic> map, {this.id})
+  Project.fromMap(Map<String, dynamic> map, {this.documentID})
       : this.name = map['nombre'],
         this.city = map['ciudad'],
         this.state = map['departamento'],
@@ -28,11 +28,11 @@ class Project {
         this.tasksPercentage = map['tareas_porcentaje'];
 
   Project.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, id: snapshot.documentID);
+      : this.fromMap(snapshot.data, documentID: snapshot.documentID);
 
   @override
   String toString() {
-    return 'Project{name: $name, city: $city, state: $state, income: $income, outgoing: $outgoing, activitiesNumber: $activitiesNumber, price: $price, tasksPercentage: $tasksPercentage, reference: $id}';
+    return 'Project{name: $name, city: $city, state: $state, income: $income, outgoing: $outgoing, activitiesNumber: $activitiesNumber, price: $price, tasksPercentage: $tasksPercentage}';
   }
 
 

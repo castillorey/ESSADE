@@ -27,10 +27,6 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   @override
   void initState() {
     super.initState();
-
-    _activitiesQuery = Firestore.instance
-        .collection('proyectos').document(widget.project.id)
-        .collection('actividades').snapshots();
   }
 
   @override
@@ -38,7 +34,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
     User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
     _activitiesQuery = Firestore.instance
         .collection('usuarios').document(currentUser.documentID)
-        .collection('proyectos').document(widget.project.id)
+        .collection('proyectos').document(widget.project.documentID)
         .collection('actividades').snapshots();
 
     return Column(

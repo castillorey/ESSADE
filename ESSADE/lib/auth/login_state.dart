@@ -5,43 +5,65 @@ import 'package:essade/widgets/info_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginState with ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore db = Firestore.instance;
+  SharedPreferences _prefs;
 
   User _user;
   bool _loggedIn = false;
   bool _registerIdDone = false;
-  bool _loading = false;
+  bool _loading = true;
+
+  LoginState(){
+    loginState();
+  }
 
   bool isLoggedIn() => _loggedIn;
   bool isLoading() => _loading;
   bool isRegisterCodeDone() => _registerIdDone;
   User currentUser() => _user;
 
-  void googleLogin() async {
-    _loading = true;
-    notifyListeners();
+  void loginState() async {
+    _prefs = await SharedPreferences.getInstance();
+    if(_prefs.containsKey('isLoggedIn')){
+      var currentUser = await getCurrentUser();
+      _loggedIn = currentUser != null;
+      _user = currentUser;
+      _loading = false;
+      notifyListeners();
+    } else {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 
-    //_user = await _handleGoogleSignIn();
-    _loading = false;
-    //_loggedIn = _user != null ? true : false;
-    _loggedIn = true;
-    print('Iniciando sesión');
-    notifyListeners();
-    
+  Future<User> getCurrentUser() async {
+    try{
+      User user = User();
+      var currentUser = await _auth.currentUser();
+      QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: currentUser.email).getDocuments();
+      if(_query.documents.length == 0)
+        return null;
+
+      user = User.fromSnapshot(_query.documents[0]);
+
+      return user;
+    } catch(error){
+      print(error.toString());
+      return null;
+    }
   }
 
   void login(BuildContext context, String email, String password) async {
-    _loading = true;
-    notifyListeners();
-
     _user = await _handleSignIn(email, password);
     _loading = false;
 
     if(_user != null){
+      _prefs.setBool('isLoggedIn', true);
       _loggedIn = true;
     }
     else{
@@ -104,12 +126,12 @@ class LoginState with ChangeNotifier {
     //_googleSignIn.signOut();
     _auth.signOut().then((onValue) {
       print('SIGNED OUT SUCCESSFUFLLY');
+      _prefs.clear();
+      _loggedIn = false;
+      notifyListeners();
     }).catchError((onError){
       print(onError);
     });
-
-    _loggedIn = false;
-    notifyListeners();
   }
 
   void documentIdRegistered(){
@@ -185,6 +207,19 @@ class LoginState with ChangeNotifier {
       print(error.toString());
       return null;
     }
+  }
+
+  void googleLogin() async {
+    _loading = true;
+    notifyListeners();
+
+    //_user = await _handleGoogleSignIn();
+    _loading = false;
+    //_loggedIn = _user != null ? true : false;
+    _loggedIn = true;
+    print('Iniciando sesión');
+    notifyListeners();
+
   }
 
   Future<FirebaseUser> _handleGoogleSignIn() async {

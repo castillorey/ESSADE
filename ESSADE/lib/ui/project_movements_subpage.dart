@@ -24,9 +24,6 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   @override
   void initState() {
     super.initState();
-    _movementsQuery = Firestore.instance
-        .collection('movimientos')
-        .where('id_proyecto', isEqualTo: widget.project.id).snapshots();
   }
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,7 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
     User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
     _movementsQuery = Firestore.instance
         .collection('usuarios').document(currentUser.documentID)
-        .collection('proyectos').document(widget.project.id)
+        .collection('proyectos').document(widget.project.documentID)
         .collection('movimientos').snapshots();
 
     return Column(
@@ -152,7 +149,7 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
           boxShadow: [
             BoxShadow(
                 offset: Offset(0,0),
-                color: movement.type == 'Ingreso' ? Color(0xFF85BB65) : essadeErrorColor,
+                color: movement.type == 'Ingreso' ? essadeIncomeColor : essadeErrorColor,
                 blurRadius: 5
             )
           ]
@@ -160,7 +157,7 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
       child: Icon(
         Icons.fiber_manual_record,
         size: 20,
-        color: movement.type == 'Ingreso' ? Color(0xFF85BB65) : essadeErrorColor,
+        color: movement.type == 'Ingreso' ? essadeIncomeColor : essadeErrorColor,
       ),
     );
   }

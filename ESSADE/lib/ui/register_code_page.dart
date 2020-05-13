@@ -142,7 +142,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
       },
       validator: (String value){
         if (value.isEmpty)
-          return 'Ingrese su código proporcionado';
+          return 'Ingrese su No. de id';
 
         return null;
       },
