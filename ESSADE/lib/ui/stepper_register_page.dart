@@ -111,7 +111,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
             elevation: 0.0,
           ),
           body: Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: _buildBody()
           )
       ),
@@ -351,25 +351,30 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
       dynamic result = await Provider.of<LoginState>(context, listen: false)
           .registerWithEmailAndPassword(_email, _password, _name, _noId);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close showLoadingProgressCircle
-      if(result == null)
+      if(result == null){
+        _myShowDialog(context, 'Hay algo raro con el correo proporcionado. Echale un vistaso');
         return null;
+      }
       Navigator.of(context).popUntil((route) => route.isFirst);
-
-
     } catch(error){
       print(error);
-      showDialog(
-          context: context,
-          builder: (context) {
-            Future.delayed(Duration(seconds: 7), () {
-              Navigator.of(context).pop(true);
-            });
-            return InfoDialogWidget(
-                message: 'Lo sentimos, ha ocurrido un error.',
-                icon: Icons.error_outline
-            );
-          }
-      );
+      _myShowDialog(context, 'Lo sentimos, ha ocurrido un error muy raro.');
     }
+  }
+
+  _myShowDialog(BuildContext context, String message){
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pop(true);
+          });
+          return InfoDialogWidget(
+              message: message,
+              textAlign: TextAlign.center,
+              icon: Icons.error_outline
+          );
+        }
+    );
   }
 }

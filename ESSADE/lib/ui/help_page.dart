@@ -39,7 +39,7 @@ class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[

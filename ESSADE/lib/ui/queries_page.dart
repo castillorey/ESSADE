@@ -36,7 +36,7 @@ class _QueriesPageState extends State<QueriesPage> {
     _query = Firestore.instance
         .collection('usuarios').document(currentUser.documentID).collection('proyectos').snapshots();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
       child: StreamBuilder<QuerySnapshot>(
         stream: _query,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){

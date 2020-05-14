@@ -13,7 +13,7 @@ class _QuotePageState extends State<QuotePage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
           child: QuoteFormWidget(),
         )
     );

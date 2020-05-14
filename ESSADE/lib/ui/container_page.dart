@@ -17,8 +17,8 @@ class ContainerPage extends StatefulWidget {
 }
 
 class _ContainerPageState extends State<ContainerPage> {
-  int _selectedIndex = 0;
-  final List<Widget> tabs = [
+  int _selectedPage = 0;
+  final List<Widget> _pageList = [
     HomePage(),
     QuotePage(),
     QueriesPage(),
@@ -28,7 +28,7 @@ class _ContainerPageState extends State<ContainerPage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedPage = index;
     });
   }
 
@@ -54,20 +54,14 @@ class _ContainerPageState extends State<ContainerPage> {
             title: Image.asset('assets/logos/essade.png', height: 60),
             backgroundColor: Colors.white,
             brightness: Brightness.light,
-            elevation: _selectedIndex == 0 ? 0.0 : 0.5,
+            elevation: _selectedPage == 0 ? 0.0 : 0.5,
           ),
         ),
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Container(
-              height: MediaQuery.of(context).size.height - 130,
-              padding: EdgeInsets.symmetric(
-                  vertical: 10.0
-              ),
-              child: tabs.elementAt(_selectedIndex)
-            ),
+          child: IndexedStack(
+            index: _selectedPage,
+            children: _pageList,
           ),
         ),
         bottomNavigationBar: SizedBox(
@@ -98,7 +92,7 @@ class _ContainerPageState extends State<ContainerPage> {
                 title: Text('Empresa', style: essadeParagraph()),
               ),
             ],
-            currentIndex: _selectedIndex,
+            currentIndex: _selectedPage,
             selectedItemColor: primaryColor,
             onTap: _onItemTapped,
           ),
