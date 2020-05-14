@@ -37,11 +37,12 @@ essadeH5(Color color) => TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-essadeParagraph( {Color color = essadeBlack, bool bold = false}) => TextStyle(
+essadeParagraph( {Color color = essadeBlack, bool bold = false, bool underlined = false}) => TextStyle(
   color: color,
   fontFamily: 'Raleway',
   fontSize: 14.0,
-  fontWeight: bold ? FontWeight.bold : null
+  fontWeight: bold ? FontWeight.bold : null,
+  decoration: underlined ? TextDecoration.underline : null,
 );
 
 final essadeLightfont = TextStyle(

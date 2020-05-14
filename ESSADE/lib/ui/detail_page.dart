@@ -7,19 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DetailPage extends StatelessWidget {
-  final Widget page;
+  final Widget child;
   final Function onBackPressed;
+  final IconData backButtonIcon;
 
-  const DetailPage({Key key, this.page, this.onBackPressed}) : super(key: key);
+  const DetailPage({Key key, this.child, this.onBackPressed, this.backButtonIcon = Icons.close}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.close, color: essadeBlack),
+            icon: Icon(backButtonIcon, color: essadeBlack),
             onPressed: () => onBackPressed(),
           ),
           backgroundColor: Colors.transparent,
@@ -28,7 +30,7 @@ class DetailPage extends StatelessWidget {
         ),
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: _buildBody(page),
+          child: _buildBody(child),
         )
       ),
     );

@@ -4,14 +4,14 @@ class SubtitleGuideTextWidget extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
 
-  const SubtitleGuideTextWidget({Key key, this.text, this.textAlign = TextAlign.justify}) : super(key: key);
+  const SubtitleGuideTextWidget({Key key, this.text, this.textAlign = TextAlign.start}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Text(
         text,
-        style: essadeH4(essadeDarkGray),
+        style: essadeH5(essadeDarkGray),
         textAlign: textAlign,
       ),
     );

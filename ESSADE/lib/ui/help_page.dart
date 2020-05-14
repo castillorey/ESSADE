@@ -66,7 +66,7 @@ class _HelpPageState extends State<HelpPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailPage(
-                            page: TelDirectoryDetailPage(),
+                            child: TelDirectoryDetailPage(),
                             onBackPressed: () => Navigator.of(context).pop(),
                           )
                       )
@@ -78,7 +78,7 @@ class _HelpPageState extends State<HelpPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => DetailPage(
-                        page: FAQDetailPage(),
+                        child: FAQDetailPage(),
                         onBackPressed: () => Navigator.of(context).pop(),
                       )
                   )

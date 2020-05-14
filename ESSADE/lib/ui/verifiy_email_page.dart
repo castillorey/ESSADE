@@ -13,7 +13,7 @@ class VerifyEmailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DetailPage(
       onBackPressed: () => Provider.of<LoginState>(context, listen: false).logout(),
-      page: Consumer<LoginState>(
+      child: Consumer<LoginState>(
         builder: (BuildContext context, LoginState value, Widget child){
           if(value.isLoading()){
             return Container(
@@ -27,7 +27,6 @@ class VerifyEmailPage extends StatelessWidget {
           }
         },
         child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               TitleWidget(

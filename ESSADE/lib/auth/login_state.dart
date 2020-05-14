@@ -36,13 +36,9 @@ class LoginState with ChangeNotifier {
       if(currentUser != null && isEmailVerified()){
         _loggedIn = true;
         _user = currentUser;
-        _loading = false;
-        notifyListeners();
       } else {
         logout();
       }
-
-    } else {
       _loading = false;
       notifyListeners();
     }
@@ -99,28 +95,42 @@ class LoginState with ChangeNotifier {
     _loading = true;
     notifyListeners();
     var currentUser = await _auth.currentUser();
-    currentUser.reload();
+    await currentUser.reload();
     _loading = false;
     print('CURRENT USER: $currentUser');
 
     _emailVerified = currentUser.isEmailVerified;
     print('IS VERIFIED?: $_emailVerified');
-
+    notifyListeners();
     if(_emailVerified) {
-      notifyListeners();
       return true;
     } else {
       return false;
     }
   }
 
-  void emailAndPasswordSignUp(String email, String password) async{
-    _loading = true;
-    notifyListeners();
-    _user = await _handleSignIn(email, password);
-    _loading = false;
+  Future<void> resetPassword(String email) async {
+    try {
+      _loading = true;
+      notifyListeners();
+      await _auth.sendPasswordResetEmail(email: email);
+      _loading = false;
+      notifyListeners();
+    } catch(error) {
+      print(error);
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
+  void emailAndPasswordSignUp(FirebaseUser user) async{
+    //_loading = true;
+    //notifyListeners();
+    //_user = await _handleSignIn(email, password);
+    //_loading = false;
     print('INICIANDO SESION DESPUES DE REGISTRO');
-    if(_user != null){
+    if(user != null){
+      _user = await getCurrentUser();
       _prefs.setBool('isLoggedIn', true);
       _loggedIn = true;
       print('SESION INICIADA');
@@ -142,6 +152,8 @@ class LoginState with ChangeNotifier {
       });
     } catch(error) {
       print(error.toString());
+      _loggedIn = false;
+      notifyListeners();
     }
   }
 
@@ -189,7 +201,7 @@ class LoginState with ChangeNotifier {
       newUser.setEmail = email;
       newUser.setIsRegistered = true;
       db.collection('usuarios').document(newUser.documentID).updateData(newUser.toJson());
-      emailAndPasswordSignUp(email, password);
+      emailAndPasswordSignUp(result.user);
 
       return newUser;
     } catch(e){
