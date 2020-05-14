@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/ui/detail_page.dart';
+import 'package:essade/ui/tel_directory_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
 import 'package:essade/widgets/info_dialog.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'faq_detail_page.dart';
 
 class HelpPage extends StatefulWidget {
   @override
@@ -40,7 +43,7 @@ class _HelpPageState extends State<HelpPage> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            TitleWidget(text: 'Ayuda', color: essadeBlack, alignment: Alignment.center,),
+            TitleWidget(text: 'Ayuda', color: essadeBlack, textAlign: TextAlign.center,),
             SizedBox(height: 20),
             SubtitleGuideTextWidget(
               text: 'Si tienes alguna inquietud'
@@ -62,7 +65,11 @@ class _HelpPageState extends State<HelpPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailPage(pageType: DetailPageType.TelephoneDirectory,))
+                          builder: (context) => DetailPage(
+                            page: TelDirectoryDetailPage(),
+                            onBackPressed: () => Navigator.of(context).pop(),
+                          )
+                      )
                   );
             }),
             SizedBox(height: 20),
@@ -70,7 +77,11 @@ class _HelpPageState extends State<HelpPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DetailPage(pageType: DetailPageType.FAQ,))
+                      builder: (context) => DetailPage(
+                        page: FAQDetailPage(),
+                        onBackPressed: () => Navigator.of(context).pop(),
+                      )
+                  )
               );
             }),
             SizedBox(height: 20),

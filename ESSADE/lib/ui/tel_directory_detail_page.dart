@@ -22,7 +22,6 @@ class TelDirectoryDetailPage extends StatelessWidget {
           TitleWidget(
             text: 'Directorio telefónico',
             color: essadeBlack,
-            alignment: Alignment.center,
           ),
           SizedBox(height: 20),
           Padding(

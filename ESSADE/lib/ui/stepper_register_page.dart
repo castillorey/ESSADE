@@ -1,4 +1,5 @@
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/ui/verifiy_email_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';
@@ -353,6 +354,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
       if(result == null)
         return null;
       Navigator.of(context).popUntil((route) => route.isFirst);
+
 
     } catch(error){
       print(error);

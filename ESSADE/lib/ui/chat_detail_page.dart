@@ -11,7 +11,6 @@ class ChatDetailPage extends StatelessWidget {
           TitleWidget(
             text: 'Chat',
             color: essadeBlack,
-            alignment: Alignment.center,
           ),
         ]
     );

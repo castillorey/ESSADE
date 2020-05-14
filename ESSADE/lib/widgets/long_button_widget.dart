@@ -12,7 +12,7 @@ class LongButtonWidget extends StatelessWidget {
     @required this.backgroundColor,
     @required this.textColor,
     // ignore: avoid_init_to_null
-    @required this.onPressed, this.icon = null
+    @required this.onPressed, this.icon = Icons.arrow_forward
   });
 
   @override
@@ -28,13 +28,14 @@ class LongButtonWidget extends StatelessWidget {
         ),
         color: backgroundColor,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: icon != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
           children: <Widget>[
             Text(
               text,
               style: btnFontStyle(textColor, bold: true),
             ),
-            Icon(icon != null ? icon : Icons.arrow_forward, color: textColor)
+            if(icon != null)
+              Icon(icon, color: textColor)
           ],
         ),
       ),

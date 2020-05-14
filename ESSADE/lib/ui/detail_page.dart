@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DetailPage extends StatelessWidget {
-  final DetailPageType pageType;
+  final Widget page;
+  final Function onBackPressed;
 
-  const DetailPage({Key key, this.pageType}) : super(key: key);
+  const DetailPage({Key key, this.page, this.onBackPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class DetailPage extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.close, color: essadeBlack),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => onBackPressed(),
           ),
           backgroundColor: Colors.transparent,
           brightness: Brightness.light,
@@ -27,7 +28,7 @@ class DetailPage extends StatelessWidget {
         ),
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: _buildBody(context),
+          child: _buildBody(page),
         )
       ),
     );
@@ -35,26 +36,7 @@ class DetailPage extends StatelessWidget {
 
 
 
-  Widget _buildBody(BuildContext context){
-    switch(pageType){
-      case DetailPageType.Chat: {
-
-      }
-        break;
-      case DetailPageType.TelephoneDirectory:{return TelDirectoryDetailPage();}
-        break;
-      case DetailPageType.FAQ:{return FAQDetailPage();}
-        break;
-      case DetailPageType.About:{}
-        break;
-      case DetailPageType.MisionVision:{}
-        break;
-      case DetailPageType.Values:{}
-        break;
-      case DetailPageType.Principles:{}
-        break;
-      case DetailPageType.Policy:{}
-        break;
-    }
+  Widget _buildBody(Widget page){
+    return page;
   }
 }

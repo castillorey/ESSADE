@@ -15,8 +15,8 @@ class LoginState with ChangeNotifier {
 
   User _user;
   bool _loggedIn = false;
-  bool _registerIdDone = false;
-  bool _loading = true;
+  bool _loading = false;
+  bool _emailVerified = false;
 
   LoginState(){
     loginState();
@@ -24,17 +24,24 @@ class LoginState with ChangeNotifier {
 
   bool isLoggedIn() => _loggedIn;
   bool isLoading() => _loading;
-  bool isRegisterCodeDone() => _registerIdDone;
+  bool isEmailVerified() => _emailVerified;
   User currentUser() => _user;
 
   void loginState() async {
     _prefs = await SharedPreferences.getInstance();
     if(_prefs.containsKey('isLoggedIn')){
-      var currentUser = await getCurrentUser();
-      _loggedIn = currentUser != null;
-      _user = currentUser;
-      _loading = false;
+      _loading = true;
       notifyListeners();
+      var currentUser = await getCurrentUser();
+      if(currentUser != null && isEmailVerified()){
+        _loggedIn = true;
+        _user = currentUser;
+        _loading = false;
+        notifyListeners();
+      } else {
+        logout();
+      }
+
     } else {
       _loading = false;
       notifyListeners();
@@ -48,7 +55,7 @@ class LoginState with ChangeNotifier {
       QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: currentUser.email).getDocuments();
       if(_query.documents.length == 0)
         return null;
-
+      _emailVerified = currentUser.isEmailVerified;
       user = User.fromSnapshot(_query.documents[0]);
 
       return user;
@@ -59,6 +66,8 @@ class LoginState with ChangeNotifier {
   }
 
   void login(BuildContext context, String email, String password) async {
+    _loading = true;
+    notifyListeners();
     _user = await _handleSignIn(email, password);
     _loading = false;
 
@@ -86,57 +95,54 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 
-
-  void validateDocumentId(BuildContext context, String idType, String noId) async {
+  Future<bool> checkEmailVerification() async {
     _loading = true;
     notifyListeners();
-
-    _registerIdDone = await handleDocumentIdValidation(idType, noId);
+    var currentUser = await _auth.currentUser();
+    currentUser.reload();
     _loading = false;
+    print('CURRENT USER: $currentUser');
 
-    if(_registerIdDone){
-      documentIdRegistered();
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context).pop(true);
-            });
-            return InfoDialogWidget(
-                message: 'El No. Id ingresado no se encuetra registrado.',
-                textAlign: TextAlign.center,
-                icon: Icons.error_outline
-            );
-          }
-      );
-    }
-    print('Validating Document');
-    notifyListeners();
-  }
+    _emailVerified = currentUser.isEmailVerified;
+    print('IS VERIFIED?: $_emailVerified');
 
-  void emailAndPasswordSignUp(User user) {
-    _user = user;
-    _loggedIn = true;
-    print('Iniciando sesión');
-    notifyListeners();
-  }
-
-  void logout(){
-    //_googleSignIn.signOut();
-    _auth.signOut().then((onValue) {
-      print('SIGNED OUT SUCCESSFUFLLY');
-      _prefs.clear();
-      _loggedIn = false;
+    if(_emailVerified) {
       notifyListeners();
-    }).catchError((onError){
-      print(onError);
-    });
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  void documentIdRegistered(){
-    _registerIdDone = true;
+  void emailAndPasswordSignUp(String email, String password) async{
+    _loading = true;
     notifyListeners();
+    _user = await _handleSignIn(email, password);
+    _loading = false;
+    print('INICIANDO SESION DESPUES DE REGISTRO');
+    if(_user != null){
+      _prefs.setBool('isLoggedIn', true);
+      _loggedIn = true;
+      print('SESION INICIADA');
+    }
+    notifyListeners();
+  }
+
+  void logout() async {
+    try {
+      _loading = true;
+      notifyListeners();
+      await _auth.signOut();
+      print('SIGNED OUT SUCCESSFUFLLY');
+      Future.delayed(const Duration(seconds: 1), () {
+        _loading = false;
+        _prefs.clear();
+        _loggedIn = false;
+        notifyListeners();
+      });
+    } catch(error) {
+      print(error.toString());
+    }
   }
 
   Future<User> _handleSignIn(String email, String password) async {
@@ -146,7 +152,9 @@ class LoginState with ChangeNotifier {
       if(result == null)
         return null;
 
-      print('Hasta ahora aquí vamos bien');
+      if(result.user.isEmailVerified)
+        _emailVerified = true;
+
       User user = User();
       FirebaseUser firebaseUser = result.user;
       QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: firebaseUser.email).getDocuments();
@@ -166,23 +174,22 @@ class LoginState with ChangeNotifier {
     try{
       
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
       if(result == null)
         return null;
 
+      await result.user.sendEmailVerification();
+      print('EMail verification sent');
+
       QuerySnapshot ref = await db.collection('usuarios').where('no_id', isEqualTo: noId).getDocuments();
-      print(ref.documents);
       if(ref.documents.length == 0)
         return null;
-
 
       User newUser = User.fromSnapshot(ref.documents[0]);
       newUser.setName = name;
       newUser.setEmail = email;
       newUser.setIsRegistered = true;
-
       db.collection('usuarios').document(newUser.documentID).updateData(newUser.toJson());
-      emailAndPasswordSignUp(newUser);
+      emailAndPasswordSignUp(email, password);
 
       return newUser;
     } catch(e){
@@ -197,7 +204,8 @@ class LoginState with ChangeNotifier {
       QuerySnapshot _query = await db
           .collection('usuarios')
           .where('no_id', isEqualTo: noId)
-          .where('tipo_id', isEqualTo: idType).where('registrado', isEqualTo: false).getDocuments();
+          .where('tipo_id', isEqualTo: idType)
+          .where('registrado', isEqualTo: false).getDocuments();
       if(_query.documents.length != 0)
         return true;
 

@@ -4,6 +4,7 @@ import 'package:essade/ui/container_page.dart';
 import 'package:essade/ui/login_page.dart';
 import 'package:essade/ui/register_code_page.dart';
 import 'package:essade/ui/stepper_register_page.dart';
+import 'package:essade/ui/verifiy_email_page.dart';
 import 'package:flutter/material.dart';
 import 'models/global.dart';
 import 'auth/login_state.dart';
@@ -58,14 +59,14 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/': (BuildContext context) {
               var state = Provider.of<LoginState>(context);
-              print(state.isLoggedIn());
+              print('ESTADO: ${state.isLoggedIn()}');
               if(state.isLoggedIn()){
-                print('Abriendo Container Page!!');
-                return ContainerPage();
-              } else {
-                print('Abriendo Login Page!!');
-                return LoginPage();
+                if(state.isEmailVerified())
+                  return ContainerPage();
+                else
+                  return VerifyEmailPage();
               }
+              return LoginPage();
             },
           },
         ),

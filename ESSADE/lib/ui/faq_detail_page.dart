@@ -18,7 +18,6 @@ class FAQDetailPage extends StatelessWidget {
           TitleWidget(
             text: 'FAQ',
             color: essadeBlack,
-            alignment: Alignment.center,
           ),
           SizedBox(height: 20),
           Expanded(

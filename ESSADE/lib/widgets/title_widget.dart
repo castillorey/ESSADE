@@ -4,19 +4,17 @@ import 'package:flutter/material.dart';
 class TitleWidget extends StatelessWidget {
   final String text;
   final Color color;
-  final Alignment alignment;
+  final TextAlign textAlign;
 
-  const TitleWidget({Key key, this.text, this.color, this.alignment}) : super(key: key);
+  const TitleWidget({Key key, this.text, this.color, this.textAlign = TextAlign.center}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: alignment,
-      child: Text(
-        text,
-        style: essadeH2(color),
-      ),
+    return Text(
+      text,
+      style: essadeH2(color),
+      textAlign: textAlign,
     );
   }
 }

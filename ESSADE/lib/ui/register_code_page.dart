@@ -173,7 +173,6 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
           .handleDocumentIdValidation(itemSelected, documentId);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close loadingCircle
       if(result){
-        Provider.of<LoginState>(context, listen: false).documentIdRegistered();
         print(documentIdController.text);
         Navigator.push(
             context,
