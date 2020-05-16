@@ -70,7 +70,20 @@ class ResetPasswordPage extends StatelessWidget {
                       onPressed: () async {
                         if(_formKey.currentState.validate()){
                           await Provider.of<LoginState>(context, listen: false).resetPassword(emailInputController.text);
-                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (_context) {
+                                Future.delayed(Duration(seconds: 4), () {
+                                  Navigator.of(_context).pop(true);
+                                  Navigator.of(context).pop();
+                                });
+                                return InfoDialogWidget(
+                                    message: 'Listo!\nTe hemos enviado las instrucciones. Ve corriendo y revisa tu correo',
+                                    textAlign: TextAlign.center,
+                                    icon: Icons.done
+                                );
+                              }
+                          );
                         }
                       },
                       icon: null,
