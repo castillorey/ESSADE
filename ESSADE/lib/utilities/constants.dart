@@ -73,14 +73,16 @@ essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
   );
 }
 
-iosFontStyle({bool bold = false}) => TextStyle(
-  fontFamily: 'SFMono',
-  fontWeight: bold ? FontWeight.bold : null
+iosFontStyle({bool bold = false, double size = 16}) => TextStyle(
+  fontFamily: 'SFProDisplay',
+  fontWeight: bold ? FontWeight.bold : null,
+  fontSize: size
 );
 
-androidFontStyle({bool bold = false}) => TextStyle(
+androidFontStyle({bool bold = false, double size = 16}) => TextStyle(
     fontFamily: 'Roboto',
-    fontWeight: bold ? FontWeight.bold : null
+    fontWeight: bold ? FontWeight.bold : null,
+    fontSize: size
 );
 
 Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {

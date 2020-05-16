@@ -56,10 +56,10 @@ flutter:
        - asset: fonts/Roboto-Bold.ttf
          style: normal
 
-    - family: SFMono
+    - family: SFProDisplay
       fonts:
-          - asset: fonts/SFMono-Regular.ttf
-          - asset: fonts/SFMono-Bold.ttf
+          - asset: fonts/SFProDisplay-Regular.ttf
+          - asset: fonts/SFProDisplay-Bold.ttf
             style: normal
 
 

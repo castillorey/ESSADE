@@ -55,7 +55,7 @@ class CustomAlertDialogWidget extends StatelessWidget {
       );
     } else {
       return CupertinoAlertDialog(
-        title: Text(title, style: iosFontStyle(bold: true)),
+        title: Text(title, style: iosFontStyle(bold: true, size: 18)),
         content: Container(
           margin: EdgeInsets.only(top: 10.0),
           child: Column(

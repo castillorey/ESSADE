@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     pickerSelectionConfirmed = 0;
     thereIsProjectSelected = false;
-
   }
 
   @override
@@ -114,7 +113,6 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             );
           }
-
         },
       ),
     );
@@ -139,14 +137,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildExpandedItem(String name, String ciudad, String departamento){
-    return ListTile(
-      title: Text(name, style: essadeParagraph()),
-      subtitle: Text('$ciudad, $departamento', style: essadeLightfont,),
-    );
-  }
+  Widget _buildStrategicInfoItem(){
 
-  Widget _buildInfoItem(){
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -233,7 +225,7 @@ class _HomePageState extends State<HomePage> {
             child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
           ),
           SizedBox(height: 10),
-          _buildInfoItem()
+          _buildStrategicInfoItem()
         ],
       ),
     );
@@ -343,9 +335,9 @@ class _HomePageState extends State<HomePage> {
 
         final _totalPercentageDone = _getActivitiesTotalPercentageDone(_tasks);
         final _pendingPercentage = 1 - _totalPercentageDone;
-        final PD = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+        final _percentDone = NumberFormat.decimalPercentPattern(decimalDigits: 2)
             .format(_totalPercentageDone);
-        final PP = NumberFormat.decimalPercentPattern(decimalDigits: 2)
+        final _pendingpercent = NumberFormat.decimalPercentPattern(decimalDigits: 2)
             .format(_pendingPercentage);
 
         List<Series<Task, String>> _tasksPercentageData = [];
@@ -384,14 +376,14 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('% Ejecutado', style: essadeParagraph()),
-                    Text(PD, style: essadeParagraph())
+                    Text(_percentDone, style: essadeParagraph())
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('% Por ejecutar', style: essadeParagraph()),
-                    Text(PP, style: essadeParagraph())
+                    Text(_pendingpercent, style: essadeParagraph())
                   ],
                 )
               ],

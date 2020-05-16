@@ -191,10 +191,9 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context){
                             return CustomAlertDialogWidget(
                               context: context,
-                              title: 'Activar la lectura de huella',
-                              message: 'Ten en cuenta que cualquier huella registrada en el dispositivo'
-                                  ' podrá ser utilizada para ingresar.\n\n'
-                                  'Podrás desactivar la lectura con huella en el menú: Más > Autenticación con huella',
+                              title: 'Activar la lectura de biométrico',
+                              message: 'Podrás desactivar la lectura con biométrico en el menú: '
+                                  'Más > Configuración de biométrico',
                               icon: _biometricIcon,
                               onAcceptPressed: () {
                                 Navigator.push(
