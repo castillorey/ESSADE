@@ -115,7 +115,7 @@ class ProjectValuesSubpage extends StatelessWidget {
 
             result = Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Container(
                   height: 250.0,
                   child: BarChart(

@@ -48,7 +48,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           elevation: 0.0,
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          padding: EdgeInsets.only(bottom: 15.0, left: 30.0, right: 30.0),
           child: Column(
             children: <Widget>[
               _title(),
@@ -58,8 +58,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                   child: Stack(
                     alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30.0),
+                      Container(
+                        margin:const EdgeInsets.only(top: 10.0, bottom: 30.0),
                         child: PageView.builder(
                           physics: ClampingScrollPhysics(),
                           itemCount: pagesWidgetList().length,
