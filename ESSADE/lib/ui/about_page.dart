@@ -1,4 +1,5 @@
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/ui/settings_biometric_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
@@ -42,15 +43,28 @@ class _AboutPageState extends State<AboutPage> {
           _values(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image(
-                image: AssetImage('assets/images/4785.jpg')
-            ),
+            child: Image.asset('assets/images/4785.jpg', height: 300),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _externalInfoItem('Echale un vistaso a nuestras Políticas'),
-              _externalInfoItem('Conóce nuestros Principios')
+              _moreSettingsItem(
+                  'Echale un vistaso a nuestras Políticas'
+              ),
+              Divider(height: 5.0,thickness: 0.2, color: essadeGray),
+              _moreSettingsItem(
+                  'Conóce nuestros Principios'
+              ),
+              Divider(height: 5.0, thickness: 0.2, color: essadeGray),
+              _moreSettingsItem(
+                'Configuración biométrico',
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsBiometricPage()));
+                }
+              ),
+
             ],
           ),
           Divider(
@@ -93,9 +107,9 @@ class _AboutPageState extends State<AboutPage> {
       ),
     );
   }
-  Widget _externalInfoItem(String text){
+  Widget _moreSettingsItem(String text, {Function onPressed}){
     return GestureDetector(
-      onTap: () => print('Opening PDF'),
+      onTap: () => onPressed(),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Row(

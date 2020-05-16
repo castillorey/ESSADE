@@ -89,7 +89,7 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.menu),
-                title: Text('Empresa', style: essadeParagraph()),
+                title: Text('Más', style: essadeParagraph()),
               ),
             ],
             currentIndex: _selectedPage,

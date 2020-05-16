@@ -5,7 +5,7 @@ import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Quote.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
-import 'package:essade/widgets/info_dialog.dart';
+import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

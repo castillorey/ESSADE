@@ -59,7 +59,6 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/': (BuildContext context) {
               var state = Provider.of<LoginState>(context);
-              print('ESTADO: ${state.isLoggedIn()}');
               if(state.isLoggedIn()){
                 if(state.isEmailVerified())
                   return ContainerPage();

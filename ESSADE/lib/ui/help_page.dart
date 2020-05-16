@@ -5,7 +5,7 @@ import 'package:essade/ui/detail_page.dart';
 import 'package:essade/ui/tel_directory_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
-import 'package:essade/widgets/info_dialog.dart';
+import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/subtitle_guide_text_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +153,7 @@ class _HelpPageState extends State<HelpPage> {
                   focusedErrorBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20.0,),
               Container(
                 width: double.infinity,
                 child: RaisedButton(
@@ -174,7 +174,8 @@ class _HelpPageState extends State<HelpPage> {
                     style: btnFontStyle(Colors.white),
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 20.0),
             ],
           )
         )

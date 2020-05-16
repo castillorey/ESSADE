@@ -3,7 +3,7 @@ import 'package:essade/auth/login_state.dart';
 import 'package:essade/ui/signup_page.dart';
 import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
-import 'package:essade/widgets/info_dialog.dart';
+import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';
 import 'package:essade/widgets/selectable_widget.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';

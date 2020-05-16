@@ -73,6 +73,16 @@ essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
   );
 }
 
+iosFontStyle({bool bold = false}) => TextStyle(
+  fontFamily: 'SFMono',
+  fontWeight: bold ? FontWeight.bold : null
+);
+
+androidFontStyle({bool bold = false}) => TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: bold ? FontWeight.bold : null
+);
+
 Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {
   return showDialog<void>(
       context: context,
@@ -128,3 +138,4 @@ const Color essadeDarkGray = Color(0xFF85878a);
 const Color essadeGray = Color(0xFFa5a5aa);
 const Color essadeErrorColor = Color(0xFFED4337);
 const Color essadeIncomeColor = Color(0xFF85BB65);
+const Color essadeRedOrangeColor = Color(0xFFFF5349);
