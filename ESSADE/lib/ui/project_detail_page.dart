@@ -137,15 +137,15 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
   List<Widget> pagesWidgetList() => <Widget>[
     Container(
-        margin: EdgeInsets.symmetric( horizontal: 12),
+        margin: EdgeInsets.symmetric( horizontal: 10.0),
         child: ProjectValuesSubpage(project: widget.project)
     ),
     Container(
-        margin: EdgeInsets.symmetric( horizontal: 12),
+        margin: EdgeInsets.symmetric( horizontal: 10.0),
         child: ProjectActivitiesSubpage(project: widget.project)
     ),
     Container(
-        margin: EdgeInsets.symmetric( horizontal: 12),
+        margin: EdgeInsets.symmetric( horizontal: 10.0),
         child: ProjectMovementsSubpage(project: widget.project,)
     )
   ];

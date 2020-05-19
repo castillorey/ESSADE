@@ -139,5 +139,6 @@ const Color essadeBlack = Color(0xFF262626);
 const Color essadeDarkGray = Color(0xFF85878a);
 const Color essadeGray = Color(0xFFa5a5aa);
 const Color essadeErrorColor = Color(0xFFED4337);
-const Color essadeIncomeColor = Color(0xFF85BB65);
+const Color essadeIncomeColor = Color(0xFF00B894);
+const Color essadeOutgoingColor = Color(0xFFD63031);
 const Color essadeRedOrangeColor = Color(0xFFFF5349);

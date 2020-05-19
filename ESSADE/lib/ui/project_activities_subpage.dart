@@ -55,10 +55,10 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
               return Expanded(
                 child: ListView.builder(
                   itemCount: activities.length,
-                  padding: EdgeInsets.only(top: 20, left: 5, right: 5),
+                  padding: EdgeInsets.only(top: 20,),
                   itemBuilder: (context, index){
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 50.0),
+                      padding: EdgeInsets.only(bottom: 30.0),
                       child: Row(
                         children: <Widget>[
                           _activityBadge(),
@@ -88,7 +88,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context){
-          var date = DateFormat.yMMMd('en_US').format(activity.start_date.toDate());
+          var date = DateFormat.MMMd('en_US').format(activity.start_date.toDate());
           return Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
@@ -199,9 +199,9 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   Widget _activityDate(Activity activity){
     var date = DateFormat.yMMMd('en_US').format(activity.start_date.toDate());
     return Container(
-        width: 100,
-        padding: EdgeInsets.only(left: 8),
-        child: Text(date.toString(), style: essadeLightfont,)
+        width: 55,
+        margin: EdgeInsets.only(left: 8.0, right: 8),
+        child: Text(date.toString(), style: essadeH5(essadeGray))
     );
   }
 
@@ -211,7 +211,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
         onTap: () => _showActivityModalBottomSheet(context, activity),
         child: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
