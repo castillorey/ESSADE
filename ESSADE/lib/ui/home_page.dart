@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
   
   Widget _buildHomepageBody(){
-    var _currentUser = Provider.of<LoginState>(context).currentUser();
+    var _currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
     _projectsQuery = Firestore.instance
         .collection('usuarios').document(_currentUser.documentID)
         .collection('proyectos').snapshots();

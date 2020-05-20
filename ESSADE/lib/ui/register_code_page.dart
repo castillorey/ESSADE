@@ -51,7 +51,6 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           backgroundColor: Colors.transparent,
-          brightness: Brightness.light,
           elevation: 0.0,
         ),
         body: SingleChildScrollView(

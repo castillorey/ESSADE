@@ -287,7 +287,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 decoration: InputDecoration(
                   hintText: 'Repetir contraseña',
                   hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: EdgeInsets.all(18.0),
                   enabledBorder: essadeBorderErrorStyle(15.0, essadeGray.withOpacity(0.5)),
                   focusedBorder: essadeBorderErrorStyle(15.0, essadePrimaryColor),
                   errorBorder: essadeBorderErrorStyle(15.0, essadeErrorColor),

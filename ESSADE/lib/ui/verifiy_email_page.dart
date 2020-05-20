@@ -51,23 +51,8 @@ class VerifyEmailPage extends StatelessWidget {
                 text: 'VERIFICAR Y PROCEDER',
                 textColor: Colors.white,
                 backgroundColor: essadePrimaryColor,
-                onPressed: () async {
-                  bool isVerified = await Provider.of<LoginState>(context, listen: false).checkEmailVerification();
-                  if(!isVerified){
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          Future.delayed(Duration(seconds: 3), () {
-                            Navigator.of(context).pop(true);
-                          });
-                          return InfoDialogWidget(
-                              message: 'Su correo no ha sido verificado',
-                              textAlign: TextAlign.center,
-                              icon: Icons.error
-                          );
-                        }
-                    );
-                  }
+                onPressed: () {
+                  Provider.of<LoginState>(context, listen: false).checkEmailVerification(context);
                 },
                 icon: null,
               )

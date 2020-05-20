@@ -36,6 +36,7 @@ class LoginState with ChangeNotifier {
   }
 
   void loginState() async {
+    print('Verifying Login state');
     _prefs = await SharedPreferences.getInstance();
     if(_prefs.containsKey('isLoggedIn')){
       _loading = true;
@@ -57,12 +58,15 @@ class LoginState with ChangeNotifier {
     notifyListeners();
     _user = await _handleSignIn(email, password);
     _loading = false;
+    notifyListeners();
 
     if(_user != null){
+      print('Iniciando sesión');
       _prefs.setBool('isLoggedIn', true);
       _loggedIn = true;
     }
     else{
+      print('Inicio sesión fallido');
       showDialog(
           context: context,
           builder: (context) {
@@ -77,9 +81,6 @@ class LoginState with ChangeNotifier {
           }
       );
     }
-
-    print('Iniciando sesión');
-    notifyListeners();
   }
 
   void logout() async {
@@ -105,6 +106,7 @@ class LoginState with ChangeNotifier {
     print('INICIANDO SESION DESPUES DE REGISTRO');
     if(user != null){
       _user = await getCurrentUser();
+      print('User: ${_user.toString()}');
       _prefs.setBool('isLoggedIn', true);
       _loggedIn = true;
       print('SESION INICIADA');
@@ -119,22 +121,22 @@ class LoginState with ChangeNotifier {
   Future<User> _handleSignIn(String email, String password) async {
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-
       if(result == null)
         return null;
 
-      if(result.user.isEmailVerified)
-        _emailVerified = true;
-
+      print('Email signed correctly');
+      _emailVerified = result.user.isEmailVerified;
       User user = User();
       FirebaseUser firebaseUser = result.user;
+      print('Email: ${firebaseUser.email}');
+
       QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: firebaseUser.email).getDocuments();
       if(_query.documents.length == 0)
         return null;
-
+      print('Email signed correctly and valid');
       user = User.fromSnapshot(_query.documents[0]);
-
       return user;
+
     } catch(error){
       print(error.toString());
       return null;
@@ -148,7 +150,9 @@ class LoginState with ChangeNotifier {
       QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: currentUser.email).getDocuments();
       if(_query.documents.length == 0)
         return null;
+
       _emailVerified = currentUser.isEmailVerified;
+      print('ASKING FOR EMAIL?: $_emailVerified');
       user = User.fromSnapshot(_query.documents[0]);
 
       return user;
@@ -160,21 +164,23 @@ class LoginState with ChangeNotifier {
 
   Future<User> registerWithEmailAndPassword(String email, String password, String name, String noId) async {
     try{
-      
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      if(result == null)
-        return null;
-
-      await result.user.sendEmailVerification();
-      print('EMail verification sent');
 
       QuerySnapshot ref = await db.collection('usuarios').where('no_id', isEqualTo: noId).getDocuments();
       if(ref.documents.length == 0)
         return null;
+      print('VALID USER signing');
+      
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      if(result == null)
+        return null;
+      print('User succesfully created');
+
+      await result.user.sendEmailVerification();
+      print('EMail verification sent');
 
       User newUser = User.fromSnapshot(ref.documents[0]);
       newUser.setName = name;
-      newUser.setEmail = email;
+      newUser.setEmail = email.toLowerCase();
       newUser.setIsRegistered = true;
       db.collection('usuarios').document(newUser.documentID).updateData(newUser.toJson());
       emailAndPasswordSignUp(result.user);
@@ -184,7 +190,6 @@ class LoginState with ChangeNotifier {
       print(e.toString());
       return null;
     }
-
   }
 
   Future<bool> handleDocumentIdValidation(String idType, String noId,) async {
@@ -205,22 +210,32 @@ class LoginState with ChangeNotifier {
     }
   }
 
-  Future<bool> checkEmailVerification() async {
+  Future<void> checkEmailVerification(BuildContext context) async {
     _loading = true;
     notifyListeners();
     var currentUser = await _auth.currentUser();
     await currentUser.reload();
-    _loading = false;
-    print('CURRENT USER: $currentUser');
 
-    _emailVerified = currentUser.isEmailVerified;
-    print('IS VERIFIED?: $_emailVerified');
+    if(currentUser != null)
+      _user = await getCurrentUser();
+    else
+      showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context).pop(true);
+            });
+            return InfoDialogWidget(
+                message: 'Su correo no ha sido verificado',
+                textAlign: TextAlign.center,
+                icon: Icons.error
+            );
+          }
+      );
+
+    _loading = false;
     notifyListeners();
-    if(_emailVerified) {
-      return true;
-    } else {
-      return false;
-    }
+
   }
 
   Future<void> resetPassword(String email) async {

@@ -59,10 +59,13 @@ class _QueriesPageState extends State<QueriesPage> {
                       style: essadeH2(essadeBlack),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset('assets/images/consult.png', height: 250),
+                  ),
                   ExpansionTile(
                       leading: Icon(Icons.work),
-                      title: Text('Mis proyectos', style: essadeParagraph(),),
+                      title: Text('Mis proyectos', style: essadeParagraph()),
                       children: projects.map((p){
                         return ListTile(
                           onTap: (){
