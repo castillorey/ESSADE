@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Movement.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/models/Task.dart';
@@ -43,9 +44,7 @@ class _HomePageState extends State<HomePage> {
   
   Widget _buildHomepageBody(){
     var _currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    _projectsQuery = Firestore.instance
-        .collection('usuarios').document(_currentUser.documentID)
-        .collection('proyectos').snapshots();
+    _projectsQuery = ProjectsRepository(_currentUser.documentID).queryAll();
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
       child: StreamBuilder<QuerySnapshot>(
@@ -82,15 +81,8 @@ class _HomePageState extends State<HomePage> {
                         thereIsProjectSelected = item != null;
                         pickerSelectionConfirmed = item;
 
-                        _movementsQuery = Firestore.instance
-                            .collection('usuarios').document(_currentUser.documentID)
-                            .collection('proyectos').document(_projects[pickerSelectionConfirmed].documentID)
-                            .collection('movimientos').snapshots();
-
-                        _activitiesQuery = Firestore.instance
-                            .collection('usuarios').document(_currentUser.documentID)
-                            .collection('proyectos').document(_projects[pickerSelectionConfirmed].documentID)
-                            .collection('actividades').snapshots();
+                        _movementsQuery = ProjectsRepository(_currentUser.documentID).queryMovements(_projects[pickerSelectionConfirmed].documentID);
+                        _activitiesQuery = ProjectsRepository(_currentUser.documentID).queryActivities(_projects[pickerSelectionConfirmed].documentID);
                       });
                     },
                   ),
@@ -178,7 +170,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   double _getActivitiesTotalPercentageDone(List<Task> tasks){
-    print('TODO BIEN POR AQUI: ${tasks.toString()}');
     double totalPercentageDone = 0;
     tasks.forEach((task) => totalPercentageDone += task.percentageDone);//totalPercentageDone += task.percentageDone);
     var result = totalPercentageDone/(tasks.length * 100);

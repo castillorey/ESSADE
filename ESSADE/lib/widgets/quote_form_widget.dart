@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Quote.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/input_text_field_widget.dart';
+import 'package:essade/widgets/selectable_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +66,21 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                 ),
               ),
               SizedBox(height: 20),
-              _buildSelectableComponent(services),
+              SelectableWidget(
+                objectKey: 'nombre',
+                documents: services,
+                initialText: 'Seleccione un servicio...',
+                icon: Icons.work,
+                borderColor: selectableBorderColor,
+                onItemSelected: (item){
+                  setState(() {
+                    serviceSelected = services[item];
+                    isServiceSelected = item != null;
+                    selectableBorderColor = essadeGray.withOpacity(0.5);
+                    selectableIconColor = essadeDarkGray;
+                  });
+                },
+              ),
               SizedBox(height: 20),
               TextFormField(
                 controller: commentInputController,
@@ -126,148 +142,12 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
         )
     );
   }
-  // TODO: Refactor this to SelectableWidget
-  Future _buildCupertinoModalPopup(List<String> services){
-    pickerSelection = pickerSelectionConfirmed;
-    return showCupertinoModalPopup(context: context, builder: (context){
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xff999999),
-                  width: 0.0,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                CupertinoButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    setState(() {
-                      pickerSelection = pickerSelectionConfirmed;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 5.0,
-                  ),
-                ),
-                CupertinoButton(
-                  child: Text('Hecho'),
-                  onPressed: () {
-                    setState(() {
-                      pickerSelectionConfirmed = pickerSelection;
-                      serviceSelected = services[pickerSelectionConfirmed];
-                      isServiceSelected = true;
-                      selectableBorderColor = essadeGray.withOpacity(0.5);
-                      selectableIconColor = essadeDarkGray;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 5.0,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: 320.0,
-            color: Color(0xfff7f7f7),
-            child: CupertinoPicker(
-                scrollController: FixedExtentScrollController(initialItem: pickerSelectionConfirmed),
-                onSelectedItemChanged: (val) {
-                  setState(() {
-                    pickerSelection = val;
-                  });
-                },
-                useMagnifier: true,
-                magnification: 1.2,
-                itemExtent: 30,
-                children: services.map((value){
-                  return Container(
-                    alignment: Alignment.center,
-                    child: Text(value),
-                  );
-                }).toList()
-            ),
-          )
-        ],
-      );
-    });
-  }
-
-  Widget _buildSelectableComponent(List<String> services){
-    Widget selectableWidget;
-    if(Platform.isAndroid){
-      selectableWidget = DropdownButton(
-          value: serviceSelected,
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          onChanged: (newValue) {
-            this.setState(() {
-              serviceSelected = newValue;
-            });
-          },
-          items: services.map((value){
-            return DropdownMenuItem(
-              value: value,
-              child: Text(value),
-            );
-          }).toList()
-      );
-    } else if (Platform.isIOS){
-      selectableWidget = GestureDetector(
-        onTap: () => _buildCupertinoModalPopup(services),
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                    color: selectableBorderColor,
-                    width: 1.0
-                )
-            ),
-            height: 60.0,
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.work,
-                  color: selectableIconColor,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  serviceSelected,
-                  style: essadeParagraph(),
-                )
-              ],
-            )
-        ),
-      );
-    }
-    return selectableWidget;
-  }
 
   Future<void> _handleQuoteSubmit(BuildContext context) async {
     try {
       showLoadingProgressCircle(context, _keyLoader);
       User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-      DocumentReference ref = await Firestore.instance.collection('usuarios')
-          .document(currentUser.documentID).collection('cotizaciones').add({
-        'tipo_servicio': serviceSelected,
-        'comentario': commentInputController.text
-      });
+      DocumentReference ref = await ProjectsRepository(currentUser.documentID).addQuote(serviceSelected, commentInputController.text);
       if(ref == null)
         return null;
 

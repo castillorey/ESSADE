@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/ui/project_detail_page.dart';
@@ -33,8 +34,7 @@ class _QueriesPageState extends State<QueriesPage> {
   @override
   Widget build(BuildContext context) {
     User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    _query = Firestore.instance
-        .collection('usuarios').document(currentUser.documentID).collection('proyectos').snapshots();
+    _query = ProjectsRepository(currentUser.documentID).queryAll();
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
       child: StreamBuilder<QuerySnapshot>(

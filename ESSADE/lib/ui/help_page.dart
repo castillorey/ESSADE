@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/ui/detail_page.dart';
 import 'package:essade/ui/tel_directory_detail_page.dart';
@@ -187,10 +188,7 @@ class _HelpPageState extends State<HelpPage> {
     try {
       showLoadingProgressCircle(context, _keyLoader);
       User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-      DocumentReference ref = await Firestore.instance.collection('usuarios')
-          .document(currentUser.documentID).collection('sugerencias').add({
-        'comentario': commentInputController.text
-      });
+      DocumentReference ref = await ProjectsRepository(currentUser.documentID).addSuggestion(commentInputController.text);
       if(ref == null)
         return null;
       Navigator.of(_keyLoader.currentContext,rootNavigator: true).pop();//close the dialoge
