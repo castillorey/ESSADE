@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const double sideMenuMaxWidth = 200;
+const double sideMenuMinWidth = 80;
+
+
 essadeTitle(Color color) => TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 30,
@@ -141,3 +145,4 @@ const Color essadeErrorColor = Color(0xFFED4337);
 const Color essadeIncomeColor = Color(0xFF00B894);
 const Color essadeOutgoingColor = Color(0xFFD63031);
 const Color essadeRedOrangeColor = Color(0xFFFF5349);
+const Color essadeAdminBackground = Color(0xFFF8FCFD);
