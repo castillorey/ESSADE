@@ -41,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderStateMixin{
-  int _selectedPage = 0;
+  int _selectedPage = 1;
   bool _isCollapsed = false;
 
   List<Widget> _pageList = [
@@ -106,9 +106,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         },
         navigationItems: _navigationItems,
       ),
-      body: IndexedStack(
-        index: _selectedPage,
-        children: _pageList,
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
+        color: essadeAdminBackground,
+        child: IndexedStack(
+          index: _selectedPage,
+          children: _pageList,
+        ),
       ),
     );
   }
@@ -124,9 +128,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
               left: _isCollapsed ? sideMenuMinWidth : sideMenuMaxWidth,
               height: MediaQuery.of(context).size.height,
               width: _isCollapsed ? screenWidth - sideMenuMinWidth : screenWidth - sideMenuMaxWidth,
-              child: IndexedStack(
-                index: _selectedPage,
-                children: _pageList,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
+                color: essadeAdminBackground,
+                child: IndexedStack(
+                  index: _selectedPage,
+                  children: _pageList,
+                ),
               )
           ),
           /*,*/

@@ -14,7 +14,7 @@ class SimpleNavigationDrawerWidget extends StatefulWidget {
 }
 
 class _SimpleNavigationDrawerWidgetState extends State<SimpleNavigationDrawerWidget> {
-  int currentSelectedIndex = 0;
+  int currentSelectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {

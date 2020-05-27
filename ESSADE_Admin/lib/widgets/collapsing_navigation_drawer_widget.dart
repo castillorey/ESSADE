@@ -23,7 +23,7 @@ class _CollapsingNavigationDrawerWidgetState extends State<CollapsingNavigationD
   bool isCollapsed = false;
   AnimationController _animationController;
   Animation<double> widthAnimation;
-  int currentSelectedIndex = 0;
+  int currentSelectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {

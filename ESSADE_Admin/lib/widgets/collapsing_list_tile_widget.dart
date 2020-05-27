@@ -44,7 +44,8 @@ class _CollapsingListTileWidgetState extends State<CollapsingListTileWidget> {
               : null,
         ),
         width: widthAnimation.value,
-        padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 25.0),
+        padding: EdgeInsets.symmetric(horizontal: 25.0),
+        margin: EdgeInsets.symmetric(vertical: 20.0),
         child: Row(
           children: [
             Icon(widget.icon, color: widget.isSelected ? essadePrimaryColor : essadeGray, size: 25.0),

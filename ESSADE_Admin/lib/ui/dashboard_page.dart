@@ -7,12 +7,12 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
-      color: essadeAdminBackground,
+      //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
+      //color: essadeAdminBackground,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildFirsRow(),
+          _buildFirstRow(),
           Expanded(
             child: ListView(
               children: [
@@ -37,7 +37,7 @@ class DashboardPage extends StatelessWidget {
     );
   }
   
-  _buildFirsRow(){
+  _buildFirstRow(){
     var now = new DateFormat('EEE, MMM d, ''yy').format(new DateTime.now());
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

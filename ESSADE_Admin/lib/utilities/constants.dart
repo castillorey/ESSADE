@@ -48,8 +48,8 @@ essadeParagraph( {Color color = essadeBlack, bool bold = false, bool underlined 
   decoration: underlined ? TextDecoration.underline : null,
 );
 
-final essadeLightfont = TextStyle(
-  color: essadeDarkGray,
+essadeLightfont(Color color) => TextStyle(
+  color: color,
   fontFamily: 'Raleway',
   fontSize: 12.0,
 );
