@@ -74,7 +74,7 @@ class LoginState with ChangeNotifier {
               Navigator.of(context).pop(true);
             });
             return InfoDialogWidget(
-                message: 'Usuario o contraseña incorrecta.',
+                message: 'Usuario o contraseña incorrecta',
                 textAlign: TextAlign.center,
                 icon: Icons.error_outline
             );
@@ -269,7 +269,7 @@ class LoginState with ChangeNotifier {
               Navigator.of(context).pop();
             });
             return InfoDialogWidget(
-                message: 'Biométrico activado.',
+                message: 'Biométrico activado',
                 textAlign: TextAlign.center,
                 icon: Icons.done
             );
@@ -284,7 +284,7 @@ class LoginState with ChangeNotifier {
               Navigator.of(context).pop(true);
             });
             return InfoDialogWidget(
-                message: 'Usuario o contraseña incorrecta.',
+                message: 'Usuario o contraseña incorrecta',
                 textAlign: TextAlign.center,
                 icon: Icons.error_outline
             );
@@ -310,7 +310,7 @@ class LoginState with ChangeNotifier {
                   Navigator.of(context).pop();
                 });
                 return InfoDialogWidget(
-                    message: 'Biométrico desactivado.',
+                    message: 'Biométrico desactivado',
                     textAlign: TextAlign.center,
                     icon: Icons.done
                 );
@@ -324,7 +324,7 @@ class LoginState with ChangeNotifier {
                   Navigator.of(_context).pop(true);
                 });
                 return InfoDialogWidget(
-                    message: 'Lo sentimos ha ocurrido un error.',
+                    message: 'Lo sentimos ha ocurrido un error',
                     textAlign: TextAlign.center,
                     icon: Icons.error
                 );

@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
-import 'package:essade/ui/signup_page.dart';
 import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
@@ -33,7 +31,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     documentIdController = new TextEditingController();
     isDocumentSelected = false;
     documentId = '';
-    selectableBorderColor = essadeGray.withOpacity(0.2);
+    selectableBorderColor = essadeGray.withOpacity(0.5);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -42,22 +40,22 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: essadePrimaryColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: essadeBlack),
             onPressed: () => Navigator.of(context).pop(),
           ),
           backgroundColor: Colors.transparent,
+          brightness: Brightness.light,
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Container(
-              color: essadePrimaryColor,
               padding: EdgeInsets.symmetric(
                 horizontal: 40,
                 vertical: 40
@@ -69,20 +67,19 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'NECESITAMOS VALIDAR QUE ERES NESTRO CLIENTE',
-                      style: essadeTitle(Colors.white),
+                      'Necesitamos validar que eres nuestro cliente',
+                      style: essadeTitle(essadeBlack),
                     ),
                     SizedBox(height: 30.0),
                     Text(
                       'Tipo de documento',
-                      style: essadeH5(Colors.white),
+                      style: essadeH5(essadePrimaryColor),
                     ),
                     SizedBox(height: 10.0),
                     SelectableWidget(
                       objectKey: 'nombre',
                       documents: idTypes,
                       initialText: 'Tipo de documento',
-                      textColor: Colors.white,
                       onItemSelected: (item){
                         if(item != null)
                           setState(() {
@@ -92,21 +89,24 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                       },
                       borderColor: selectableBorderColor,
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      'No. id',
-                      style: essadeH5(Colors.white),
+                    SizedBox(height: 10),
+                    //_myTextFormField(),
+                    SimpleTextFormFieldWidget(
+                      label: 'No. ID',
+                      inputType: TextInputType.text,
+                      editingController: documentIdController,
+                      onChanged: () => _formKey.currentState.validate(),
+                      validationText: 'Ingrese su No. de ID',
+                      hintText: 'Su No. de ID',
                     ),
-                    SizedBox(height: 10.0),
-                    _myTextFormField(),
                     SizedBox(height: 30),
                     LongButtonWidget(
-                      textColor: essadePrimaryColor,
+                      textColor: Colors.white,
                       text: 'Validar',
                       onPressed: () async {
                         if(!isDocumentSelected){
                           setState(() {
-                            selectableBorderColor = Colors.white;
+                            selectableBorderColor = essadeErrorColor;
                           });
                         }
                         if (_formKey.currentState.validate() && itemSelected != '----'){
@@ -116,7 +116,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                           _handleSubmit(context);
                         }
                       },
-                      backgroundColor: Colors.white,
+                      backgroundColor: essadePrimaryColor,
                     )
                   ],
                 ),
@@ -141,7 +141,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
       },
       validator: (String value){
         if (value.isEmpty)
-          return 'Ingrese su No. de id';
+          return 'Ingrese su No. de ID';
 
         return null;
       },
@@ -155,7 +155,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
             borderSide: BorderSide(width: 0, style: BorderStyle.none),
           ),
           fillColor: essadeGray.withOpacity(0.3),
-          hintText: 'Ingrese su No. de id',
+          hintText: 'Ingrese su No. de ID',
           hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Raleway'),
           contentPadding: EdgeInsets.all(20.0),
           errorBorder: essadeBorderErrorStyle(10.0, Colors.white),
@@ -185,7 +185,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 Navigator.of(context).pop(true);
               });
               return InfoDialogWidget(
-                message: 'El No. Id ingresado no se encuentra registrado.',
+                message: 'El No. ID ingresado no se encuentra registrado',
                 icon: Icons.error,
                 textAlign: TextAlign.center,
               );

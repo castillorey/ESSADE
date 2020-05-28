@@ -78,7 +78,7 @@ class ResetPasswordPage extends StatelessWidget {
                                   Navigator.of(context).pop();
                                 });
                                 return InfoDialogWidget(
-                                    message: 'Listo!\nTe hemos enviado las instrucciones. Ve corriendo y revisa tu correo',
+                                    message: '¡Listo!\nTe hemos enviado las instrucciones. Ve corriendo y revisa tu correo',
                                     textAlign: TextAlign.center,
                                     icon: Icons.done
                                 );

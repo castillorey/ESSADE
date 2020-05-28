@@ -27,8 +27,8 @@ class TelDirectoryDetailPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SubtitleGuideTextWidget(
-                text: 'Por favor comunicate a través'
-                ' de la linea que más se ajuste a tu inquietud'
+                text: 'Por favor comunícate a través'
+                ' de la línea que más se ajuste a tu inquietud'
             ),
           ),
           Expanded(

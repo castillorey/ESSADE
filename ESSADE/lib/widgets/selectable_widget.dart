@@ -156,11 +156,12 @@ class _SelectableWidgetState extends State<SelectableWidget> {
             height: 60.0,
             child: Row(
               children: <Widget>[
-                Icon(
-                  widget.icon,
-                  color: essadeDarkGray,
-                ),
-                SizedBox(width: 10),
+                if (widget.icon != null)
+                  Icon(
+                    widget.icon,
+                    color: essadeDarkGray,
+                  ),
+                  SizedBox(width: 10),
                 Text(
                   itemSelected,
                   style: essadeParagraph(color: widget.textColor),

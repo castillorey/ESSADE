@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 essadeTitle(Color color) => TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 30,

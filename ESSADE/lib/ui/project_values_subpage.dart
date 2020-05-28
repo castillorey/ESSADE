@@ -101,7 +101,7 @@ class ProjectValuesSubpage extends StatelessWidget {
               id: 'Ingresos',
               data: _incomes,
               fillPatternFn: (_,__) => FillPatternType.solid,
-              fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeIncomeColor),
+              fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadePrimaryColor),
             ));
 
             _movementsData.add(Series(
@@ -110,7 +110,7 @@ class ProjectValuesSubpage extends StatelessWidget {
               id: 'Egresos',
               data: _outgoings,
               fillPatternFn: (_,__) => FillPatternType.solid,
-              fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeErrorColor),
+              fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeGray),
             ));
 
             result = Expanded(

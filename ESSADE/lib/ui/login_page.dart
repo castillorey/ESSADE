@@ -1,20 +1,16 @@
+import 'dart:io';
+
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/ui/settings_biometric_page.dart';
 import 'package:essade/ui/register_code_page.dart';
 import 'package:essade/ui/reset_password_page.dart';
-import 'package:essade/ui/signup_page.dart';
-import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/biometric_button_widget.dart';
 import 'package:essade/widgets/custom_alert_dialog_widget.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
-import 'package:essade/widgets/long_social_button_widget.dart';
-import 'package:essade/widgets/or_log_sign_in_with_widget.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';
 import 'package:essade/widgets/switch_loged_signed_widget.dart';
-import 'package:essade/widgets/input_text_field_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';
-import 'package:essade/widgets/social_buttons_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -78,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Container(
                                   width: MediaQuery.of(context).size.width / 1.5,
                                   child: Text(
-                                    'HOLA,\nBIENVENIDO',
+                                    '¡Hola,\nbienvenido!',
                                     style: essadeTitle(essadePrimaryColor),
                                   ),
                                 ),
@@ -89,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                                   editingController: emailInputController,
                                   onChanged: () => _formKey.currentState.validate(),
                                   validationText: 'Ingrese su correo electrónico',
-                                  hintText: 'Su correo electrónico',
+                                  hintText: 'Su correo  electrónico',
                                 ),
                                 SimpleTextFormFieldWidget(
                                   label: 'Contraseña',
@@ -141,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: SwitchLoggedSignedWidget(
                     guideText: '¿Aún no tienes cuenta? ',
                     guideTextColor: essadeDarkGray,
-                    actionText: 'Registrate aquí',
+                    actionText: 'registrate aquí',
                     actionTextColor: essadePrimaryColor,
                     onTap: (){
                       Navigator.push(
@@ -170,11 +166,11 @@ class _LoginPageState extends State<LoginPage> {
           if (snapshot.data.contains(BiometricType.face)) {
             // Face ID.
             _biometricIcon = Icons.face;
-            _biometricText = 'Face ID';
+            _biometricText = Platform.isAndroid ? 'Recon. facial' : 'Face ID';
           } else if (snapshot.data.contains(BiometricType.fingerprint)) {
             // Touch ID.
             _biometricIcon = Icons.fingerprint;
-            _biometricText = 'Touch ID';
+            _biometricText = Platform.isAndroid ? 'Huella' :'Touch ID';
           }
           result =  Container(
             margin: EdgeInsets.only(bottom: 15.0),

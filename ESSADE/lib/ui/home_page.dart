@@ -5,9 +5,7 @@ import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Movement.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/models/Task.dart';
-import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
-import 'package:essade/widgets/graph_widget.dart';
 import 'package:essade/widgets/not_projects_widget.dart';
 import 'package:essade/widgets/selectable_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,26 +13,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-
-
 class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _projectsQuery;
   int pickerSelectionConfirmed;
   bool thereIsProjectSelected;
-  //FirebaseAuth currentUser;
   Stream<QuerySnapshot> _movementsQuery;
   Stream<QuerySnapshot> _activitiesQuery;
+  bool _showStrategicInfo = true;
   @override
   void initState() {
     super.initState();
     pickerSelectionConfirmed = 0;
     thereIsProjectSelected = false;
+  }
+
+  void onExpansionTileToggle(bool value){
+    setState(() {
+      _showStrategicInfo = !value;
+    });
   }
 
   @override
@@ -86,17 +89,31 @@ class _HomePageState extends State<HomePage> {
                       });
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 8.0),
                   if(thereIsProjectSelected)
                     _buildProjectInfo(_projects[pickerSelectionConfirmed])
                   else
                     Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                          'Seleccione un proyecto para ver su información detallada',
-                          style: essadeParagraph()
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 8.0),
+                        child: Text(
+                            'Seleccione un proyecto para ver su información detallada',
+                            style: essadeParagraph()
+                        ),
                       ),
-                    )
+                    ),
+                  SizedBox(height: 10.0),
+                  Divider(
+                    height: 10,
+                    thickness: 2,
+                    color: essadeGray.withOpacity(0.1),
+                  ),
+                  Visibility (
+                    visible: _showStrategicInfo,
+                    child: _buildStrategicInfoItem()
+                  ),
+                  SizedBox(height: 5.0)
                 ],
               );
             }
@@ -129,12 +146,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildStrategicInfoItem(){
+  _launchInstagramTipsURL() async {
+    const url = 'https://www.instagram.com/explore/tags/essadetips/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
+  Widget _buildStrategicInfoItem(){
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: <Widget>[
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
+          ),
+          SizedBox(height: 8.0),
           Row(
             children: <Widget>[
               Container(
@@ -151,15 +181,18 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 8.0),
           Row(
             children: <Widget>[
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                      'Conoce más',
-                      style: essadeLightfont
-                  )
+              GestureDetector(
+                onTap: () => _launchInstagramTipsURL(),
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                        'Conoce más',
+                        style: essadeLightfont
+                    )
+                ),
               ),
               Icon(Icons.play_circle_filled, size: 15,)
             ],
@@ -191,6 +224,9 @@ class _HomePageState extends State<HomePage> {
           _buildTotalBalance(_balance),
           SizedBox(height: 20),
           ExpansionTile(
+            onExpansionChanged: (value) {
+              onExpansionTileToggle(value);
+            },
             leading: Icon(Icons.graphic_eq),
             title: Text('Ingresos y egresos', style: essadeParagraph()),
             children: <Widget>[
@@ -199,6 +235,9 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20),
           ExpansionTile(
+            onExpansionChanged: (value) {
+              onExpansionTileToggle(value);
+            },
             leading: Icon(Icons.business_center),
             title: Text('Avance de obra', style: essadeParagraph()),
             children: <Widget>[
@@ -206,17 +245,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(height: 10),
-          Divider(
-            height: 20,
-            thickness: 2,
-            color: essadeGray.withOpacity(0.1),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text('Información estratégica', style: essadeH4(essadeDarkGray)),
-          ),
-          SizedBox(height: 10),
-          _buildStrategicInfoItem()
         ],
       ),
     );
@@ -253,7 +281,7 @@ class _HomePageState extends State<HomePage> {
             id: 'Ingresos',
             data: _incomes,
             fillPatternFn: (_,__) => FillPatternType.solid,
-            fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeIncomeColor),
+            fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadePrimaryColor),
         ));
 
         _movementsData.add(Series(
@@ -262,7 +290,7 @@ class _HomePageState extends State<HomePage> {
             id: 'Egresos',
             data: _outgoings,
             fillPatternFn: (_,__) => FillPatternType.solid,
-            fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeErrorColor),
+            fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeGray),
         ));
 
         return Column(
@@ -385,10 +413,4 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void isProjectSelectedCallback(bool wasProjectSelected, int pickerSelected){
-    setState(() {
-      thereIsProjectSelected = wasProjectSelected;
-      pickerSelectionConfirmed = pickerSelected;
-    });
-  }
 }

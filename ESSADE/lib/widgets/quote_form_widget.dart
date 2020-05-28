@@ -133,7 +133,7 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                   color: essadePrimaryColor,
                   elevation: 0.0,
                   child: Text(
-                    'Enviar Cotización',
+                    'Enviar cotización',
                     style: btnFontStyle(Colors.white),
                   ),
                 ),

@@ -36,9 +36,9 @@ class _AboutPageState extends State<AboutPage> {
           SizedBox(height: 10),
           _whoWeAre(),
           SizedBox(height: 20),
-          _mvParagraphs('Mision', _missionP),
+          _mvParagraphs('Misión', _missionP),
           SizedBox(height: 10),
-          _mvParagraphs('Vision', _visionP),
+          _mvParagraphs('Visión', _visionP),
           SizedBox(height: 30),
           _values(),
           Padding(
@@ -49,11 +49,11 @@ class _AboutPageState extends State<AboutPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               _moreSettingsItem(
-                  'Echale un vistaso a nuestras Políticas'
+                  'Échale un vistazo a nuestras políticas'
               ),
               Divider(height: 5.0,thickness: 0.2, color: essadeGray),
               _moreSettingsItem(
-                  'Conóce nuestros Principios'
+                  'Conóce nuestros principios'
               ),
               Divider(height: 5.0, thickness: 0.2, color: essadeGray),
               _moreSettingsItem(
@@ -135,7 +135,7 @@ class _AboutPageState extends State<AboutPage> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            'Nuestros Valores',
+            'Nuestros valores',
             style: essadeH2(Colors.white),
           ),
           Padding(
@@ -254,11 +254,11 @@ class _AboutPageState extends State<AboutPage> {
         children: <Widget>[
           Text(
             '¿Quiénes sómos?',
-            style: essadeH2(essadePrimaryColor),
+            style: essadeH2(essadeBlack),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/juntos.png', height: 200)
+            child: Image.asset('assets/images/team.png', height: 200)
           ),
           Container(
             margin: EdgeInsets.only(top: 20),

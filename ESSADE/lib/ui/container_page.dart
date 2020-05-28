@@ -81,7 +81,7 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.zoom_in),
-                title: Text('Consultas', style: essadeParagraph()),
+                title: Text('Consultar', style: essadeParagraph()),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.help),

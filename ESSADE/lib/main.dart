@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    precacheImage(AssetImage('assets/images/juntos.png'), context);
+    precacheImage(AssetImage('assets/images/team.png'), context);
     precacheImage(AssetImage('assets/images/4775.jpg'), context);
     super.didChangeDependencies();
   }

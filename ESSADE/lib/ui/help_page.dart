@@ -47,21 +47,21 @@ class _HelpPageState extends State<HelpPage> {
             TitleWidget(text: 'Ayuda', color: essadeBlack, textAlign: TextAlign.center,),
             SizedBox(height: 20),
             SubtitleGuideTextWidget(
-              text: 'Si tienes alguna inquietud'
-                  'por favor comuniquese con nosotros a través de:',
+              text: 'Si tiene alguna inquietud'
+                  ' por favor comuníquese con nosotros a través de:',
             ),
             SizedBox(height: 20),
             CardItemWidget(
                 text: 'Chat',
                 icon: FontAwesomeIcons.whatsapp,
-                iconColor: Color(0xFF25D366),
+                iconColor: essadeDarkGray,
                 iconSize: 25,
                 onTap: () => _launchWhatsAppURL()) ,
             SizedBox(height: 20),
             CardItemWidget(
                 text: 'Contácto telefónico',
                 icon: FontAwesomeIcons.phoneAlt,
-                iconColor: essadePrimaryColor,
+                iconColor: essadeDarkGray,
                 onTap: (){
                   Navigator.push(
                       context,
@@ -171,7 +171,7 @@ class _HelpPageState extends State<HelpPage> {
                   color: essadePrimaryColor,
                   elevation: 0.0,
                   child: Text(
-                    'Enviar Sugerencia',
+                    'Enviar sugerencia',
                     style: btnFontStyle(Colors.white),
                   ),
                 ),

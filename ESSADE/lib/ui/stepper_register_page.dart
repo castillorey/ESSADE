@@ -1,5 +1,4 @@
 import 'package:essade/auth/login_state.dart';
-import 'package:essade/ui/verifiy_email_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';
@@ -18,16 +17,12 @@ class StepperRegisterPage extends StatefulWidget {
 class _StepperRegisterPageState extends State<StepperRegisterPage> {
   PageController _formsPageViewController = PageController();
   TextEditingController nameInputController = TextEditingController();
-  //TextEditingController lastnameInputController = TextEditingController();
   TextEditingController emailInputController = TextEditingController();
-  //TextEditingController mobileInputController = TextEditingController();
   TextEditingController passwordInputController = TextEditingController();
   TextEditingController repeatPasswordInputController = TextEditingController();
   List _formSteps = [];
   String _name;
-  //String lastname;
   String _email;
-  //String mobile;
   String _password;
   String _noId;
 
@@ -70,7 +65,6 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     // TODO: implement initState
     super.initState();
 
-
     _formSteps = [
       WillPopScope(
         onWillPop: () => Future.sync(this.onWillPop),
@@ -85,9 +79,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     currentPageValue = 0;
 
     _name = '';
-    //lastname = '' ;
     _email= '';
-    //mobile = '';
     _password = '';
     _noId = widget.noId;
 
@@ -159,7 +151,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               margin: EdgeInsets.symmetric(vertical: 20.0),
               //width: MediaQuery.of(context).size.width / 1.5,
               child: Text(
-                'EMPECEMOS CON TUS DATOS PERSONALES',
+                'Empecemos con tus datos personales',
                 style: essadeH3(essadeBlack),
               ),
             ),
@@ -216,7 +208,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               margin: EdgeInsets.symmetric(vertical: 20.0),
               //width: MediaQuery.of(context).size.width / 1.5,
               child: Text(
-                'AHORA TUS CREDENCIALES DE INGRESO',
+                'Ahora tus credenciales de ingreso',
                 style: essadeH3(essadeBlack),
               ),
             ),
@@ -352,13 +344,13 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
           .registerWithEmailAndPassword(_email, _password, _name, _noId);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close showLoadingProgressCircle
       if(result == null){
-        _myShowDialog(context, 'Hay algo raro con el correo proporcionado. Echale un vistaso');
+        _myShowDialog(context, 'Hay algo raro con el correo proporcionado. Échale un vistaso');
         return null;
       }
       Navigator.of(context).popUntil((route) => route.isFirst);
     } catch(error){
       print(error);
-      _myShowDialog(context, 'Lo sentimos, ha ocurrido un error muy raro.');
+      _myShowDialog(context, 'Lo sentimos, ha ocurrido un error muy raro');
     }
   }
 
