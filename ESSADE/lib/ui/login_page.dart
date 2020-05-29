@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: Container(
                     child: SafeArea(
-                      child: SingleChildScrollView(
+                      child: Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 40.0,
                           ),
@@ -71,21 +71,38 @@ class _LoginPageState extends State<LoginPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 1.5,
-                                  child: Text(
-                                    '¡Hola,\nbienvenido!',
-                                    style: essadeTitle(essadePrimaryColor),
-                                  ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/logos/essade.png', height: 60),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                                      width: 10.0,
+                                      height: 50.0,
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                            left: BorderSide(width: 0.5, color: essadeBlack),
+                                          ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width / 1.5,
+                                        child: Text(
+                                          '¡Hola,\nbienvenido!',
+                                          style: essadeTitle(essadeBlack),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 10.0),
                                 SimpleTextFormFieldWidget(
                                   label: 'Usuario',
                                   inputType: TextInputType.emailAddress,
                                   editingController: emailInputController,
                                   onChanged: () => _formKey.currentState.validate(),
                                   validationText: 'Ingrese su correo electrónico',
-                                  hintText: 'Su correo  electrónico',
+                                  hintText: 'Su correo electrónico',
                                 ),
                                 SimpleTextFormFieldWidget(
                                   label: 'Contraseña',
@@ -137,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: SwitchLoggedSignedWidget(
                     guideText: '¿Aún no tienes cuenta? ',
                     guideTextColor: essadeDarkGray,
-                    actionText: 'registrate aquí',
+                    actionText: 'Registrate aquí',
                     actionTextColor: essadePrimaryColor,
                     onTap: (){
                       Navigator.push(

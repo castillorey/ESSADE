@@ -43,85 +43,98 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: essadeBlack),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: Colors.transparent,
-          brightness: Brightness.light,
-          elevation: 0.0,
-        ),
-        body: SingleChildScrollView(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 40
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Necesitamos validar que eres nuestro cliente',
-                      style: essadeTitle(essadeBlack),
-                    ),
-                    SizedBox(height: 30.0),
-                    Text(
-                      'Tipo de documento',
-                      style: essadeH5(essadePrimaryColor),
-                    ),
-                    SizedBox(height: 10.0),
-                    SelectableWidget(
-                      objectKey: 'nombre',
-                      documents: idTypes,
-                      initialText: 'Tipo de documento',
-                      onItemSelected: (item){
-                        if(item != null)
-                          setState(() {
-                            itemSelected = idTypes[item];
-                            isDocumentSelected = true;
-                          });
-                      },
-                      borderColor: selectableBorderColor,
-                    ),
-                    SizedBox(height: 10),
-                    //_myTextFormField(),
-                    SimpleTextFormFieldWidget(
-                      label: 'No. ID',
-                      inputType: TextInputType.text,
-                      editingController: documentIdController,
-                      onChanged: () => _formKey.currentState.validate(),
-                      validationText: 'Ingrese su No. de ID',
-                      hintText: 'Su No. de ID',
-                    ),
-                    SizedBox(height: 30),
-                    LongButtonWidget(
-                      textColor: Colors.white,
-                      text: 'Validar',
-                      onPressed: () async {
-                        if(!isDocumentSelected){
-                          setState(() {
-                            selectableBorderColor = essadeErrorColor;
-                          });
-                        }
-                        if (_formKey.currentState.validate() && itemSelected != '----'){
-                          setState(() {
-                            documentId = documentIdController.text;
-                          });
-                          _handleSubmit(context);
-                        }
-                      },
-                      backgroundColor: essadePrimaryColor,
-                    )
-                  ],
+        body: Column(
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 32.0,
+                    margin: EdgeInsets.only(top: 15.0),
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Icon(Icons.arrow_back, color: essadeBlack),
+                  ),
                 ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 25.0),
+                    child: Image.asset('assets/logos/essade.png', height: 60),
+                  ),
+                ),
+                Container(
+                  width: 32.0,
+                )
+              ],
+            ),
+            _buildContent(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildContent() {
+    return Flexible(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              Text(
+                'Necesitamos validar que eres nuestro cliente',
+                style: essadeTitle(essadeBlack),
               ),
-            )
+              SizedBox(height: 30.0),
+              Text(
+                'Tipo de documento',
+                style: essadeH5(essadeBlack),
+              ),
+              SizedBox(height: 10.0),
+              SelectableWidget(
+                objectKey: 'nombre',
+                documents: idTypes,
+                initialText: 'Tipo de documento',
+                onItemSelected: (item){
+                  if(item != null)
+                    setState(() {
+                      itemSelected = idTypes[item];
+                      isDocumentSelected = true;
+                    });
+                },
+                borderColor: selectableBorderColor,
+              ),
+              SizedBox(height: 10),
+              //_myTextFormField(),
+              SimpleTextFormFieldWidget(
+                label: 'No. ID',
+                inputType: TextInputType.text,
+                editingController: documentIdController,
+                onChanged: () => _formKey.currentState.validate(),
+                validationText: 'Ingrese su No. de ID',
+                hintText: 'Su No. de ID',
+              ),
+              SizedBox(height: 30),
+              LongButtonWidget(
+                textColor: Colors.white,
+                text: 'Validar',
+                onPressed: () async {
+                  if(!isDocumentSelected){
+                    setState(() {
+                      selectableBorderColor = essadeErrorColor;
+                    });
+                  }
+                  if (_formKey.currentState.validate() && itemSelected != '----'){
+                    setState(() {
+                      documentId = documentIdController.text;
+                    });
+                    _handleSubmit(context);
+                  }
+                },
+                backgroundColor: essadePrimaryColor,
+              )
+            ],
           ),
         ),
       ),

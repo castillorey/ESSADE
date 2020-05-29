@@ -43,11 +43,7 @@ class _MyAppState extends State<MyApp> {
       create: (BuildContext context) => LoginState(),
       child: GestureDetector(
         onTap:  () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: MaterialApp(
           title: 'Essade App',

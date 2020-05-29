@@ -61,7 +61,7 @@ class SimpleTextFormFieldWidget extends StatelessWidget {
     children: <Widget>[
       Text(
         label,
-        style: essadeH5(essadePrimaryColor),
+        style: essadeH5(essadeBlack),
       ),
       SizedBox(height: 10.0),
     ],

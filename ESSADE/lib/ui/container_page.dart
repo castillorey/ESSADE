@@ -48,21 +48,33 @@ class _ContainerPageState extends State<ContainerPage> {
         }
       },
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65.0),
-          child: AppBar(
-            title: Image.asset('assets/logos/essade.png', height: 60),
-            backgroundColor: Colors.white,
-            brightness: Brightness.light,
-            elevation: _selectedPage == 0 ? 0.0 : 0.5,
-          ),
-        ),
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: IndexedStack(
-            index: _selectedPage,
-            children: _pageList,
-          ),
+        body: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 32.0,
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 25.0),
+                    child: Image.asset('assets/logos/essade.png', height: 60),
+                  ),
+                ),
+                Container(
+                  width: 32.0,
+                )
+              ],
+            ),
+            if (_selectedPage != 0)
+              Divider(),
+            Expanded(
+              child: IndexedStack(
+                index: _selectedPage,
+                children: _pageList,
+              ),
+            ),
+          ],
         ),
         bottomNavigationBar: SizedBox(
           height: 60,
@@ -81,7 +93,7 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.zoom_in),
-                title: Text('Consultar', style: essadeParagraph()),
+                title: Text('Consultart', style: essadeParagraph()),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.help),

@@ -92,26 +92,44 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.close, color: essadeBlack),
-              onPressed: () => Navigator.of(context).pop(),
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 32.0,
+                    margin: EdgeInsets.only(top: 15.0),
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Icon(Icons.arrow_back, color: essadeBlack),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 25.0),
+                    child: Image.asset('assets/logos/essade.png', height: 60),
+                  ),
+                ),
+                Container(
+                  width: 32.0,
+                )
+              ],
             ),
-            backgroundColor: Colors.transparent,
-            brightness: Brightness.light,
-            elevation: 0.0,
-          ),
-          body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: _buildBody()
-          )
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: _buildBody()
+            ),
+          ],
+        )
       ),
     );
   }
 
   Widget _buildBody(){
-    double appBarHeight = AppBar().preferredSize.height;
+    double topBarHeight = 85;
 
     return SingleChildScrollView(
       child: Column(
@@ -120,7 +138,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height - appBarHeight - 10,
+            height: MediaQuery.of(context).size.height - topBarHeight,
             child: PageView.builder(
               controller: _formsPageViewController,
               physics: NeverScrollableScrollPhysics(),
@@ -217,7 +235,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               children: <Widget>[
                 Text(
                   'Crea tu contraseña',
-                  style: essadeH5(essadePrimaryColor),
+                  style: essadeH5(essadeBlack),
                 ),
                 SizedBox(width: 5.0),
                 GestureDetector(
@@ -257,7 +275,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
             SizedBox(height: 5.0),
             Text(
               'Solo para confirmar',
-              style: essadeH5(essadePrimaryColor),
+              style: essadeH5(essadeBlack),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),

@@ -1,5 +1,4 @@
 import 'package:essade/auth/login_state.dart';
-import 'package:essade/ui/detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/long_button_widget.dart';
@@ -15,10 +14,9 @@ class ResetPasswordPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return DetailPage(
-      onBackPressed: () => Navigator.of(context).pop(),
-      backButtonIcon: Icons.arrow_back,
-      child: Consumer<LoginState>(
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Consumer<LoginState>(
           builder: (BuildContext context, LoginState value, Widget child){
             if(value.isLoading()){
               return Container(
@@ -31,66 +29,89 @@ class ResetPasswordPage extends StatelessWidget {
               return child;
             }
           },
-          child: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10.0, left: 6.0, right: 6.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    TitleWidget(
-                      text: 'Restablece tu contraseña',
-                      color: essadeBlack,
-                      textAlign: TextAlign.left,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      width: 32.0,
+                      margin: EdgeInsets.only(top: 15.0),
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: Icon(Icons.arrow_back, color: essadeBlack),
                     ),
-                    SizedBox(height: 10),
-                    SubtitleGuideTextWidget(
-                      text: 'Ingresa el correo electrónico asociado con tu cuenta'
-                          ' y te enviaremos las instrucciones para restablecer tu contraseña.',
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 25.0),
+                      child: Image.asset('assets/logos/essade.png', height: 60),
                     ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          SimpleTextFormFieldWidget(
-                            label: 'Correo',
-                            inputType: TextInputType.emailAddress,
-                            editingController: emailInputController,
-                            onChanged: () => _formKey.currentState.validate(),
-                            validationText: 'Ingrese su correo electrónico',
-                            hintText: 'Correo electrónico',
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    LongButtonWidget(
-                      text: 'Enviar correo',
-                      textColor: Colors.white,
-                      backgroundColor: essadePrimaryColor,
-                      onPressed: () async {
-                        if(_formKey.currentState.validate()){
-                          await Provider.of<LoginState>(context, listen: false).resetPassword(emailInputController.text);
-                          showDialog(
-                              context: context,
-                              builder: (_context) {
-                                Future.delayed(Duration(seconds: 4), () {
-                                  Navigator.of(_context).pop(true);
-                                  Navigator.of(context).pop();
-                                });
-                                return InfoDialogWidget(
-                                    message: '¡Listo!\nTe hemos enviado las instrucciones. Ve corriendo y revisa tu correo',
-                                    textAlign: TextAlign.center,
-                                    icon: Icons.done
-                                );
-                              }
-                          );
-                        }
-                      },
-                      icon: null,
-                    )
-                  ]
+                  ),
+                  Container(
+                    width: 32.0,
+                  )
+                ],
               ),
-            ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+                child: Column(
+                    children: <Widget>[
+                      TitleWidget(
+                        text: 'Restablece tu contraseña',
+                        color: essadeBlack,
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 10),
+                      SubtitleGuideTextWidget(
+                        text: 'Ingresa el correo electrónico asociado con tu cuenta'
+                            ' y te enviaremos las instrucciones para restablecer tu contraseña.',
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            SimpleTextFormFieldWidget(
+                              label: 'Correo',
+                              inputType: TextInputType.emailAddress,
+                              editingController: emailInputController,
+                              onChanged: () => _formKey.currentState.validate(),
+                              validationText: 'Ingrese su correo electrónico',
+                              hintText: 'Correo electrónico',
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      LongButtonWidget(
+                        text: 'Enviar correo',
+                        textColor: Colors.white,
+                        backgroundColor: essadePrimaryColor,
+                        onPressed: () async {
+                          if(_formKey.currentState.validate()){
+                            await Provider.of<LoginState>(context, listen: false).resetPassword(emailInputController.text);
+                            showDialog(
+                                context: context,
+                                builder: (_context) {
+                                  Future.delayed(Duration(seconds: 4), () {
+                                    Navigator.of(_context).pop(true);
+                                    Navigator.of(context).pop();
+                                  });
+                                  return InfoDialogWidget(
+                                      message: '¡Listo!\nTe hemos enviado las instrucciones. Ve corriendo y revisa tu correo',
+                                      textAlign: TextAlign.center,
+                                      icon: Icons.done
+                                  );
+                                }
+                            );
+                          }
+                        },
+                        icon: null,
+                      )
+                    ]
+                ),
+              ),
+            ],
           ),
       ),
     );
