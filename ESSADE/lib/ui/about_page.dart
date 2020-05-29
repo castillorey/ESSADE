@@ -151,8 +151,8 @@ class _AboutPageState extends State<AboutPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _valueItem('Pasión', 'Amamos lo que hacemos', FontAwesomeIcons.solidHeart),
-                _valueItem('Integridad', 'Somos diferentes', FontAwesomeIcons.balanceScale)
+                _valueItem('Pasión', 'Amamos lo que hacemos', 'assets/values/heart.png'),
+                _valueItem('Integridad', 'Somos diferentes', 'assets/values/integrity.png')
               ],
             ),
           ),
@@ -161,8 +161,8 @@ class _AboutPageState extends State<AboutPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _valueItem('Excelencia', 'No nos conformamos', FontAwesomeIcons.certificate),
-                _valueItem('Calidad', 'Nos importa cada detalle', FontAwesomeIcons.crown)
+                _valueItem('Excelencia', 'No nos conformamos', 'assets/values/excelence.png'),
+                _valueItem('Calidad', 'Nos importa cada detalle', 'assets/values/qa.png')
               ],
             ),
           ),
@@ -171,8 +171,8 @@ class _AboutPageState extends State<AboutPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _valueItem('Liderazgo', 'Vamos un paso adelante', FontAwesomeIcons.users),
-                _valueItem('Trasparencia', 'Generamos confianza', FontAwesomeIcons.search)
+                _valueItem('Liderazgo', 'Vamos un paso adelante', 'assets/values/lead.png'),
+                _valueItem('Trasparencia', 'Generamos confianza', 'assets/values/transparency.png')
               ],
             ),
           ),
@@ -181,8 +181,8 @@ class _AboutPageState extends State<AboutPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _valueItem('Compromiso', 'Planificamos con tus necesidades', FontAwesomeIcons.handsHelping),
-                _valueItem('Servicio', 'Eres nuestra prioridad', FontAwesomeIcons.peopleCarry)
+                _valueItem('Compromiso', 'Planificamos con tus necesidades', 'assets/values/hands.png'),
+                _valueItem('Servicio', 'Eres nuestra prioridad', 'assets/values/service.png')
               ],
             ),
           )
@@ -191,15 +191,12 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget _valueItem(String title, String p, IconData icon){
+  Widget _valueItem(String title, String p, String imagePath){
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FaIcon(
-            icon,
-            color: Colors.white,
-          ),
+          Image.asset(imagePath, height: 35.0),
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
             child: Text(
