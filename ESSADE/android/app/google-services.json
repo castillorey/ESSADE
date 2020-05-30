@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1015902088754",
+    "firebase_url": "https://essade-42f64.firebaseio.com",
+    "project_id": "essade-42f64",
+    "storage_bucket": "essade-42f64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015902088754:android:7d85f473b3b123f249562b",
+        "android_client_info": {
+          "package_name": "com.example.essade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015902088754-hi73fkcfaa2ni8an7jv20shgh23ujnfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFMq9yenSm3cHYTQ8XdXHiq_Yuu3pMGxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015902088754-hi73fkcfaa2ni8an7jv20shgh23ujnfd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1015902088754-ea974atsvlcfsgguejkp347apipi7mq6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kckc-654-hotmail.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

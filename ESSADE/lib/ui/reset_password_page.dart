@@ -44,7 +44,7 @@ class ResetPasswordPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(top: 25.0),
+                      margin: EdgeInsets.only(top: 30.0),
                       child: Image.asset('assets/logos/essade.png', height: 60),
                     ),
                   ),

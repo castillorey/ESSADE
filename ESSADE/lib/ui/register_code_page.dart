@@ -18,7 +18,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
   TextEditingController documentIdController;
   bool isDocumentSelected;
   String itemSelected;
-  List<String> idTypes = ['NIT', 'CC'];
+  List<String> idTypes;
   String documentId;
   Color selectableBorderColor;
 
@@ -27,6 +27,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     // TODO: implement initState
     super.initState();
 
+    idTypes = ['----','NIT', 'CC'];
     itemSelected = '----';
     documentIdController = new TextEditingController();
     isDocumentSelected = false;
@@ -58,7 +59,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 ),
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(top: 25.0),
+                    margin: EdgeInsets.only(top: 30.0),
                     child: Image.asset('assets/logos/essade.png', height: 60),
                   ),
                 ),
@@ -95,7 +96,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
               SelectableWidget(
                 objectKey: 'nombre',
                 documents: idTypes,
-                initialText: 'Tipo de documento',
+                initialText: '----',
                 onItemSelected: (item){
                   if(item != null)
                     setState(() {

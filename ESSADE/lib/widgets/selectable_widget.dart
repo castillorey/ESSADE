@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,14 +121,17 @@ class _SelectableWidgetState extends State<SelectableWidget> {
 
   Widget _buildSelectableComponent(List documents){
     Widget selectableWidget;
-    if(Platform.isAndroid){
+    if(false){
       selectableWidget = DropdownButton(
           value: itemSelected,
           icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
           onChanged: (newValue) {
-            itemSelected = newValue;
+            setState(() {
+              itemSelected = newValue;
+              widget.onItemSelected(newValue);
+            });
           },
           items: documents.map((value){
             return DropdownMenuItem(
@@ -139,7 +140,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
             );
           }).toList()
       );
-    } else if (Platform.isIOS){
+    } else if (true){
       selectableWidget = GestureDetector(
         onTap: () => _myShowCupertinoModalPopup(documents),
         child: Container(
@@ -176,6 +177,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('Estos son los documentos: ${widget.documents}');
     return _buildSelectableComponent(widget.documents);
   }
 }

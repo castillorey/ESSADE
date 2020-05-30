@@ -43,131 +43,128 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
-        child: Consumer<LoginState>(
-          builder: (BuildContext context, LoginState value, Widget child){
-            if(value.isLoading()){
-              return Center(child: CircularProgressIndicator());
-            } else {
-              return child;
-            }
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Center(
-                  child: Container(
-                    child: SafeArea(
-                      child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 40.0,
-                          ),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Image.asset('assets/logos/essade.png', height: 60),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                                      width: 10.0,
-                                      height: 50.0,
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                            left: BorderSide(width: 0.5, color: essadeBlack),
-                                          ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width / 1.5,
-                                        child: Text(
-                                          '¡Hola,\nbienvenido!',
-                                          style: essadeTitle(essadeBlack),
+      body: Consumer<LoginState>(
+        builder: (BuildContext context, LoginState value, Widget child){
+          if(value.isLoading()){
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return child;
+          }
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  child: SafeArea(
+                    child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 40.0,
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Image.asset('assets/logos/essade.png', height: 60),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                                    width: 10.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                          left: BorderSide(width: 0.5, color: essadeBlack),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 10.0),
-                                SimpleTextFormFieldWidget(
-                                  label: 'Usuario',
-                                  inputType: TextInputType.emailAddress,
-                                  editingController: emailInputController,
-                                  onChanged: () => _formKey.currentState.validate(),
-                                  validationText: 'Ingrese su correo electrónico',
-                                  hintText: 'Su correo electrónico',
-                                ),
-                                SimpleTextFormFieldWidget(
-                                  label: 'Contraseña',
-                                  obscureText: true,
-                                  inputType: TextInputType.visiblePassword,
-                                  editingController: passwordInputController,
-                                  onChanged: () => _formKey.currentState.validate(),
-                                  validationText: 'Ingrese su contraseña',
-                                  hintText: 'Su contraseña',
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onTap: () => Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => ResetPasswordPage()
-                                    )),
-                                    child: Text(
-                                      'Olvidé mi contraseña',
-                                      style: essadeParagraph(color: essadePrimaryColor, underlined: true),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 30),
-                                LongButtonWidget(
-                                    text: 'Iniciar',
-                                    backgroundColor: essadePrimaryColor,
-                                    textColor: Colors.white,
-                                    onPressed: () {
-                                      if(_formKey.currentState.validate())
-                                        Provider.of<LoginState>(context, listen: false)
-                                            .login(context, emailInputController.text, passwordInputController.text);
-                                    }
-                                ),
-                                SizedBox(height: 40),
-                                if(_isBiometricAvailable)
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: _buildBiometricButton(),
+                                  Expanded(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      child: Text(
+                                        '¡Hola,\nbienvenido!',
+                                        style: essadeTitle(essadeBlack),
+                                      ),
+                                    ),
                                   )
-                              ],
-                            ),
-                          )
-                      ),
+                                ],
+                              ),
+                              SizedBox(height: 10.0),
+                              SimpleTextFormFieldWidget(
+                                label: 'Usuario',
+                                inputType: TextInputType.emailAddress,
+                                editingController: emailInputController,
+                                onChanged: () => _formKey.currentState.validate(),
+                                validationText: 'Ingrese su correo electrónico',
+                                hintText: 'Su correo electrónico',
+                              ),
+                              SimpleTextFormFieldWidget(
+                                label: 'Contraseña',
+                                obscureText: true,
+                                inputType: TextInputType.visiblePassword,
+                                editingController: passwordInputController,
+                                onChanged: () => _formKey.currentState.validate(),
+                                validationText: 'Ingrese su contraseña',
+                                hintText: 'Su contraseña',
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () => Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => ResetPasswordPage()
+                                  )),
+                                  child: Text(
+                                    'Olvidé mi contraseña',
+                                    style: essadeParagraph(color: essadePrimaryColor, underlined: true),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 30),
+                              LongButtonWidget(
+                                  text: 'Iniciar',
+                                  backgroundColor: essadePrimaryColor,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    if(_formKey.currentState.validate())
+                                      Provider.of<LoginState>(context, listen: false)
+                                          .login(context, emailInputController.text, passwordInputController.text);
+                                  }
+                              ),
+                              SizedBox(height: 40),
+                              if(_isBiometricAvailable)
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: _buildBiometricButton(),
+                                )
+                            ],
+                          ),
+                        )
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 20,
-                  child: SwitchLoggedSignedWidget(
-                    guideText: '¿Aún no tienes cuenta? ',
-                    guideTextColor: essadeDarkGray,
-                    actionText: 'Registrate aquí',
-                    actionTextColor: essadePrimaryColor,
-                    onTap: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterCodePage())
-                      );
-                    },
-                  ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: SwitchLoggedSignedWidget(
+                  guideText: '¿Aún no tienes cuenta? ',
+                  guideTextColor: essadeDarkGray,
+                  actionText: 'Registrate aquí',
+                  actionTextColor: essadePrimaryColor,
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterCodePage())
+                    );
+                  },
                 ),
-              ],
-            ),
-          )
-        ),
+              ),
+            ],
+          ),
+        )
       ),
     );
   }

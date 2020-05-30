@@ -7,7 +7,6 @@ import 'package:essade/ui/project_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/not_projects_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class QueriesPage extends StatefulWidget {
@@ -22,6 +21,7 @@ class _QueriesPageState extends State<QueriesPage> {
   int indexProjectSelected;
   Project projectSelected;
   List<Project> projects;
+  bool _showConsultImage;
 
 @override
   void initState() {
@@ -29,6 +29,13 @@ class _QueriesPageState extends State<QueriesPage> {
 
     indexProjectSelected = 0;
     thereIsProjectSelected = false;
+    _showConsultImage = true;
+  }
+
+  void onExpansionTileToggle(bool value){
+    setState(() {
+      _showConsultImage = !value;
+    });
   }
 
   @override
@@ -59,11 +66,18 @@ class _QueriesPageState extends State<QueriesPage> {
                       style: essadeH2(essadeBlack),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset('assets/images/consult.png', height: 250),
+                  SizedBox(height: 20.0),
+                  Visibility(
+                    visible: _showConsultImage,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset('assets/images/consult.png', height: screenSizeHeight * 0.25),
+                    ),
                   ),
                   ExpansionTile(
+                    onExpansionChanged: (value){
+                      onExpansionTileToggle(value);
+                    },
                       leading: Icon(Icons.work),
                       title: Text('Mis proyectos', style: essadeParagraph()),
                       children: projects.map((p){

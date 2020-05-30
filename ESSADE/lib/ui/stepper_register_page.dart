@@ -109,7 +109,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 ),
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(top: 25.0),
+                    margin: EdgeInsets.only(top: 30.0),
                     child: Image.asset('assets/logos/essade.png', height: 60),
                   ),
                 ),
@@ -129,7 +129,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   }
 
   Widget _buildBody(){
-    double topBarHeight = 85;
+    double topBarHeight = 90;
 
     return SingleChildScrollView(
       child: Column(

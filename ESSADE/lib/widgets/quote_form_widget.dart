@@ -137,7 +137,8 @@ class _QuoteFormWidgetState extends State<QuoteFormWidget> {
                     style: btnFontStyle(Colors.white),
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 20)
             ]
         )
     );

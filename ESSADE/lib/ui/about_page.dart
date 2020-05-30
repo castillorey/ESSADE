@@ -5,6 +5,7 @@ import 'package:essade/widgets/card_item_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class AboutPage extends StatefulWidget {
@@ -26,13 +27,26 @@ class _AboutPageState extends State<AboutPage> {
 
   String _visionP = 'Transformar la industria de la construcción en Colombia por medio de un'
       ' servicio de calidad, confiable e innovador.';
+  LocalAuthentication _localAuth;
+  bool _isBiometricAvailable = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _localAuth = LocalAuthentication();
+    _localAuth.canCheckBiometrics.then((result){
+      setState(() {
+        _isBiometricAvailable = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
         children: <Widget>[
-          //TitleWidget(text: 'Sobre Nosotros',color: essadeBlack, alignment: Alignment.center),
           SizedBox(height: 10),
           _whoWeAre(),
           SizedBox(height: 20),
@@ -43,7 +57,7 @@ class _AboutPageState extends State<AboutPage> {
           _values(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/4785.jpg', height: 300),
+            child: Image.asset('assets/images/4785.jpg', height: screenSizeHeight * 0.4),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,27 +70,31 @@ class _AboutPageState extends State<AboutPage> {
                   'Conóce nuestros principios'
               ),
               Divider(height: 5.0, thickness: 0.2, color: essadeGray),
-              _moreSettingsItem(
-                'Configuración biométrico',
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsBiometricPage()));
-                }
-              ),
-
+              if (_isBiometricAvailable)
+                _biometricSettingsItem()
             ],
-          ),
-          Divider(
-            height: 5,
-            thickness: 0.2,
-            color: essadeBlack,
           ),
           _logout()
 
 
         ],
       ),
+    );
+  }
+
+  _biometricSettingsItem(){
+    return Column(
+      children: [
+        _moreSettingsItem(
+            'Configuración biométrico',
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsBiometricPage()));
+            }
+        ),
+        Divider(height: 5, thickness: 0.2, color: essadeBlack),
+      ],
     );
   }
 
@@ -255,7 +273,7 @@ class _AboutPageState extends State<AboutPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/team.png', height: 200)
+            child: Image.asset('assets/images/team.png', height: screenSizeHeight * 0.35)
           ),
           Container(
             margin: EdgeInsets.only(top: 20),

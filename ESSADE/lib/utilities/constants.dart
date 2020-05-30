@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
+
+final screenSizeHeight = ui.window.physicalSize.height / ui.window.devicePixelRatio;
+final screenSizeWidth = ui.window.physicalSize.width / ui.window.devicePixelRatio;
 
 essadeTitle(Color color) => TextStyle(
     fontFamily: 'Montserrat',
