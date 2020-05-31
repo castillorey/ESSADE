@@ -48,10 +48,11 @@ essadeParagraph( {Color color = essadeBlack, bool bold = false, bool underlined 
   decoration: underlined ? TextDecoration.underline : null,
 );
 
-final essadeLightfont = TextStyle(
+essadeLightfont({bool underlined = false}) => TextStyle(
   color: essadeDarkGray,
   fontFamily: 'Raleway',
   fontSize: 12.0,
+  decoration: underlined ? TextDecoration.underline : null,
 );
 
 final List<String> essadeServices = [

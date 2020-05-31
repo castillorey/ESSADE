@@ -27,8 +27,8 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     // TODO: implement initState
     super.initState();
 
-    idTypes = ['----','NIT', 'CC'];
-    itemSelected = '----';
+    idTypes = ['NIT', 'CC'];
+    itemSelected = 'Seleccionar';
     documentIdController = new TextEditingController();
     isDocumentSelected = false;
     documentId = '';
@@ -68,6 +68,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 )
               ],
             ),
+            Divider(),
             _buildContent(),
           ],
         ),
@@ -96,7 +97,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
               SelectableWidget(
                 objectKey: 'nombre',
                 documents: idTypes,
-                initialText: '----',
+                initialText: 'Seleccionar',
                 onItemSelected: (item){
                   if(item != null)
                     setState(() {
@@ -114,7 +115,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 editingController: documentIdController,
                 onChanged: () => _formKey.currentState.validate(),
                 validationText: 'Ingrese su No. de ID',
-                hintText: 'Su No. de ID',
+                hintText: 'No. de ID',
               ),
               SizedBox(height: 30),
               LongButtonWidget(

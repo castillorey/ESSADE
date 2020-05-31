@@ -5,6 +5,7 @@ import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class ProjectActivitiesSubpage extends StatefulWidget {
 class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   Stream<QuerySnapshot> _activitiesQuery;
   List<Activity> activities;
-  
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +29,14 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = "es";
+    initializeDateFormatting();
+
     User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
     _activitiesQuery = Firestore.instance
         .collection('usuarios').document(currentUser.documentID)
         .collection('proyectos').document(widget.project.documentID)
-        .collection('actividades').snapshots();
+        .collection('actividades').orderBy('fecha_creacion', descending: true).snapshots();
 
     return Column(
       children: <Widget>[
@@ -85,7 +89,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context){
-          var date = DateFormat.MMMd('en_US').format(activity.start_date.toDate());
+          var date = DateFormat.MMMd().add_jm().format(activity.start_date.toDate());
           return Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
@@ -194,7 +198,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
   }
 
   Widget _activityDate(Activity activity){
-    var date = DateFormat.yMMMd('en_US').format(activity.start_date.toDate());
+    var date = DateFormat.yMMMd().format(activity.start_date.toDate());
     return Container(
         width: 55,
         margin: EdgeInsets.only(left: 8.0, right: 8),

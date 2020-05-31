@@ -16,7 +16,7 @@ class NotProjectsWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/4795.jpg', height: 300),
+            child: Image.asset('assets/images/empty.png', height: 300),
           ),
         ],
       ),

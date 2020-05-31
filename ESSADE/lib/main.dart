@@ -6,6 +6,7 @@ import 'package:essade/ui/register_code_page.dart';
 import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/ui/verifiy_email_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'models/global.dart';
 import 'auth/login_state.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     precacheImage(AssetImage('assets/images/team.png'), context);
-    precacheImage(AssetImage('assets/images/4775.jpg'), context);
+    precacheImage(AssetImage('assets/images/meeting.png'), context);
     super.didChangeDependencies();
   }
   @override
@@ -45,25 +46,28 @@ class _MyAppState extends State<MyApp> {
         onTap:  () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: MaterialApp(
-          title: 'Essade App',
-          theme: ThemeData(
-            primarySwatch: primaryMaterialColor,
-            canvasColor: Colors.transparent,
-            scaffoldBackgroundColor: Colors.white
-          ),
-          routes: {
-            '/': (BuildContext context) {
-              var state = Provider.of<LoginState>(context);
-              if(state.isLoggedIn()){
-                if(state.isEmailVerified())
-                  return ContainerPage();
-                else
-                  return VerifyEmailPage();
-              }
-              return LoginPage();
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: MaterialApp(
+            title: 'Essade App',
+            theme: ThemeData(
+              primarySwatch: primaryMaterialColor,
+              canvasColor: Colors.transparent,
+              scaffoldBackgroundColor: Colors.white
+            ),
+            routes: {
+              '/': (BuildContext context) {
+                var state = Provider.of<LoginState>(context);
+                if(state.isLoggedIn()){
+                  if(state.isEmailVerified())
+                    return ContainerPage();
+                  else
+                    return VerifyEmailPage();
+                }
+                return LoginPage();
+              },
             },
-          },
+          ),
         ),
       ),
     );

@@ -16,7 +16,7 @@ class AboutPage extends StatefulWidget {
 
 
 class _AboutPageState extends State<AboutPage> {
-  String _whoWeAreP1 = 'ESSADE S.A.S, es una empresa constructora de obras civiles, '
+  String _whoWeAreP1 = 'ESSADE S.A.S., es una empresa constructora de obras civiles, '
       'comprometida con la excelencia, transparencia y calidad de sus proyectos.'
       '';
   String _whoWeAreP2 = 'Somos personas transformando al país, a través de la formación'
@@ -47,7 +47,6 @@ class _AboutPageState extends State<AboutPage> {
     return Container(
       child: ListView(
         children: <Widget>[
-          SizedBox(height: 10),
           _whoWeAre(),
           SizedBox(height: 20),
           _mvParagraphs('Misión', _missionP),
@@ -57,7 +56,7 @@ class _AboutPageState extends State<AboutPage> {
           _values(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/4785.jpg', height: screenSizeHeight * 0.4),
+            child: Image.asset('assets/images/meeting.png', height: screenSizeHeight * 0.4),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,10 +65,6 @@ class _AboutPageState extends State<AboutPage> {
                   'Échale un vistazo a nuestras políticas'
               ),
               Divider(height: 5.0,thickness: 0.2, color: essadeGray),
-              _moreSettingsItem(
-                  'Conóce nuestros principios'
-              ),
-              Divider(height: 5.0, thickness: 0.2, color: essadeGray),
               if (_isBiometricAvailable)
                 _biometricSettingsItem()
             ],
@@ -86,7 +81,7 @@ class _AboutPageState extends State<AboutPage> {
     return Column(
       children: [
         _moreSettingsItem(
-            'Configuración biométrico',
+            'Configuración biométrica',
             onPressed: (){
               Navigator.push(
                   context,
@@ -268,7 +263,7 @@ class _AboutPageState extends State<AboutPage> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            '¿Quiénes sómos?',
+            '¿Quiénes somos?',
             style: essadeH2(essadeBlack),
           ),
           Padding(

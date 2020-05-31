@@ -66,8 +66,7 @@ class _ContainerPageState extends State<ContainerPage> {
                 )
               ],
             ),
-            if (_selectedPage != 0)
-              Divider(),
+            Divider(),
             Expanded(
               child: IndexedStack(
                 index: _selectedPage,

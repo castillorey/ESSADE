@@ -63,7 +63,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 CupertinoButton(
-                  child: Text('Cancel'),
+                  child: Text('Cancelar'),
                   onPressed: () {
                     setState(() {
                       pickerSelection = pickerSelectionConfirmed;
@@ -76,7 +76,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
                   ),
                 ),
                 CupertinoButton(
-                  child: Text('Hecho'),
+                  child: Text('Listo'),
                   onPressed: () {
                     setState(() {
                       pickerSelectionConfirmed = pickerSelection;
@@ -120,28 +120,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
   }
 
   Widget _buildSelectableComponent(List documents){
-    Widget selectableWidget;
-    if(false){
-      selectableWidget = DropdownButton(
-          value: itemSelected,
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          onChanged: (newValue) {
-            setState(() {
-              itemSelected = newValue;
-              widget.onItemSelected(newValue);
-            });
-          },
-          items: documents.map((value){
-            return DropdownMenuItem(
-              value: value,
-              child: Text(value),
-            );
-          }).toList()
-      );
-    } else if (true){
-      selectableWidget = GestureDetector(
+    return GestureDetector(
         onTap: () => _myShowCupertinoModalPopup(documents),
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
@@ -171,8 +150,6 @@ class _SelectableWidgetState extends State<SelectableWidget> {
             )
         ),
       );
-    }
-    return selectableWidget;
   }
 
   @override

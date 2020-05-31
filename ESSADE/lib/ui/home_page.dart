@@ -27,6 +27,8 @@ class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _movementsQuery;
   Stream<QuerySnapshot> _activitiesQuery;
   bool _showStrategicInfo = true;
+  final currencyGlobalFormatter = NumberFormat.simpleCurrency(decimalDigits: 0);
+
   @override
   void initState() {
     super.initState();
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      '¡Hola ${capitalize(_currentUser.name)}!',
+                      '¡Hola, ${capitalize(_currentUser.name)}!',
                       style: essadeH2(essadeBlack),
                     ),
                   ),
@@ -134,11 +136,11 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Saldo total',
+            'Valor total',
             style: essadeH4(essadeBlack),
           ),
           Text(
-            '$balance',
+            balance,
             style: essadeH2(essadePrimaryColor),
           )
         ],
@@ -167,35 +169,41 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: 8.0),
           Row(
             children: <Widget>[
-              Container(
-                  width: 200,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    'Aprende los mejores tips para que tu cuarto se vea mucho más grande',
-                    style: essadeParagraph(),
-                  )
+              Expanded(
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      '¿Sabías que... si desconectas los aparatos electrónicos que no'
+                          ' estés usando ahorras hasta el 10% del consumo'
+                          ' energético del inmueble?',
+                      style: essadeParagraph(),
+                    )
+                ),
               ),
-              Icon(
-                Icons.home,
-                color: essadePrimaryColor,
+              Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: Icon(
+                  Icons.home,
+                  color: essadePrimaryColor,
+                ),
               )
             ],
           ),
           SizedBox(height: 8.0),
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => _launchInstagramTipsURL(),
-                child: Container(
+          GestureDetector(
+            onTap: () => _launchInstagramTipsURL(),
+            child: Row(
+              children: <Widget>[
+                Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                         'Conoce más',
-                        style: essadeLightfont
+                        style: essadeLightfont(underlined: true)
                     )
                 ),
-              ),
-              Icon(Icons.play_circle_filled, size: 15,)
-            ],
+                Icon(Icons.play_circle_filled, size: 15,)
+              ],
+            ),
           )
         ],
       ),
@@ -210,13 +218,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildProjectInfo(Project project){
-
-    final _balance = NumberFormat.simpleCurrency(decimalDigits: 0)
-        .format(project.price);
-    final _incomes = NumberFormat.simpleCurrency(decimalDigits: 0)
-        .format(project.income);
-    final _outgoings = NumberFormat.simpleCurrency(decimalDigits: 0)
-        .format(project.outgoing);
+    final _balance = currencyGlobalFormatter.format(project.price).toString().replaceAll(',', '.');
+    final _incomes = currencyGlobalFormatter.format(project.income).toString().replaceAll(',', '.');
+    final _outgoings = currencyGlobalFormatter.format(project.outgoing).toString().replaceAll(',', '.');
 
     return Flexible(
       child: ListView(
@@ -274,6 +278,7 @@ class _HomePageState extends State<HomePage> {
             _incomes.add(item);
         });
 
+        final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(decimalDigits: 0);
         List<Series<Movement, String>> _movementsData = [];
         _movementsData.add(Series(
             domainFn: (Movement movement, _) => DateFormat.MMM('en_US').format(movement.startDate.toDate()),
@@ -282,6 +287,7 @@ class _HomePageState extends State<HomePage> {
             data: _incomes,
             fillPatternFn: (_,__) => FillPatternType.solid,
             fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadePrimaryColor),
+            labelAccessorFn: (Movement movement, _) => '${chartCurrencyFormat.format(movement.value)}'
         ));
 
         _movementsData.add(Series(
@@ -291,8 +297,11 @@ class _HomePageState extends State<HomePage> {
             data: _outgoings,
             fillPatternFn: (_,__) => FillPatternType.solid,
             fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeGray),
+            labelAccessorFn: (Movement movement, _) => '${chartCurrencyFormat.format(movement.value)}'
         ));
 
+        final tickCurrencyFormat = BasicNumericTickFormatterSpec
+            .fromNumberFormat(NumberFormat.compactSimpleCurrency());
         return Column(
           children: <Widget>[
             Container(
@@ -300,8 +309,17 @@ class _HomePageState extends State<HomePage> {
               child: BarChart(
                 _movementsData,
                 animate: true,
+                //Set bar label decorator.
+                barRendererDecorator: new BarLabelDecorator(
+                    outsideLabelStyleSpec: TextStyleSpec(color: MaterialPalette.black, fontFamily: 'Raleway'),
+                    labelAnchor: BarLabelAnchor.end,
+                    labelPosition: BarLabelPosition.outside
+                ),
                 barGroupingType: BarGroupingType.grouped,
                 animationDuration: Duration(seconds: 1),
+                primaryMeasureAxis: NumericAxisSpec(
+                  tickFormatterSpec: tickCurrencyFormat
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -311,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Saldo', style: essadeParagraph()),
+                    Text('Valor total', style: essadeParagraph()),
                     Text(balance, style: essadeParagraph())
                   ],
                 ),
@@ -367,6 +385,7 @@ class _HomePageState extends State<HomePage> {
           data: _tasks,
           fillPatternFn: (_,__) => FillPatternType.solid,
           fillColorFn: (Task task, _) => ColorUtil.fromDartColor(essadePrimaryColor),
+          labelAccessorFn: (Task task, _) => '${task.percentageDone.toString()}%'
         ));
 
         return Column(
@@ -376,6 +395,11 @@ class _HomePageState extends State<HomePage> {
               child: BarChart(
                 _tasksPercentageData,
                 animate: true,
+                //Set bar label decorator.
+                barRendererDecorator: new BarLabelDecorator(
+                  insideLabelStyleSpec: TextStyleSpec(color: MaterialPalette.white, fontFamily: 'Raleway'),
+                  labelAnchor: BarLabelAnchor.end
+                ),
                 vertical: false,
                 barGroupingType: BarGroupingType.grouped,
                 animationDuration: Duration(seconds: 1),
@@ -394,14 +418,14 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('% Ejecutado', style: essadeParagraph()),
+                    Text('% Total ejecutado', style: essadeParagraph()),
                     Text(_percentDone, style: essadeParagraph())
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('% Por ejecutar', style: essadeParagraph()),
+                    Text('% Total por ejecutar', style: essadeParagraph()),
                     Text(_pendingpercent, style: essadeParagraph())
                   ],
                 )

@@ -8,9 +8,9 @@ class TelDirectoryDetailPage extends StatelessWidget {
   Map<String, String> _directory = {
     'Gerencia':'(+57) 300 393 8174',
     'G. Contable':'(+57) 313 641 6196',
-    'G. de Calidad':'(+57) 300 647 2477',
+    'SGI':'(+57) 300 647 2477',
     'G. Humana':'(+57) 321 506 7160',
-    'G. Comercial':'(+57) 300 393 8174',
+    'G. Digital':'(+57) 313 760 5729',
     'G. Técnica':'(+57) 300 275 2557 ',
 
   };

@@ -33,7 +33,7 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
     _movementsQuery = Firestore.instance
         .collection('usuarios').document(currentUser.documentID)
         .collection('proyectos').document(widget.project.documentID)
-        .collection('movimientos').snapshots();
+        .collection('movimientos').orderBy('fecha_creacion', descending: true).snapshots();
 
     return Column(
       children: <Widget>[

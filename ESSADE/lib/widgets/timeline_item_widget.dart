@@ -2,6 +2,7 @@ import 'package:essade/models/Movement.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class TimelineItemWidget extends StatelessWidget {
@@ -11,6 +12,8 @@ class TimelineItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = "es";
+    initializeDateFormatting();
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Row(
@@ -24,7 +27,7 @@ class TimelineItemWidget extends StatelessWidget {
 
 
   Widget _movementDate(Movement movement){
-    var date = DateFormat.yMMMd('en_US').format(movement.startDate.toDate());
+    var date = DateFormat.yMMMd().format(movement.startDate.toDate());
     return Container(
         width: 55,
         //padding: EdgeInsets.only(left: 8),
@@ -34,7 +37,7 @@ class TimelineItemWidget extends StatelessWidget {
   }
 
   Widget _movementInfo(context, Movement movement){
-    var appropiateColor = movement.type == 'Egreso' ? essadeOutgoingColor : essadeIncomeColor;
+    var appropiateColor = movement.type == 'Egreso' ? essadeGray : essadePrimaryColor;
     return Expanded(
       child: GestureDetector(
         onTap: () => _showMovementModalBottomSheet(context, movement),
@@ -101,7 +104,7 @@ class TimelineItemWidget extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context){
-          var date = DateFormat.yMMMd('en_US').format(movement.startDate.toDate());
+          var date = DateFormat.MMMd().add_jm().format(movement.startDate.toDate());
           return Container(
             decoration: BoxDecoration(
                 color: Colors.white,

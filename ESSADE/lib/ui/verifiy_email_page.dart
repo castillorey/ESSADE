@@ -44,7 +44,7 @@ class VerifyEmailPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset('assets/images/email_verification.jpg', height: 230),
+                child: Image.asset('assets/images/verify.png', height: 230),
               ),
               SizedBox(height: 10),
               LongButtonWidget(

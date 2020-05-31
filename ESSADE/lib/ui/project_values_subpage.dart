@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 
 class ProjectValuesSubpage extends StatelessWidget {
   final Project project;
+  ProjectValuesSubpage({Key key, this.project}) : super(key: key);
 
-
-  const ProjectValuesSubpage({Key key, this.project}) : super(key: key);
+  NumberFormat _globalCurrencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,25 @@ class ProjectValuesSubpage extends StatelessWidget {
        ),
      ),
    );
+  }
+
+  _projectValuesItem(String text, String value){
+    return Align(
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            text,
+            style: essadeH4(essadeBlack),
+          ),
+          Text(
+            value,
+            style: essadeH4(essadePrimaryColor),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildGraph(BuildContext context) {
@@ -94,6 +113,7 @@ class ProjectValuesSubpage extends StatelessWidget {
                 _incomes.add(item);
             });
 
+            final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(decimalDigits: 0);
             List<Series<Movement, String>> _movementsData = [];
             _movementsData.add(Series(
               domainFn: (Movement movement, _) => DateFormat.MMM('en_US').format(movement.startDate.toDate()),
@@ -102,6 +122,7 @@ class ProjectValuesSubpage extends StatelessWidget {
               data: _incomes,
               fillPatternFn: (_,__) => FillPatternType.solid,
               fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadePrimaryColor),
+              labelAccessorFn: (Movement movement, _) => '${chartCurrencyFormat.format(movement.value)}'
             ));
 
             _movementsData.add(Series(
@@ -111,7 +132,11 @@ class ProjectValuesSubpage extends StatelessWidget {
               data: _outgoings,
               fillPatternFn: (_,__) => FillPatternType.solid,
               fillColorFn: (Movement movement, _) => ColorUtil.fromDartColor(essadeGray),
+              labelAccessorFn: (Movement movement, _) => '${chartCurrencyFormat.format(movement.value)}'
             ));
+
+            final tickCurrencyFormat = BasicNumericTickFormatterSpec
+                .fromNumberFormat(NumberFormat.compactSimpleCurrency());
 
             result = Expanded(
               child: Container(
@@ -121,8 +146,17 @@ class ProjectValuesSubpage extends StatelessWidget {
                   child: BarChart(
                     _movementsData,
                     animate: true,
+                    //Set bar label decorator.
+                    barRendererDecorator: new BarLabelDecorator(
+                        outsideLabelStyleSpec: TextStyleSpec(color: MaterialPalette.black, fontFamily: 'Raleway'),
+                        labelAnchor: BarLabelAnchor.end,
+                        labelPosition: BarLabelPosition.outside
+                    ),
                     barGroupingType: BarGroupingType.grouped,
                     animationDuration: Duration(seconds: 1),
+                    primaryMeasureAxis: NumericAxisSpec(
+                        tickFormatterSpec: tickCurrencyFormat
+                    ),
                   ),
                 ),
               ),
@@ -137,86 +171,27 @@ class ProjectValuesSubpage extends StatelessWidget {
       },
     );
   }
+
   Widget _totalBalance() {
     final balance = project.income - project.outgoing;
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Saldo total',
-            style: essadeH4(essadeBlack),
-          ),
-          Text(
-            '${NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(balance)}',
-            style: essadeH4(essadePrimaryColor),
-          )
-        ],
-      ),
-    );
+    final result = _globalCurrencyFormat.format(balance).toString().replaceAll(',', '.');
+    return _projectValuesItem('Saldo actual', result);
   }
 
   Widget _pendingBalance() {
     final pendingBalance = project.price - project.income;
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Saldo pendiente',
-            style: essadeH4(essadeBlack),
-          ),
-          Text(
-            '${NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(pendingBalance)}',
-            style: essadeH4(essadePrimaryColor),
-          )
-        ],
-      ),
-    );
+    final result = _globalCurrencyFormat.format(pendingBalance).toString().replaceAll(',', '.');
+    return _projectValuesItem('Saldo pendiente', result);
   }
 
   Widget _incomes(){
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Ingresos',
-            style: essadeH4(essadeBlack),
-          ),
-          Text(
-            '${NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(project.income)}',
-            style: essadeH4(essadePrimaryColor),
-          )
-        ],
-      ),
-    );
+    final result = _globalCurrencyFormat.format(project.income).toString().replaceAll(',', '.');
+    return _projectValuesItem('Ingresos', result);
   }
 
   Widget _outcomes(){
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Egresos',
-            style: essadeH4(essadeBlack),
-          ),
-          Text(
-            '${NumberFormat.simpleCurrency(decimalDigits: 0)
-                .format(project.outgoing)}',
-            style: essadeH4(essadePrimaryColor),
-          )
-        ],
-      ),
-    );
+    final result = _globalCurrencyFormat.format(project.outgoing).toString().replaceAll(',', '.');
+    return _projectValuesItem('Egresos', result);
   }
 
   Widget _buildMovements() {

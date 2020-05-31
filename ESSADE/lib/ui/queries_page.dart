@@ -67,12 +67,9 @@ class _QueriesPageState extends State<QueriesPage> {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  Visibility(
-                    visible: _showConsultImage,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset('assets/images/consult.png', height: screenSizeHeight * 0.25),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset('assets/images/consult.png', height: screenSizeHeight * 0.25),
                   ),
                   ExpansionTile(
                     onExpansionChanged: (value){
@@ -90,7 +87,7 @@ class _QueriesPageState extends State<QueriesPage> {
                             );
                           },
                           title: Text(p.name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
-                          subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont),
+                          subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont()),
                           trailing: Icon(Icons.keyboard_arrow_right),
                         );
                       }).toList()

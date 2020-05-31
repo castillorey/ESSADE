@@ -53,6 +53,7 @@ class ResetPasswordPage extends StatelessWidget {
                   )
                 ],
               ),
+              Divider(),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
                 child: Column(
