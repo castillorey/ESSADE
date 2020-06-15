@@ -5,6 +5,7 @@ import 'package:essade/ui/help_page.dart';
 import 'package:essade/ui/queries_page.dart';
 import 'package:essade/ui/quote_page.dart';
 import 'package:essade/utilities/constants.dart';
+import 'package:essade/widgets/top_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -50,22 +51,7 @@ class _ContainerPageState extends State<ContainerPage> {
       child: Scaffold(
         body: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 32.0,
-                ),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 30.0),
-                    child: Image.asset('assets/logos/essade.png', height: 60),
-                  ),
-                ),
-                Container(
-                  width: 32.0,
-                )
-              ],
-            ),
+            TopBarWidget(showBackButton: false),
             Divider(),
             Expanded(
               child: IndexedStack(

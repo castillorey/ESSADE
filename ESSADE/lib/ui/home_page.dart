@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _movementsQuery;
   Stream<QuerySnapshot> _activitiesQuery;
   bool _showStrategicInfo = true;
-  final currencyGlobalFormatter = NumberFormat.simpleCurrency(decimalDigits: 0);
+  final currencyGlobalFormatter = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
 
   @override
   void initState() {
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      '¿Sabías que... si desconectas los aparatos electrónicos que no'
+                      '¿Sabías que... si desconectas los aparatos eléctricos que no'
                           ' estés usando ahorras hasta el 10% del consumo'
                           ' energético del inmueble?',
                       style: essadeParagraph(),
@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> {
             _incomes.add(item);
         });
 
-        final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(decimalDigits: 0);
+        final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(locale: 'en', decimalDigits: 0);
         List<Series<Movement, String>> _movementsData = [];
         _movementsData.add(Series(
             domainFn: (Movement movement, _) => DateFormat.MMM('en_US').format(movement.startDate.toDate()),
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> {
         ));
 
         final tickCurrencyFormat = BasicNumericTickFormatterSpec
-            .fromNumberFormat(NumberFormat.compactSimpleCurrency());
+            .fromNumberFormat(chartCurrencyFormat);
         return Column(
           children: <Widget>[
             Container(

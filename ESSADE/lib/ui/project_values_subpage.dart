@@ -12,7 +12,7 @@ class ProjectValuesSubpage extends StatelessWidget {
   final Project project;
   ProjectValuesSubpage({Key key, this.project}) : super(key: key);
 
-  NumberFormat _globalCurrencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
+  NumberFormat _globalCurrencyFormat = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,7 @@ class ProjectValuesSubpage extends StatelessWidget {
           child: Text('General', style: essadeH4(essadeDarkGray)),
         ),
         _buildGraph(context),
+        _buildTotalPrice(),
         _buildMovements(),
         _buildBalances()
       ],
@@ -72,7 +73,7 @@ class ProjectValuesSubpage extends StatelessWidget {
     );
   }
 
-  Widget _buildGraph(BuildContext context) {
+  _buildGraph(BuildContext context) {
     var _currentUser = Provider.of<LoginState>(context).currentUser();
     var _movementsQuery = Firestore.instance
         .collection('usuarios').document(_currentUser.documentID)
@@ -113,7 +114,7 @@ class ProjectValuesSubpage extends StatelessWidget {
                 _incomes.add(item);
             });
 
-            final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(decimalDigits: 0);
+            final chartCurrencyFormat = NumberFormat.compactSimpleCurrency(locale: 'en', decimalDigits: 0);
             List<Series<Movement, String>> _movementsData = [];
             _movementsData.add(Series(
               domainFn: (Movement movement, _) => DateFormat.MMM('en_US').format(movement.startDate.toDate()),
@@ -136,7 +137,7 @@ class ProjectValuesSubpage extends StatelessWidget {
             ));
 
             final tickCurrencyFormat = BasicNumericTickFormatterSpec
-                .fromNumberFormat(NumberFormat.compactSimpleCurrency());
+                .fromNumberFormat(chartCurrencyFormat);
 
             result = Expanded(
               child: Container(
@@ -172,51 +173,61 @@ class ProjectValuesSubpage extends StatelessWidget {
     );
   }
 
-  Widget _totalBalance() {
-    final balance = project.income - project.outgoing;
-    final result = _globalCurrencyFormat.format(balance).toString().replaceAll(',', '.');
-    return _projectValuesItem('Saldo actual', result);
+  _buildValues(String valueName, int value) {
+    final result = _globalCurrencyFormat.format(value).toString().replaceAll(',', '.');
+    return _projectValuesItem(valueName, result);
   }
 
-  Widget _pendingBalance() {
-    final pendingBalance = project.price - project.income;
-    final result = _globalCurrencyFormat.format(pendingBalance).toString().replaceAll(',', '.');
-    return _projectValuesItem('Saldo pendiente', result);
-  }
-
-  Widget _incomes(){
-    final result = _globalCurrencyFormat.format(project.income).toString().replaceAll(',', '.');
-    return _projectValuesItem('Ingresos', result);
-  }
-
-  Widget _outcomes(){
-    final result = _globalCurrencyFormat.format(project.outgoing).toString().replaceAll(',', '.');
-    return _projectValuesItem('Egresos', result);
-  }
-
-  Widget _buildMovements() {
+  _buildTotalPrice() {
     return  Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: <Widget>[
           Expanded(
-              child: _incomes()
-          ),
-          Expanded(
-            child: _outcomes(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Valor del proyecto',
+                    style: essadeH4(essadeBlack),
+                  ),
+                  Text(
+                    '${project.price}',
+                    style: essadeH4(essadePrimaryColor),
+                  )
+                ],
+              )
           )
         ],
       ),
     );
   }
 
-  Widget _buildBalances(){
+  _buildMovements() {
+    return  Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: _buildValues('Ingresos', project.income)
+          ),
+          Expanded(
+            child: _buildValues('Egresos', project.outgoing),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildBalances(){
+    final balance = project.income - project.outgoing;
+    final pendingBalance = project.price - project.income;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: <Widget>[
-          Expanded(child: _totalBalance()),
-          Expanded(child: _pendingBalance())
+          Expanded(child: _buildValues('Saldo actual', balance)),
+          Expanded(child: _buildValues('Saldo pendiente', pendingBalance))
         ],
       ),
     );

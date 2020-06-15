@@ -2,6 +2,7 @@ import 'package:essade/auth/login_state.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
 import 'package:essade/widgets/simple_text_form_field_widget.dart';
+import 'package:essade/widgets/top_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -96,28 +97,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    width: 32.0,
-                    margin: EdgeInsets.only(top: 15.0),
-                    padding: EdgeInsets.only(left: 15.0),
-                    child: Icon(Icons.arrow_back, color: essadeBlack),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 30.0),
-                    child: Image.asset('assets/logos/essade.png', height: 60),
-                  ),
-                ),
-                Container(
-                  width: 32.0,
-                )
-              ],
-            ),
+            TopBarWidget(),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: _buildBody()

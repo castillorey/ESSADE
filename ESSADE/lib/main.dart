@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: MaterialApp(
-            title: 'Essade App',
+            title: 'ESSADE App',
             theme: ThemeData(
               primarySwatch: primaryMaterialColor,
               canvasColor: Colors.transparent,
