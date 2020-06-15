@@ -58,22 +58,6 @@ class _HelpPageState extends State<HelpPage> {
                 iconSize: 25,
                 onTap: () => _launchWhatsAppURL()) ,
             SizedBox(height: 20),
-            CardItemWidget(
-                text: 'Contácto telefónico',
-                icon: FontAwesomeIcons.phoneAlt,
-                iconColor: essadeDarkGray,
-                onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                            child: TelDirectoryDetailPage(),
-                            onBackPressed: () => Navigator.of(context).pop(),
-                          )
-                      )
-                  );
-            }),
-            SizedBox(height: 20),
             CardItemWidget(text: 'Preguntas frecuentes', icon: FontAwesomeIcons.question,  onTap: (){
               Navigator.push(
                   context,
@@ -122,7 +106,7 @@ class _HelpPageState extends State<HelpPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Sugerencias',
+          'Sugerencias/PQR',
           style: essadeH4(essadeDarkGray),
         ),
         SizedBox(height: 20),
