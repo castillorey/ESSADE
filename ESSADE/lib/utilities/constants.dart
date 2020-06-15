@@ -1,3 +1,4 @@
+import 'package:essade/models/Value.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
@@ -60,6 +61,28 @@ final List<String> essadeServices = [
   'Construcción',
   'Mantenimiento',
   'Remodelación'
+];
+
+final String essadeWhoWeAreP1 = 'ESSADE S.A.S., es una empresa constructora de obras civiles, '
+    'comprometida con la excelencia, transparencia y calidad de sus proyectos.';
+final String essadeWhoWeAreP2 = 'Somos personas transformando al país, a través de la formación'
+    ' integral de nuestros colaboradores e inspiración a nuestros clientes.';
+
+final String essadeMissionP = 'Proveer satisfacción a nuestros clientes a través de un servicio exclusivo,'
+    ' mano de obra calificada y la construcción eficiente de sus proyectos de obra civil.';
+
+final String essadeVisionP = 'Transformar la industria de la construcción en Colombia por medio de un'
+    ' servicio de calidad, confiable e innovador.';
+
+final List<Value> essadeValues = [
+  new Value('Pasión', 'Amamos lo que hacemos', 'assets/values/heart.png'),
+  new Value('Integridad', 'Somos diferentes', 'assets/values/integrity.png'),
+  new Value('Excelencia', 'No nos conformamos', 'assets/values/excelence.png'),
+  new Value('Calidad', 'Nos importa cada detalle', 'assets/values/qa.png'),
+  new Value('Liderazgo', 'Vamos un paso adelante', 'assets/values/lead.png'),
+  new Value('Trasparencia', 'Generamos confianza', 'assets/values/transparency.png'),
+  new Value('Compromiso', 'Planificamos con tus necesidades', 'assets/values/hands.png'),
+  new Value('Servicio', 'Eres nuestra prioridad', 'assets/values/service.png'),
 ];
 
 btnFontStyle(Color color, {bool bold: false}) => TextStyle(

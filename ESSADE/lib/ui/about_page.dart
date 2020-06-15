@@ -1,4 +1,5 @@
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/models/Value.dart';
 import 'package:essade/ui/settings_biometric_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -16,30 +18,31 @@ class AboutPage extends StatefulWidget {
 
 
 class _AboutPageState extends State<AboutPage> {
-  String _whoWeAreP1 = 'ESSADE S.A.S., es una empresa constructora de obras civiles, '
-      'comprometida con la excelencia, transparencia y calidad de sus proyectos.'
-      '';
-  String _whoWeAreP2 = 'Somos personas transformando al país, a través de la formación'
-      ' integral de nuestros colaboradores e inspiración a nuestros clientes.';
+  String _whoWeAreP1 ;
+  String _whoWeAreP2;
+  String _missionP;
+  String _visionP;
 
-  String _missionP = 'Proveer satisfacción a nuestros clientes a través de un servicio exclusivo,'
-      ' mano de obra calificada y la construcción eficiente de sus proyectos de obra civil.';
-
-  String _visionP = 'Transformar la industria de la construcción en Colombia por medio de un'
-      ' servicio de calidad, confiable e innovador.';
   LocalAuthentication _localAuth;
   bool _isBiometricAvailable = false;
+  List<Value> _valuesList;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+     _whoWeAreP1 = essadeWhoWeAreP1;
+     _whoWeAreP2 = essadeWhoWeAreP2;
+     _missionP = essadeMissionP;
+     _visionP = essadeVisionP;
+
     _localAuth = LocalAuthentication();
     _localAuth.canCheckBiometrics.then((result){
       setState(() {
         _isBiometricAvailable = result;
       });
     });
+    _valuesList = essadeValues;
   }
 
   @override
@@ -62,7 +65,8 @@ class _AboutPageState extends State<AboutPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               _moreSettingsItem(
-                  'Échale un vistazo a nuestras políticas'
+                  'Visita nuestro sitio web',
+                onPressed: () => _launchExternalURL('https://www.essade.com/')
               ),
               Divider(height: 5.0,thickness: 0.2, color: essadeGray),
               if (_isBiometricAvailable)
@@ -75,6 +79,14 @@ class _AboutPageState extends State<AboutPage> {
         ],
       ),
     );
+  }
+
+  _launchExternalURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   _biometricSettingsItem(){
@@ -159,46 +171,18 @@ class _AboutPageState extends State<AboutPage> {
               color: Colors.white,
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _valueItem('Pasión', 'Amamos lo que hacemos', 'assets/values/heart.png'),
-                _valueItem('Integridad', 'Somos diferentes', 'assets/values/integrity.png')
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _valueItem('Excelencia', 'No nos conformamos', 'assets/values/excelence.png'),
-                _valueItem('Calidad', 'Nos importa cada detalle', 'assets/values/qa.png')
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _valueItem('Liderazgo', 'Vamos un paso adelante', 'assets/values/lead.png'),
-                _valueItem('Trasparencia', 'Generamos confianza', 'assets/values/transparency.png')
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _valueItem('Compromiso', 'Planificamos con tus necesidades', 'assets/values/hands.png'),
-                _valueItem('Servicio', 'Eres nuestra prioridad', 'assets/values/service.png')
-              ],
-            ),
-          )
+          for(int i = 0; i < _valuesList.length; i+=2)
+            Container(
+              margin: const EdgeInsets.only(top: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _valueItem(_valuesList[i].name, _valuesList[i].description, _valuesList[i].imagePath),
+                  _valueItem(_valuesList[i+1].name, _valuesList[i+1].description, _valuesList[i+1].imagePath),
+                ],
+              ),
+            )
         ],
       ),
     );
