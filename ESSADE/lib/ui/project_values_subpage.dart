@@ -23,40 +23,21 @@ class ProjectValuesSubpage extends StatelessWidget {
           alignment: Alignment.topLeft,
           child: Text('General', style: essadeH4(essadeDarkGray)),
         ),
-        _buildGraph(context),
         _buildTotalPrice(),
+        _buildGraph(context),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text('Información del proyecto', style: essadeH4(essadeDarkGray)),
+        ),
         _buildMovements(),
         _buildBalances()
       ],
     );
   }
 
-
-  Widget _title() {
-   return Align(
-     child: Container(
-       alignment: Alignment.topLeft,
-       padding: EdgeInsets.symmetric(vertical: 10),
-       child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: <Widget>[
-           Text(
-             project.name,
-             style: essadeH2(essadePrimaryColor),
-           ),
-           Text(
-             '${project.city}, ${project.state}',
-             style: essadeH4(essadeBlack),
-           ),
-         ],
-       ),
-     ),
-   );
-  }
-
   _projectValuesItem(String text, String value){
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -179,21 +160,22 @@ class ProjectValuesSubpage extends StatelessWidget {
   }
 
   _buildTotalPrice() {
+    final result = _globalCurrencyFormat.format(project.price).toString().replaceAll(',', '.');
     return  Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: <Widget>[
           Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     'Valor del proyecto',
                     style: essadeH4(essadeBlack),
                   ),
                   Text(
-                    '${project.price}',
-                    style: essadeH4(essadePrimaryColor),
+                    '$result',
+                    style: essadeH3(essadePrimaryColor),
                   )
                 ],
               )
