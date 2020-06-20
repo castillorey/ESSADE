@@ -52,7 +52,7 @@ class _ContainerPageState extends State<ContainerPage> {
         body: Column(
           children: [
             TopBarWidget(showBackButton: false),
-            Divider(),
+            Divider(height: 0.0),
             Expanded(
               child: IndexedStack(
                 index: _selectedPage,

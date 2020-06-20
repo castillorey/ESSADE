@@ -40,46 +40,44 @@ class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TitleWidget(text: 'Ayuda', color: essadeBlack, textAlign: TextAlign.center,),
-            SizedBox(height: 20),
-            SubtitleGuideTextWidget(
-              text: 'Si tiene alguna inquietud'
-                  ' por favor comuníquese con nosotros a través de:',
-            ),
-            SizedBox(height: 20),
-            CardItemWidget(
-                text: 'Chat',
-                icon: FontAwesomeIcons.whatsapp,
-                iconColor: essadeDarkGray,
-                iconSize: 25,
-                onTap: () => _launchWhatsAppURL()) ,
-            SizedBox(height: 20),
-            CardItemWidget(text: 'Preguntas frecuentes', icon: FontAwesomeIcons.question,  onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailPage(
-                        child: FAQDetailPage(),
-                        onBackPressed: () => Navigator.of(context).pop(),
-                      )
-                  )
-              );
-            }),
-            SizedBox(height: 20),
-            Divider(
-              height: 20,
-              thickness: 2,
-              color: essadeGray.withOpacity(0.3),
-            ),
-            SizedBox(height: 20),
-            _suggestionsForm(),
+      padding: const EdgeInsets.only(right: 30.0, left: 30.0),
+      child: ListView(
+        children: <Widget>[
+          TitleWidget(text: 'Ayuda', color: essadeBlack, textAlign: TextAlign.center),
+          SizedBox(height: 20),
+          SubtitleGuideTextWidget(
+            text: 'Si tiene alguna inquietud'
+                ' por favor comuníquese con nosotros a través de:',
+          ),
+          SizedBox(height: 20),
+          CardItemWidget(
+              text: 'Chat',
+              icon: FontAwesomeIcons.whatsapp,
+              iconColor: essadeDarkGray,
+              iconSize: 25,
+              onTap: () => _launchWhatsAppURL()) ,
+          SizedBox(height: 20),
+          CardItemWidget(text: 'Preguntas frecuentes', icon: FontAwesomeIcons.question,  onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailPage(
+                      child: FAQDetailPage(),
+                      onBackPressed: () => Navigator.of(context).pop(),
+                    )
+                )
+            );
+          }),
+          SizedBox(height: 20),
+          Divider(
+            height: 20,
+            thickness: 2,
+            color: essadeGray.withOpacity(0.3),
+          ),
+          SizedBox(height: 20),
+          _suggestionsForm(),
 
-          ],
-        ),
+        ],
       ),
     );
   }
