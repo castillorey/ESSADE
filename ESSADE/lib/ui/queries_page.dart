@@ -21,7 +21,6 @@ class _QueriesPageState extends State<QueriesPage> {
   int indexProjectSelected;
   Project projectSelected;
   List<Project> projects;
-  bool _showConsultImage;
 
 @override
   void initState() {
@@ -29,13 +28,6 @@ class _QueriesPageState extends State<QueriesPage> {
 
     indexProjectSelected = 0;
     thereIsProjectSelected = false;
-    _showConsultImage = true;
-  }
-
-  void onExpansionTileToggle(bool value){
-    setState(() {
-      _showConsultImage = !value;
-    });
   }
 
   @override
@@ -66,32 +58,23 @@ class _QueriesPageState extends State<QueriesPage> {
                       style: essadeH2(essadeBlack),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.asset('assets/images/consult.png', height: screenSizeHeight * 0.25),
+                    child: Image.asset('assets/images/consult.png', height: screenSizeHeight * 0.22),
                   ),
-                  ExpansionTile(
-                    onExpansionChanged: (value){
-                      onExpansionTileToggle(value);
-                    },
-                      leading: Icon(Icons.work),
-                      title: Text('Mis proyectos', style: essadeParagraph()),
-                      children: projects.map((p){
-                        return ListTile(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProjectDetailPage(project: p))
-                            );
-                          },
-                          title: Text(p.name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
-                          subtitle: Text('${p.city}, ${p.state}', style: essadeLightfont()),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                        );
-                      }).toList()
+                  Text('Mis proyectos', style: essadeH4(essadeDarkGray)),
+                  SizedBox(height: 5.0),
+                  Divider(
+                    indent: screenSizeWidth * 0.2,
+                    endIndent: screenSizeWidth * 0.2,
+                    thickness: 1,
+                    color: essadePrimaryColor,
                   ),
+                  SizedBox(height: 5.0),
+                  Flexible(
+                    child: _buildTilesList(projects),
+                  )
                 ],
               );
             }
@@ -104,5 +87,26 @@ class _QueriesPageState extends State<QueriesPage> {
         },
       ),
     );
+  }
+
+  _buildTilesList(List<Project> projects){
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: projects.length,
+      separatorBuilder: (context, index) => Divider(),
+      itemBuilder: (_, i) {
+        return ListTile(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProjectDetailPage(project: projects[i]))
+            );
+          },
+          title: Text(projects[i].name, style: essadeParagraph(color: essadeBlack.withOpacity(0.9))),
+          subtitle: Text('${projects[i].city}, ${projects[i].state}', style: essadeLightfont()),
+          trailing: Icon(Icons.keyboard_arrow_right),
+        );
+      });
   }
 }
