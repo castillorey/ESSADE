@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Movement.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
@@ -29,17 +30,14 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   @override
   Widget build(BuildContext context) {
 
-    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    _movementsQuery = Firestore.instance
-        .collection('usuarios').document(currentUser.documentID)
-        .collection('proyectos').document(widget.project.documentID)
-        .collection('movimientos').orderBy('fecha_creacion', descending: true).snapshots();
+    User _currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _movementsQuery = ProjectsRepository(_currentUser.documentID).queryMovements(widget.project.documentID);
 
     return Column(
       children: <Widget>[
         Align(
           alignment: Alignment.topLeft,
-          child: Text('Movimientos', style: essadeH4(essadeDarkGray)),
+          child: Text('Listado de movimientos', style: essadeH4(essadeDarkGray)),
         ),
         StreamBuilder<QuerySnapshot>(
           stream: _movementsQuery,

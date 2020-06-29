@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Movement.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/utilities/constants.dart';
@@ -12,17 +13,10 @@ class ProjectValuesSubpage extends StatelessWidget {
   final Project project;
   ProjectValuesSubpage({Key key, this.project}) : super(key: key);
 
-  NumberFormat _globalCurrencyFormat = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        //_title(),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Text('General', style: essadeH4(essadeDarkGray)),
-        ),
         _buildTotalPrice(),
         _buildGraph(context),
         Align(
@@ -56,10 +50,7 @@ class ProjectValuesSubpage extends StatelessWidget {
 
   _buildGraph(BuildContext context) {
     var _currentUser = Provider.of<LoginState>(context).currentUser();
-    var _movementsQuery = Firestore.instance
-        .collection('usuarios').document(_currentUser.documentID)
-        .collection('proyectos').document(project.documentID)
-        .collection('movimientos').snapshots();
+    var _movementsQuery = ProjectsRepository(_currentUser.documentID).queryMovements(project.documentID);
 
     return StreamBuilder(
       stream: _movementsQuery,
@@ -155,12 +146,12 @@ class ProjectValuesSubpage extends StatelessWidget {
   }
 
   _buildValues(String valueName, int value) {
-    final result = _globalCurrencyFormat.format(value).toString().replaceAll(',', '.');
+    final result = globalCurrencyFormat.format(value).toString().replaceAll(',', '.');
     return _projectValuesItem(valueName, result);
   }
 
   _buildTotalPrice() {
-    final result = _globalCurrencyFormat.format(project.price).toString().replaceAll(',', '.');
+    final result = globalCurrencyFormat.format(project.price).toString().replaceAll(',', '.');
     return  Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(

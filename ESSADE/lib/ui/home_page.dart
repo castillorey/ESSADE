@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   Stream<QuerySnapshot> _movementsQuery;
   Stream<QuerySnapshot> _activitiesQuery;
   bool _showStrategicInfo = true;
-  final currencyGlobalFormatter = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
 
   @override
   void initState() {
@@ -218,9 +217,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildProjectInfo(Project project){
-    final _balance = currencyGlobalFormatter.format(project.price).toString().replaceAll(',', '.');
-    final _incomes = currencyGlobalFormatter.format(project.income).toString().replaceAll(',', '.');
-    final _outgoings = currencyGlobalFormatter.format(project.outgoing).toString().replaceAll(',', '.');
+    final _balance = globalCurrencyFormat.format(project.price).toString().replaceAll(',', '.');
+    final _incomes = globalCurrencyFormat.format(project.income).toString().replaceAll(',', '.');
+    final _outgoings = globalCurrencyFormat.format(project.outgoing).toString().replaceAll(',', '.');
 
     return Flexible(
       child: ListView(

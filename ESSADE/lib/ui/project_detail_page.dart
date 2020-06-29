@@ -1,4 +1,5 @@
 import 'package:essade/models/Project.dart';
+import 'package:essade/ui/project_activities_graph_subpage.dart';
 import 'package:essade/ui/project_activities_subpage.dart';
 import 'package:essade/ui/project_movements_subpage.dart';
 import 'package:essade/ui/project_values_subpage.dart';
@@ -50,50 +51,50 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         body: Container(
           padding: EdgeInsets.only(bottom: 15.0, left: 30.0, right: 30.0),
           child: Column(
-            children: <Widget>[
-              _title(),
-              Expanded(
-                child: Container(
-                  //padding: const EdgeInsets.all(8.0),
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      Container(
-                        margin:const EdgeInsets.only(top: 10.0, bottom: 30.0),
-                        child: PageView.builder(
-                          physics: ClampingScrollPhysics(),
-                          itemCount: pagesWidgetList().length,
-                          controller: controller,
-                          scrollDirection: Axis.horizontal,
-                          onPageChanged: (int page){
-                            getChangedPageAndMoveBar(page);
-                          },
-                          itemBuilder: (context, index){
-                            return pagesWidgetList()[index];
-                          },
-                        ),
-                      ),
-                      Stack(
-                        alignment: AlignmentDirectional.topStart,
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                for (int i = 0; i < pagesWidgetList().length; i++)
-                                  if (i == currentPageValue) ...[circleBar(true)] else
-                                    circleBar(false),
-                              ],
-                            ),
+              children: <Widget>[
+                _title(),
+                Expanded(
+                  child: Container(
+                    //padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      children: <Widget>[
+                        Container(
+                          margin:const EdgeInsets.only(top: 10.0, bottom: 30.0),
+                          child: PageView.builder(
+                            physics: ClampingScrollPhysics(),
+                            itemCount: pagesWidgetList().length,
+                            controller: controller,
+                            scrollDirection: Axis.horizontal,
+                            onPageChanged: (int page){
+                              getChangedPageAndMoveBar(page);
+                            },
+                            itemBuilder: (context, index){
+                              return pagesWidgetList()[index];
+                            },
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Stack(
+                          alignment: AlignmentDirectional.topStart,
+                          children: <Widget>[
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  for (int i = 0; i < pagesWidgetList().length; i++)
+                                    if (i == currentPageValue) ...[circleBar(true)] else
+                                      circleBar(false),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ]
+              ]
           ),
         ),
       ),
@@ -136,18 +137,24 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
   }
 
   List<Widget> pagesWidgetList() => <Widget>[
+
+    Container(
+        margin: EdgeInsets.symmetric( horizontal: 10.0),
+        child: ProjectActivitiesGraphSubpage(project: widget.project)
+    ),
+    Container(
+      margin: EdgeInsets.symmetric( horizontal: 10.0),
+      child: ProjectActivitiesSubpage(project: widget.project)
+    ),
     Container(
         margin: EdgeInsets.symmetric( horizontal: 10.0),
         child: ProjectValuesSubpage(project: widget.project)
     ),
     Container(
         margin: EdgeInsets.symmetric( horizontal: 10.0),
-        child: ProjectActivitiesSubpage(project: widget.project)
-    ),
-    Container(
-        margin: EdgeInsets.symmetric( horizontal: 10.0),
-        child: ProjectMovementsSubpage(project: widget.project,)
+        child: ProjectMovementsSubpage(project: widget.project)
     )
+
   ];
 }
 

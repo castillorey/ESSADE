@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/auth/login_state.dart';
+import 'package:essade/controllers/projects_repository.dart';
 import 'package:essade/models/Activity.dart';
 import 'package:essade/models/Project.dart';
 import 'package:essade/models/User.dart';
@@ -32,17 +33,14 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
     Intl.defaultLocale = "es";
     initializeDateFormatting();
 
-    User currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    _activitiesQuery = Firestore.instance
-        .collection('usuarios').document(currentUser.documentID)
-        .collection('proyectos').document(widget.project.documentID)
-        .collection('actividades').orderBy('fecha_creacion', descending: true).snapshots();
+    User _currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    _activitiesQuery = ProjectsRepository(_currentUser.documentID).queryActivities(widget.project.documentID);
 
     return Column(
       children: <Widget>[
         Align(
           alignment: Alignment.topLeft,
-          child: Text('Actividades', style: essadeH4(essadeDarkGray)),
+          child: Text('Listado de actividades', style: essadeH4(essadeDarkGray)),
         ),
         StreamBuilder<QuerySnapshot>(
           stream: _activitiesQuery,

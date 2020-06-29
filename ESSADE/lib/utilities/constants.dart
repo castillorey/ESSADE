@@ -2,6 +2,8 @@ import 'package:essade/models/Value.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
+import 'package:intl/intl.dart';
+
 final screenSizeHeight = ui.window.physicalSize.height / ui.window.devicePixelRatio;
 final screenSizeWidth = ui.window.physicalSize.width / ui.window.devicePixelRatio;
 
@@ -84,6 +86,8 @@ final List<Value> essadeValues = [
   new Value('Compromiso', 'Planificamos con tus necesidades', 'assets/values/hands.png'),
   new Value('Servicio', 'Eres nuestra prioridad', 'assets/values/service.png'),
 ];
+
+final NumberFormat globalCurrencyFormat = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
 
 btnFontStyle(Color color, {bool bold: false}) => TextStyle(
   color: color,
