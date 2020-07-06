@@ -83,17 +83,16 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
 
   final GlobalKey<ScaffoldState> _keyLoader = new GlobalKey<ScaffoldState>();
 
-  Future _getImage() async {
+  Future<PickedFile> _getImage() async {
     try {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
-      if(pickedFile != null){
-        setState(() {
-          _image = File(pickedFile.path);
-          print("Image Picked: $_image");
-        });
-      }
+      if(pickedFile != null)
+        return pickedFile;
+
+      return null;
     } catch (error){
       print (error);
+      return null;
     }
   }
 
@@ -145,9 +144,25 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                     Flexible(
                       child: ListView(
                         children: [
-                          Text(
-                            '¿En qué estás interesado en cotizar?',
-                            style: essadeH4(essadeBlack),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  '¿En qué estás interesado en cotizar?',
+                                  style: essadeH4(essadeBlack),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 20.0),
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    border: Border.all(width: 1.0, color: essadeGray),
+                                    borderRadius: BorderRadius.circular(50.0)
+                                ),
+                                child: Image.asset('assets/images/lucho.png', height: screenSizeHeight * 0.1),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 15.0),
                           Container(
@@ -179,7 +194,15 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                                 ),
                                 SizedBox(height: 10.0),
                                 GestureDetector(
-                                  onTap: () => _getImage(),
+                                  onTap: () async {
+                                     PickedFile result = await _getImage();
+                                     if (result != null){
+                                       setState(() {
+                                         _image = File(result.path);
+                                         print("Image Picked: $_image");
+                                       });
+                                     }
+                                  },
                                   child: Container(
                                       height: 200,
                                       width: double.infinity,
