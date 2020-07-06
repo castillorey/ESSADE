@@ -37,8 +37,6 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildBody(Widget page){
     return page;
   }

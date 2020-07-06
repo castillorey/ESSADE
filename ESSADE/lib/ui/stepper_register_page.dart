@@ -108,7 +108,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  Widget _buildBody(){
+  _buildBody(){
     double topBarHeight = 90;
 
     return SingleChildScrollView(

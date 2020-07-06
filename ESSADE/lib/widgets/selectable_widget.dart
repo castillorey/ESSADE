@@ -39,7 +39,6 @@ class _SelectableWidgetState extends State<SelectableWidget> {
     itemSelected = widget.initialText;
     pickerSelection = 0;
     pickerSelectionConfirmed = 0;
-
   }
 
 

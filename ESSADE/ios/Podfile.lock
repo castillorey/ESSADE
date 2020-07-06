@@ -316,6 +316,8 @@ PODS:
   - GTMSessionFetcher/Core (1.3.1)
   - GTMSessionFetcher/Full (1.3.1):
     - GTMSessionFetcher/Core (= 1.3.1)
+  - image_picker (0.0.1):
+    - Flutter
   - leveldb-library (1.22)
   - local_auth (0.0.1):
     - Flutter
@@ -350,6 +352,7 @@ DEPENDENCIES:
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - google_sign_in_web (from `.symlinks/plugins/google_sign_in_web/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - local_auth (from `.symlinks/plugins/local_auth/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
@@ -409,6 +412,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   google_sign_in_web:
     :path: ".symlinks/plugins/google_sign_in_web/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   local_auth:
     :path: ".symlinks/plugins/local_auth/ios"
   shared_preferences:
@@ -458,6 +463,7 @@ SPEC CHECKSUMS:
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   local_auth: 25938960984c3a7f6e3253e3f8d962fdd16852bd
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd

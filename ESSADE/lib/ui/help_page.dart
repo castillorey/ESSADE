@@ -7,6 +7,7 @@ import 'package:essade/ui/tel_directory_detail_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
 import 'package:essade/widgets/info_dialog_widget.dart';
+import 'package:essade/widgets/simple_text_form_field_widget.dart';
 import 'package:essade/widgets/subtitle_guide_text_widget.dart';
 import 'package:essade/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class _HelpPageState extends State<HelpPage> {
     );
   }
 
-  Widget _suggestionsForm(){
+  _suggestionsForm(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -112,29 +113,13 @@ class _HelpPageState extends State<HelpPage> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                controller: commentInputController,
-                onChanged: (text){
-                  _formKey.currentState.validate();
-                },
-                validator: (String value){
-                  if (value.isEmpty)
-                    return 'Escriba algún comentario';
-
-                  return null;
-                },
+              SimpleTextFormFieldWidget(
+                inputType: TextInputType.text,
+                editingController: commentInputController,
+                onChanged: () => _formKey.currentState.validate(),
+                validationText: 'Escriba algún comentario',
+                hintText: 'Escriba sus comentarios',
                 maxLines: 10,
-                keyboardType: TextInputType.text,
-                style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
-                decoration: InputDecoration(
-                  hintText: 'Escriba sus comentarios',
-                  hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
-                  contentPadding: EdgeInsets.all(10.0),
-                  enabledBorder: _myBorderErrorStyle(10.0, essadeGray.withOpacity(0.5)),
-                  focusedBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
-                  errorBorder: _myBorderErrorStyle(10.0, essadeErrorColor),
-                  focusedErrorBorder: _myBorderErrorStyle(10.0, essadePrimaryColor),
-                ),
               ),
               SizedBox(height: 20.0,),
               Container(

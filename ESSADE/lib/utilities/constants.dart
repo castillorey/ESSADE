@@ -1,3 +1,4 @@
+import 'package:essade/models/Category.dart';
 import 'package:essade/models/Value.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -58,11 +59,27 @@ essadeLightfont({bool underlined = false}) => TextStyle(
   decoration: underlined ? TextDecoration.underline : null,
 );
 
+essadeCustomFont({double fontSize, Color color = essadeBlack, bool underlined = false, bool bold = false}) {
+  return TextStyle(
+    color: color,
+    fontSize: fontSize,
+    fontWeight: bold ? FontWeight.bold : null,
+    decoration: underlined ? TextDecoration.underline : null,
+  );
+}
+
 final List<String> essadeServices = [
   'Diseño',
   'Construcción',
   'Mantenimiento',
   'Remodelación'
+];
+
+final List<Category> quoteCategories = [
+  Category('Consultoría', Icons.business_center),
+  Category('Mantenimiento', Icons.build),
+  Category('Remodelación', Icons.pan_tool),
+  Category('Otros', Icons.more_horiz),
 ];
 
 final String essadeWhoWeAreP1 = 'ESSADE S.A.S., es una empresa constructora de obras civiles, '

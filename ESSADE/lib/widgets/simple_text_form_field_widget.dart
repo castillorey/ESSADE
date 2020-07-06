@@ -10,9 +10,10 @@ class SimpleTextFormFieldWidget extends StatelessWidget {
   final bool obscureText;
   final String label;
   final bool validateNewPassword;
+  final int maxLines;
 
 
-  const SimpleTextFormFieldWidget({Key key, this.editingController, this.onChanged, this.validationText, this.hintText, this.inputType, this.obscureText = false, this.label = '', this.validateNewPassword = false}) : super(key: key);
+  const SimpleTextFormFieldWidget({Key key, this.editingController, this.onChanged, this.validationText, this.hintText, this.inputType, this.obscureText = false, this.label = '', this.validateNewPassword = false, this.maxLines = 1}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,6 +41,7 @@ class SimpleTextFormFieldWidget extends StatelessWidget {
 
               return null;
             },
+            maxLines: maxLines,
             keyboardType: inputType,
             style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
             decoration: InputDecoration(

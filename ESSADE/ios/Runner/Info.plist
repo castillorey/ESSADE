@@ -56,5 +56,14 @@
 	<key>NSFaceIDUsageDescription</key>
     <string>Why is my app authenticating using face id?</string>
 
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Need to upload image</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Need to upload image</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need to upload image</string>
+
+
+
 </dict>
 </plist>

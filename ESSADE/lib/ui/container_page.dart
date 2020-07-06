@@ -4,6 +4,7 @@ import 'package:essade/ui/about_page.dart';
 import 'package:essade/ui/help_page.dart';
 import 'package:essade/ui/queries_page.dart';
 import 'package:essade/ui/quote_page.dart';
+import 'package:essade/ui/stepper_quote_page.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/top_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _ContainerPageState extends State<ContainerPage> {
   final List<Widget> _pageList = [
     HomePage(),
     QuotePage(),
+    //StepperQuotePage(),
     QueriesPage(),
     HelpPage(),
     AboutPage(),
