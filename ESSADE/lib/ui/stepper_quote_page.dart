@@ -10,8 +10,10 @@ import 'package:essade/widgets/simple_text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mailer/mailer.dart';
 import 'detail_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mailer/smtp_server.dart';
 
 class StepperQuotePage extends StatefulWidget {
   @override
@@ -29,6 +31,35 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   bool _nonCategorySelected = false;
   File _image;
   final picker = ImagePicker();
+  List<String> attachments = [];
+  bool isHTML = false;
+
+  final GlobalKey<ScaffoldState> _keyLoader = new GlobalKey<ScaffoldState>();
+
+  sendEmail() async {
+    String username = 'castilloreyeskm@gmail.com';
+    String password = '';
+
+    final smtpServer = gmail(username, password);
+    // Creating the Gmail server
+
+    // Create our email message.
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add('dest@example.com') //recipent email
+      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com']) //cc Recipents emails
+      ..bccRecipients.add(Address('bccAddress@example.com')) //bcc Recipents emails
+      ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}' //subject of the email
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'; //body of the email
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString()); //print if the email is sent
+    } on MailerException catch (e) {
+      print('Message not sent. \n'+ e.toString()); //print if the email is not sent
+      // e.toString() will show why the email is not sending
+    }
+  }
 
 
   void _nextFormStep() {
@@ -81,13 +112,16 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
 
   }
 
-  final GlobalKey<ScaffoldState> _keyLoader = new GlobalKey<ScaffoldState>();
-
   Future<PickedFile> _getImage() async {
     try {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
-      if(pickedFile != null)
+      if(pickedFile != null){
+        setState(() {
+          attachments.add(pickedFile.path);
+        });
         return pickedFile;
+      }
+
 
       return null;
     } catch (error){
