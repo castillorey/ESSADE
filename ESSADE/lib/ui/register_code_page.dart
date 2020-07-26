@@ -78,8 +78,8 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 objectKey: 'nombre',
                 documents: idTypes,
                 initialText: 'Seleccionar',
-                onItemSelected: (item){
-                  if(item != null)
+                onItemSelected: (item) {
+                  if (item != null)
                     setState(() {
                       itemSelected = idTypes[item];
                       isDocumentSelected = true;
@@ -102,12 +102,13 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 textColor: Colors.white,
                 text: 'Validar',
                 onPressed: () async {
-                  if(!isDocumentSelected){
+                  if (!isDocumentSelected) {
                     setState(() {
                       selectableBorderColor = essadeErrorColor;
                     });
                   }
-                  if (_formKey.currentState.validate() && itemSelected != '----'){
+                  if (_formKey.currentState.validate() &&
+                      itemSelected != '----') {
                     setState(() {
                       documentId = documentIdController.text;
                     });
@@ -123,20 +124,20 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
     );
   }
 
-  void onDocumentSelectedCallback(){
+  void onDocumentSelectedCallback() {
     setState(() {
       isDocumentSelected = true;
     });
   }
-  Widget _myTextFormField(){
+
+  Widget _myTextFormField() {
     return TextFormField(
       controller: documentIdController,
-      onChanged: (text){
+      onChanged: (text) {
         _formKey.currentState.validate();
       },
-      validator: (String value){
-        if (value.isEmpty)
-          return 'Ingrese su No. de ID';
+      validator: (String value) {
+        if (value.isEmpty) return 'Ingrese su No. de ID';
 
         return null;
       },
@@ -155,8 +156,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
           contentPadding: EdgeInsets.all(20.0),
           errorBorder: essadeBorderErrorStyle(10.0, Colors.white),
           focusedErrorBorder: essadeBorderErrorStyle(10.0, Colors.white),
-          errorStyle: TextStyle(color: Colors.white)
-      ),
+          errorStyle: TextStyle(color: Colors.white)),
     );
   }
 
@@ -165,13 +165,16 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
       showLoadingProgressCircle(context, _keyLoader);
       bool result = await Provider.of<LoginState>(context, listen: false)
           .handleDocumentIdValidation(itemSelected, documentId);
-      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close loadingCircle
-      if(result){
+      Navigator.of(_keyLoader.currentContext, rootNavigator: true)
+          .pop(); //close loadingCircle
+      if (result) {
         print(documentIdController.text);
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => StepperRegisterPage(noId: documentId,))
-        );
+            MaterialPageRoute(
+                builder: (context) => StepperRegisterPage(
+                      noId: documentId,
+                    )));
       } else {
         showDialog(
             context: context,
@@ -184,8 +187,7 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
                 icon: Icons.error,
                 textAlign: TextAlign.center,
               );
-            }
-        );
+            });
       }
       documentIdController.clear();
     } catch (error) {
@@ -196,9 +198,10 @@ class _RegisterCodePageState extends State<RegisterCodePage> {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
-            return InfoDialogWidget(message: 'Lo sentimos ha ocurrido un error :(', icon: Icons.error_outline);
-          }
-      );
+            return InfoDialogWidget(
+                message: 'Lo sentimos ha ocurrido un error :(',
+                icon: Icons.error_outline);
+          });
     }
   }
 }

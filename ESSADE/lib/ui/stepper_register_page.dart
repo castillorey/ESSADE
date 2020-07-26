@@ -36,7 +36,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  void _previousFormStep(){
+  void _previousFormStep() {
     _formsPageViewController.previousPage(
       duration: Duration(milliseconds: 300),
       curve: Curves.ease,
@@ -80,10 +80,9 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     currentPageValue = 0;
 
     _name = '';
-    _email= '';
+    _email = '';
     _password = '';
     _noId = widget.noId;
-
   }
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
@@ -93,23 +92,21 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            TopBarWidget(),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: _buildBody()
-            ),
-          ],
-        )
-      ),
+          resizeToAvoidBottomPadding: false,
+          backgroundColor: Colors.white,
+          body: Column(
+            children: [
+              TopBarWidget(),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: _buildBody()),
+            ],
+          )),
     );
   }
 
-  _buildBody(){
-    double topBarHeight = 90;
+  _buildBody() {
+    double topBarHeight = 100;
 
     return SingleChildScrollView(
       child: Column(
@@ -125,7 +122,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               itemBuilder: (BuildContext context, int index) {
                 return _formSteps[index];
               },
-              onPageChanged: (int page){
+              onPageChanged: (int page) {
                 getChangedPage(page);
               },
             ),
@@ -135,7 +132,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  Widget Step1Container(BuildContext context){
+  Widget Step1Container(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
     return Container(
@@ -177,7 +174,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               children: <Widget>[
                 _nextButton(() {
                   FocusScope.of(context).unfocus();
-                  if(_formKey.currentState.validate()){
+                  if (_formKey.currentState.validate()) {
                     setState(() {
                       _name = nameInputController.text;
                       _email = emailInputController.text;
@@ -193,7 +190,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  Widget Step2Container(BuildContext context){
+  Widget Step2Container(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -219,7 +216,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 ),
                 SizedBox(width: 5.0),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -231,10 +228,8 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                                   '* Al menos 8 caractéres\n'
                                   '* Al menos una letra\n'
                                   '* Y al menos un número\n',
-                              icon: Icons.warning
-                          );
-                        }
-                    );
+                              icon: Icons.warning);
+                        });
                   },
                   child: Icon(
                     Icons.info,
@@ -263,11 +258,10 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 obscureText: true,
                 controller: repeatPasswordInputController,
                 onChanged: (text) => _formKey.currentState.validate(),
-                validator: (String value){
-                  if (value.isEmpty)
-                    return 'Debe repetir la contraseña';
+                validator: (String value) {
+                  if (value.isEmpty) return 'Debe repetir la contraseña';
 
-                  if(value != passwordInputController.text)
+                  if (value != passwordInputController.text)
                     return 'Las contraseñas no coinciden';
 
                   return null;
@@ -276,12 +270,16 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
                 style: TextStyle(color: essadeBlack, fontFamily: 'Raleway'),
                 decoration: InputDecoration(
                   hintText: 'Repetir contraseña',
-                  hintStyle: TextStyle(color: essadeGray, fontFamily: 'Raleway'),
+                  hintStyle:
+                      TextStyle(color: essadeGray, fontFamily: 'Raleway'),
                   contentPadding: EdgeInsets.all(18.0),
-                  enabledBorder: essadeBorderErrorStyle(15.0, essadeGray.withOpacity(0.5)),
-                  focusedBorder: essadeBorderErrorStyle(15.0, essadePrimaryColor),
+                  enabledBorder:
+                      essadeBorderErrorStyle(15.0, essadeGray.withOpacity(0.5)),
+                  focusedBorder:
+                      essadeBorderErrorStyle(15.0, essadePrimaryColor),
                   errorBorder: essadeBorderErrorStyle(15.0, essadeErrorColor),
-                  focusedErrorBorder: essadeBorderErrorStyle(15.0, essadePrimaryColor),
+                  focusedErrorBorder:
+                      essadeBorderErrorStyle(15.0, essadePrimaryColor),
                 ),
               ),
             ),
@@ -291,7 +289,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
               children: <Widget>[
                 _backButton(),
                 _nextButton(() async {
-                  if(_formKey.currentState.validate()){
+                  if (_formKey.currentState.validate()) {
                     setState(() {
                       _password = passwordInputController.text;
                     });
@@ -306,7 +304,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  Widget _backButton(){
+  Widget _backButton() {
     return GestureDetector(
       onTap: () => _previousFormStep(),
       child: Container(
@@ -319,7 +317,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
     );
   }
 
-  Widget _nextButton(Function onPressed){
+  Widget _nextButton(Function onPressed) {
     return RaisedButton(
       elevation: 5.0,
       onPressed: onPressed,
@@ -336,23 +334,25 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
   }
 
   Future<void> _handleRegisterSubmit(BuildContext context) async {
-    try{
+    try {
       showLoadingProgressCircle(context, _keyLoader);
       dynamic result = await Provider.of<LoginState>(context, listen: false)
           .registerWithEmailAndPassword(_email, _password, _name, _noId);
-      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();//close showLoadingProgressCircle
-      if(result == null){
-        _myShowDialog(context, 'Hay algo raro con el correo proporcionado. Échale un vistaso');
+      Navigator.of(_keyLoader.currentContext, rootNavigator: true)
+          .pop(); //close showLoadingProgressCircle
+      if (result == null) {
+        _myShowDialog(context,
+            'Hay algo raro con el correo proporcionado. Échale un vistaso');
         return null;
       }
       Navigator.of(context).popUntil((route) => route.isFirst);
-    } catch(error){
+    } catch (error) {
       print(error);
       _myShowDialog(context, 'Lo sentimos, ha ocurrido un error muy raro');
     }
   }
 
-  _myShowDialog(BuildContext context, String message){
+  _myShowDialog(BuildContext context, String message) {
     showDialog(
         context: context,
         builder: (context) {
@@ -362,9 +362,7 @@ class _StepperRegisterPageState extends State<StepperRegisterPage> {
           return InfoDialogWidget(
               message: message,
               textAlign: TextAlign.center,
-              icon: Icons.error_outline
-          );
-        }
-    );
+              icon: Icons.error_outline);
+        });
   }
 }
