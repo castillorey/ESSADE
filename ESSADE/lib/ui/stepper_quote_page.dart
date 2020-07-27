@@ -4,6 +4,7 @@ import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Category.dart';
 import 'package:essade/models/User.dart';
 import 'package:essade/ui/how_to_contact_page.dart';
+import 'package:essade/widgets/long_button_widget.dart';
 import 'package:essade/widgets/quote_categories_select_widget.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/card_item_widget.dart';
@@ -17,7 +18,6 @@ import 'package:provider/provider.dart';
 import 'detail_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:path/path.dart' as path;
 
 class StepperQuotePage extends StatefulWidget {
   @override
@@ -28,6 +28,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   PageController formsPageViewController = PageController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+  TextEditingController nameInputController = TextEditingController();
+  TextEditingController emailInputController = TextEditingController();
   User currentUser;
   List _formSteps = [];
   String _description;
@@ -37,13 +39,21 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   File _image;
   final picker = ImagePicker();
   File imageFile;
+  String _guestName;
+  String _guestEmail;
 
   @override
   void initState() {
     super.initState();
 
     currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
+    print('Current User: $currentUser');
     _formSteps = [
+      if (currentUser == null)
+        WillPopScope(
+          onWillPop: () => Future.sync(this.onWillPop),
+          child: _buildGuestStep(context),
+        ),
       WillPopScope(
         onWillPop: () => Future.sync(this.onWillPop),
         child: _buildStepOne(context),
@@ -106,21 +116,23 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
     }
   }
 
-  Future<void> sendEmail(User user, String category, String description,
-      File image, String response) async {
+  Future<void> sendEmail(String userName, String userEmail, String category,
+      String description, File image, String response) async {
     String username = 'noreply.essade@gmail.com';
     String password = 'essade2020';
 
     final smtpServer = gmail(username, password);
     final message = Message()
       ..from = Address(username)
-      ..recipients.add('castilloreyeskm@gmail.com')
+      ..recipients.add('gerencia.essade@gmail.com')
       //..ccRecipients.addAll(['gerencia.essade@gmail.com'])
       //..bccRecipients.add(Address('bccAddress@example.com'))
       ..subject =
           'Nueva Cotización - ${DateFormat('kk:mm:ss \n EEE d MMM').format(DateTime.now())}'
-      ..html = "<h4>Correo cliente:</h4>\n" +
-          "<p>${user.email}</p>\n" +
+      ..html = "<h4>Nombre cotizante:</h4>\n" +
+          "<p>$userName</p>\n" +
+          "<h4>Correo cliente:</h4>\n" +
+          "<p>$userEmail</p>\n" +
           "<h4>Categoria a cotizar:</h4>\n" +
           "<p>$category</p>\n" +
           "<h4>Descripción:</h4>\n" +
@@ -172,6 +184,84 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
     );
   }
 
+  _buildGuestStep(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              //width: MediaQuery.of(context).size.width / 1.5,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      'Empecemos con tus datos personales',
+                      style: essadeCustomFont(
+                          fontSize: 23.0,
+                          fontFamily: 'Raleway',
+                          bold: true,
+                          color: essadeBlack),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20.0),
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: essadeGray),
+                        borderRadius: BorderRadius.circular(50.0)),
+                    child: Image.asset('assets/images/lucho.png',
+                        height: screenSizeHeight * 0.1),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            SimpleTextFormFieldWidget(
+              label: '¿Cuál es su nombre?',
+              inputType: TextInputType.text,
+              editingController: nameInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su nombre',
+              hintText: 'Su nombre',
+            ),
+            SizedBox(height: 5.0),
+            SimpleTextFormFieldWidget(
+              label: 'Correo electrónico',
+              inputType: TextInputType.emailAddress,
+              editingController: emailInputController,
+              onChanged: () => _formKey.currentState.validate(),
+              validationText: 'Ingrese su correo electrónico',
+              hintText: 'Su correo electrónico',
+            ),
+            SizedBox(height: 20.0),
+            LongButtonWidget(
+                text: 'Siguiente',
+                icon: null,
+                backgroundColor: essadePrimaryColor,
+                textColor: Colors.white,
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  if (_formKey.currentState.validate()) {
+                    setState(() {
+                      _guestName = nameInputController.text;
+                      _guestEmail = emailInputController.text;
+                    });
+                    _nextFormStep();
+                  }
+                })
+          ],
+        ),
+      ),
+    );
+  }
+
   _buildStepOne(BuildContext context) {
     List<Category> _categories = quoteCategories;
     final _formKey = GlobalKey<FormState>();
@@ -192,7 +282,7 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                           children: [
                             Flexible(
                               child: Text(
-                                '¿En qué estás interesado en cotizar?',
+                                '¿Qué te interesa cotizar?',
                                 style: essadeH4(essadeBlack),
                               ),
                             ),
@@ -317,6 +407,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   }
 
   _buildStepTwo(BuildContext context) {
+    var _userName = currentUser != null ? currentUser.name : _guestName;
+    var _userEmail = currentUser != null ? currentUser.email : _guestEmail;
     return Container(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,8 +432,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
             iconColor: essadeDarkGray,
             iconSize: 25,
             onTap: () {
-              sendEmail(currentUser, _categorySelected, _description, imageFile,
-                  'Por LLamada');
+              sendEmail(_userName, _userEmail, _categorySelected, _description,
+                  imageFile, 'Por LLamada');
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -362,8 +454,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
             iconColor: essadeDarkGray,
             iconSize: 25,
             onTap: () {
-              sendEmail(currentUser, _categorySelected, _description, imageFile,
-                  'Por correo');
+              sendEmail(_userName, _userEmail, _categorySelected, _description,
+                  imageFile, 'Por correo');
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -384,8 +476,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
             iconColor: essadeDarkGray,
             iconSize: 25,
             onTap: () {
-              sendEmail(currentUser, _categorySelected, _description, imageFile,
-                  'Llama cuando pueda');
+              sendEmail(_userName, _userEmail, _categorySelected, _description,
+                  imageFile, 'Llama cuando pueda');
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

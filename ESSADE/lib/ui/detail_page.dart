@@ -19,25 +19,26 @@ class DetailPage extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(backButtonIcon, color: essadeBlack),
-            onPressed: () => onBackPressed(),
+          resizeToAvoidBottomPadding: false,
+          appBar: AppBar(
+            leading: onBackPressed != null
+                ? IconButton(
+                    icon: Icon(backButtonIcon, color: essadeBlack),
+                    onPressed: () => onBackPressed(),
+                  )
+                : null,
+            backgroundColor: Colors.transparent,
+            brightness: Brightness.light,
+            elevation: 0.0,
           ),
-          backgroundColor: Colors.transparent,
-          brightness: Brightness.light,
-          elevation: 0.0,
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: _buildBody(child),
-        )
-      ),
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+            child: _buildBody(child),
+          )),
     );
   }
 
-  Widget _buildBody(Widget page){
+  Widget _buildBody(Widget page) {
     return page;
   }
 }

@@ -6,20 +6,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class LoginState with ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore db = Firestore.instance;
   SharedPreferences _prefs;
 
-
   User _user;
   bool _loggedIn = false;
   bool _loading = false;
   bool _emailVerified = false;
+  bool _guestQuoteDisplayed = false;
 
-  LoginState(){
+  LoginState() {
     loginState();
   }
 
@@ -27,30 +26,36 @@ class LoginState with ChangeNotifier {
   bool isLoading() => _loading;
   bool isEmailVerified() => _emailVerified;
   User currentUser() => _user;
+  bool guestQuoteHasBeenDisplayed() => _guestQuoteDisplayed;
 
-  bool isBiometricActivated(){
-    if(_prefs.containsKey('username'))
-      return true;
+  bool isBiometricActivated() {
+    if (_prefs.containsKey('username')) return true;
 
     return false;
   }
 
+  bool shouldDisplayGuestQuote() {
+    if (_prefs.containsKey('notShowGuestQuote')) return false;
+
+    return true;
+  }
+
   void loginState() async {
-    print('Verifying Login state');
+    _loading = true;
+    notifyListeners();
     _prefs = await SharedPreferences.getInstance();
-    if(_prefs.containsKey('isLoggedIn')){
-      _loading = true;
-      notifyListeners();
+    if (_prefs.containsKey('isLoggedIn')) {
       var currentUser = await getCurrentUser();
-      if(currentUser != null && isEmailVerified()){
-        _loggedIn = true;
+      if (currentUser != null && isEmailVerified()) {
         _user = currentUser;
+        _loggedIn = true;
+        notifyListeners();
       } else {
         logout();
       }
-      _loading = false;
-      notifyListeners();
     }
+    _loading = false;
+    notifyListeners();
   }
 
   void login(BuildContext context, String email, String password) async {
@@ -60,12 +65,11 @@ class LoginState with ChangeNotifier {
     _loading = false;
     notifyListeners();
 
-    if(_user != null){
+    if (_user != null) {
       print('Iniciando sesión');
       _prefs.setBool('isLoggedIn', true);
       _loggedIn = true;
-    }
-    else{
+    } else {
       print('Inicio sesión fallido');
       showDialog(
           context: context,
@@ -76,10 +80,8 @@ class LoginState with ChangeNotifier {
             return InfoDialogWidget(
                 message: 'Usuario o contraseña incorrecta',
                 textAlign: TextAlign.center,
-                icon: Icons.error_outline
-            );
-          }
-      );
+                icon: Icons.error_outline);
+          });
     }
   }
 
@@ -93,18 +95,21 @@ class LoginState with ChangeNotifier {
         _loading = false;
         _prefs.remove('isLoggedIn');
         _loggedIn = false;
+        //notifyGuestQuoteDisplayed();
+        _prefs.remove('notShowGuestQuote');
         notifyListeners();
       });
-    } catch(error) {
+    } catch (error) {
       print(error.toString());
       _loggedIn = false;
+      notifyGuestQuoteDisplayed();
       notifyListeners();
     }
   }
 
-  void emailAndPasswordSignUp(FirebaseUser user) async{
+  void emailAndPasswordSignUp(FirebaseUser user) async {
     print('INICIANDO SESION DESPUES DE REGISTRO');
-    if(user != null){
+    if (user != null) {
       _user = await getCurrentUser();
       print('User: ${_user.toString()}');
       _prefs.setBool('isLoggedIn', true);
@@ -114,15 +119,25 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 
-  void biometricLogin(BuildContext context){
+  void biometricLogin(BuildContext context) {
     login(context, _prefs.get('username'), _prefs.get('password'));
   }
 
+  void notifyGuestQuoteDisplayed({bool notShowAgain = false}) {
+    _guestQuoteDisplayed = true;
+    if (notShowAgain) disableGuestQuote();
+    notifyListeners();
+  }
+
+  void disableGuestQuote() {
+    _prefs.setBool('notShowGuestQuote', true);
+  }
+
   Future<User> _handleSignIn(String email, String password) async {
-    try{
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      if(result == null)
-        return null;
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if (result == null) return null;
 
       print('Email signed correctly');
       _emailVerified = result.user.isEmailVerified;
@@ -130,49 +145,54 @@ class LoginState with ChangeNotifier {
       FirebaseUser firebaseUser = result.user;
       print('Email: ${firebaseUser.email}');
 
-      QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: firebaseUser.email).getDocuments();
-      if(_query.documents.length == 0)
-        return null;
+      QuerySnapshot _query = await db
+          .collection('usuarios')
+          .where('correo', isEqualTo: firebaseUser.email)
+          .getDocuments();
+      if (_query.documents.length == 0) return null;
       print('Email signed correctly and valid');
       user = User.fromSnapshot(_query.documents[0]);
       return user;
-
-    } catch(error){
+    } catch (error) {
       print(error.toString());
       return null;
     }
   }
 
   Future<User> getCurrentUser() async {
-    try{
+    try {
       User user = User();
       var currentUser = await _auth.currentUser();
-      QuerySnapshot _query = await db.collection('usuarios').where('correo', isEqualTo: currentUser.email).getDocuments();
-      if(_query.documents.length == 0)
-        return null;
+      QuerySnapshot _query = await db
+          .collection('usuarios')
+          .where('correo', isEqualTo: currentUser.email)
+          .getDocuments();
+      if (_query.documents.length == 0) return null;
 
       _emailVerified = currentUser.isEmailVerified;
       print('ASKING FOR EMAIL?: $_emailVerified');
       user = User.fromSnapshot(_query.documents[0]);
 
       return user;
-    } catch(error){
+    } catch (error) {
       print(error.toString());
       return null;
     }
   }
 
-  Future<User> registerWithEmailAndPassword(String email, String password, String name, String noId) async {
-    try{
-
-      QuerySnapshot ref = await db.collection('usuarios').where('no_id', isEqualTo: noId).getDocuments();
-      if(ref.documents.length == 0)
-        return null;
+  Future<User> registerWithEmailAndPassword(
+      String email, String password, String name, String noId) async {
+    try {
+      QuerySnapshot ref = await db
+          .collection('usuarios')
+          .where('no_id', isEqualTo: noId)
+          .getDocuments();
+      if (ref.documents.length == 0) return null;
       print('VALID USER signing');
-      
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      if(result == null)
-        return null;
+
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if (result == null) return null;
       print('User succesfully created');
 
       await result.user.sendEmailVerification();
@@ -182,28 +202,33 @@ class LoginState with ChangeNotifier {
       newUser.setName = name;
       newUser.setEmail = email.toLowerCase();
       newUser.setIsRegistered = true;
-      db.collection('usuarios').document(newUser.documentID).updateData(newUser.toJson());
+      db
+          .collection('usuarios')
+          .document(newUser.documentID)
+          .updateData(newUser.toJson());
       emailAndPasswordSignUp(result.user);
 
       return newUser;
-    } catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-  Future<bool> handleDocumentIdValidation(String idType, String noId,) async {
+  Future<bool> handleDocumentIdValidation(
+    String idType,
+    String noId,
+  ) async {
     try {
       QuerySnapshot _query = await db
           .collection('usuarios')
           .where('no_id', isEqualTo: noId)
           .where('tipo_id', isEqualTo: idType)
-          .where('registrado', isEqualTo: false).getDocuments();
-      if(_query.documents.length != 0)
-        return true;
+          .where('registrado', isEqualTo: false)
+          .getDocuments();
+      if (_query.documents.length != 0) return true;
 
       return false;
-
     } catch (error) {
       print(error.toString());
       return null;
@@ -216,7 +241,7 @@ class LoginState with ChangeNotifier {
     var currentUser = await _auth.currentUser();
     await currentUser.reload();
 
-    if(currentUser != null)
+    if (currentUser != null)
       _user = await getCurrentUser();
     else
       showDialog(
@@ -228,14 +253,11 @@ class LoginState with ChangeNotifier {
             return InfoDialogWidget(
                 message: 'Su correo no ha sido verificado',
                 textAlign: TextAlign.center,
-                icon: Icons.error
-            );
-          }
-      );
+                icon: Icons.error);
+          });
 
     _loading = false;
     notifyListeners();
-
   }
 
   Future<void> resetPassword(String email) async {
@@ -245,18 +267,19 @@ class LoginState with ChangeNotifier {
       await _auth.sendPasswordResetEmail(email: email);
       _loading = false;
       notifyListeners();
-    } catch(error) {
+    } catch (error) {
       print(error);
       _loading = false;
       notifyListeners();
     }
   }
 
-  Future<void> activateBiometric(BuildContext context, String email, String password) async {
+  Future<void> activateBiometric(
+      BuildContext context, String email, String password) async {
     _loading = true;
     notifyListeners();
     _user = await _handleSignIn(email, password);
-    if(_user != null){
+    if (_user != null) {
       print('SIGNED!');
       _prefs.setString('username', email);
       _prefs.setString('password', password);
@@ -271,12 +294,9 @@ class LoginState with ChangeNotifier {
             return InfoDialogWidget(
                 message: 'Biométrico activado',
                 textAlign: TextAlign.center,
-                icon: Icons.done
-            );
-          }
-      );
-    }
-    else{
+                icon: Icons.done);
+          });
+    } else {
       showDialog(
           context: context,
           builder: (context) {
@@ -286,10 +306,8 @@ class LoginState with ChangeNotifier {
             return InfoDialogWidget(
                 message: 'Usuario o contraseña incorrecta',
                 textAlign: TextAlign.center,
-                icon: Icons.error_outline
-            );
-          }
-      );
+                icon: Icons.error_outline);
+          });
     }
     _loading = false;
     notifyListeners();
@@ -301,43 +319,38 @@ class LoginState with ChangeNotifier {
       notifyListeners();
       bool usr = await _prefs.remove('username');
       bool pswd = await _prefs.remove('password');
-        if(usr & pswd){
-          showDialog(
-              context: context,
-              builder: (_context) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(_context).pop(true);
-                  Navigator.of(context).pop();
-                });
-                return InfoDialogWidget(
-                    message: 'Biométrico desactivado',
-                    textAlign: TextAlign.center,
-                    icon: Icons.done
-                );
-              }
-          );
-        } else {
-          showDialog(
-              context: context,
-              builder: (_context) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(_context).pop(true);
-                });
-                return InfoDialogWidget(
-                    message: 'Lo sentimos ha ocurrido un error',
-                    textAlign: TextAlign.center,
-                    icon: Icons.error
-                );
-              }
-          );
-        }
+      if (usr & pswd) {
+        showDialog(
+            context: context,
+            builder: (_context) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(_context).pop(true);
+                Navigator.of(context).pop();
+              });
+              return InfoDialogWidget(
+                  message: 'Biométrico desactivado',
+                  textAlign: TextAlign.center,
+                  icon: Icons.done);
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (_context) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(_context).pop(true);
+              });
+              return InfoDialogWidget(
+                  message: 'Lo sentimos ha ocurrido un error',
+                  textAlign: TextAlign.center,
+                  icon: Icons.error);
+            });
+      }
       _loading = false;
       notifyListeners();
-    } catch(e) {
+    } catch (e) {
       print(e);
       return null;
     }
-
   }
 
   void googleLogin() async {
@@ -350,7 +363,6 @@ class LoginState with ChangeNotifier {
     _loggedIn = true;
     print('Iniciando sesión');
     notifyListeners();
-
   }
 
   Future<FirebaseUser> _handleGoogleSignIn() async {
@@ -358,14 +370,16 @@ class LoginState with ChangeNotifier {
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
 
-      if (googleUser != null){
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         final AuthCredential credential = GoogleAuthProvider.getCredential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
 
-        final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+        final FirebaseUser user =
+            (await _auth.signInWithCredential(credential)).user;
         print("signed in " + user.displayName);
         return user;
       }
@@ -374,5 +388,4 @@ class LoginState with ChangeNotifier {
     }
     return null;
   }
-
 }

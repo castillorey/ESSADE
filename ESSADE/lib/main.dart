@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:essade/models/global.dart';
 import 'package:essade/ui/container_page.dart';
 import 'package:essade/ui/login_page.dart';
+import 'package:essade/ui/quote_start_page.dart';
 import 'package:essade/ui/register_code_page.dart';
 import 'package:essade/ui/stepper_register_page.dart';
 import 'package:essade/ui/verifiy_email_page.dart';
@@ -19,16 +20,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
 
-    Firestore.instance
-        .collection('proyectos')
-        .snapshots()
-        .listen((data) =>
-        data.documents.forEach((doc) => print(doc["nombre"])));
+    Firestore.instance.collection('proyectos').snapshots().listen(
+        (data) => data.documents.forEach((doc) => print(doc["nombre"])));
   }
 
   @override
@@ -38,12 +35,13 @@ class _MyAppState extends State<MyApp> {
     precacheImage(AssetImage('assets/images/meeting.png'), context);
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => LoginState(),
       child: GestureDetector(
-        onTap:  () {
+        onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -51,19 +49,23 @@ class _MyAppState extends State<MyApp> {
           child: MaterialApp(
             title: 'ESSADE App',
             theme: ThemeData(
-              primarySwatch: primaryMaterialColor,
-              canvasColor: Colors.transparent,
-              scaffoldBackgroundColor: Colors.white
-            ),
+                primarySwatch: primaryMaterialColor,
+                canvasColor: Colors.transparent,
+                scaffoldBackgroundColor: Colors.white),
             routes: {
               '/': (BuildContext context) {
                 var state = Provider.of<LoginState>(context);
-                if(state.isLoggedIn()){
-                  if(state.isEmailVerified())
+
+                if (state.isLoggedIn()) {
+                  if (state.isEmailVerified())
                     return ContainerPage();
                   else
                     return VerifyEmailPage();
                 }
+
+                if (!state.guestQuoteHasBeenDisplayed() &&
+                    !state.isLoading() &&
+                    state.shouldDisplayGuestQuote()) return QuoteStartPage();
                 return LoginPage();
               },
             },

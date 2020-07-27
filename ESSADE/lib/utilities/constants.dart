@@ -5,64 +5,72 @@ import 'dart:ui' as ui;
 
 import 'package:intl/intl.dart';
 
-final screenSizeHeight = ui.window.physicalSize.height / ui.window.devicePixelRatio;
-final screenSizeWidth = ui.window.physicalSize.width / ui.window.devicePixelRatio;
+final screenSizeHeight =
+    ui.window.physicalSize.height / ui.window.devicePixelRatio;
+final screenSizeWidth =
+    ui.window.physicalSize.width / ui.window.devicePixelRatio;
 
 essadeTitle(Color color) => TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 30,
     fontWeight: FontWeight.bold,
-    color: color
-);
+    color: color);
 
 essadeH3(Color color) => TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 25,
     fontWeight: FontWeight.bold,
-    color: color
-);
-
+    color: color);
 
 essadeH2(Color color) => TextStyle(
-  color: color,
-  fontFamily: 'Montserrat',
-  fontSize: 30.0,
-  fontWeight: FontWeight.bold
-);
+    color: color,
+    fontFamily: 'Montserrat',
+    fontSize: 30.0,
+    fontWeight: FontWeight.bold);
 
 essadeH4(Color color) => TextStyle(
-  color: color,
-  fontFamily: 'Raleway',
-  fontSize: 18.0,
-  fontWeight: FontWeight.bold,
-);
+      color: color,
+      fontFamily: 'Raleway',
+      fontSize: 18.0,
+      fontWeight: FontWeight.bold,
+    );
 
 essadeH5(Color color) => TextStyle(
-  color: color,
-  fontFamily: 'Raleway',
-  fontSize: 16.0,
-  fontWeight: FontWeight.bold,
-);
+      color: color,
+      fontFamily: 'Raleway',
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+    );
 
-essadeParagraph( {Color color = essadeBlack, bool bold = false, bool underlined = false}) => TextStyle(
-  color: color,
-  fontFamily: 'Raleway',
-  fontSize: 14.0,
-  fontWeight: bold ? FontWeight.bold : null,
-  decoration: underlined ? TextDecoration.underline : null,
-);
+essadeParagraph(
+        {Color color = essadeBlack,
+        bool bold = false,
+        bool underlined = false}) =>
+    TextStyle(
+      color: color,
+      fontFamily: 'Raleway',
+      fontSize: 14.0,
+      fontWeight: bold ? FontWeight.bold : null,
+      decoration: underlined ? TextDecoration.underline : null,
+    );
 
 essadeLightfont({bool underlined = false}) => TextStyle(
-  color: essadeDarkGray,
-  fontFamily: 'Raleway',
-  fontSize: 12.0,
-  decoration: underlined ? TextDecoration.underline : null,
-);
+      color: essadeDarkGray,
+      fontFamily: 'Raleway',
+      fontSize: 12.0,
+      decoration: underlined ? TextDecoration.underline : null,
+    );
 
-essadeCustomFont({double fontSize, Color color = essadeBlack, bool underlined = false, bool bold = false}) {
+essadeCustomFont(
+    {double fontSize,
+    String fontFamily = '',
+    Color color = essadeBlack,
+    bool underlined = false,
+    bool bold = false}) {
   return TextStyle(
     color: color,
     fontSize: fontSize,
+    fontFamily: fontFamily,
     fontWeight: bold ? FontWeight.bold : null,
     decoration: underlined ? TextDecoration.underline : null,
   );
@@ -82,15 +90,19 @@ final List<Category> quoteCategories = [
   Category('Otros', Icons.more_horiz),
 ];
 
-final String essadeWhoWeAreP1 = 'ESSADE S.A.S., es una empresa constructora de obras civiles, '
+final String essadeWhoWeAreP1 =
+    'ESSADE S.A.S., es una empresa constructora de obras civiles, '
     'comprometida con la excelencia, transparencia y calidad de sus proyectos.';
-final String essadeWhoWeAreP2 = 'Somos personas transformando al país, a través de la formación'
+final String essadeWhoWeAreP2 =
+    'Somos personas transformando al país, a través de la formación'
     ' integral de nuestros colaboradores e inspiración a nuestros clientes.';
 
-final String essadeMissionP = 'Proveer satisfacción a nuestros clientes a través de un servicio exclusivo,'
+final String essadeMissionP =
+    'Proveer satisfacción a nuestros clientes a través de un servicio exclusivo,'
     ' mano de obra calificada y la construcción eficiente de sus proyectos de obra civil.';
 
-final String essadeVisionP = 'Transformar la industria de la construcción en Colombia por medio de un'
+final String essadeVisionP =
+    'Transformar la industria de la construcción en Colombia por medio de un'
     ' servicio de calidad, confiable e innovador.';
 
 final List<Value> essadeValues = [
@@ -99,22 +111,25 @@ final List<Value> essadeValues = [
   new Value('Excelencia', 'No nos conformamos', 'assets/values/excelence.png'),
   new Value('Calidad', 'Nos importa cada detalle', 'assets/values/qa.png'),
   new Value('Liderazgo', 'Vamos un paso adelante', 'assets/values/lead.png'),
-  new Value('Trasparencia', 'Generamos confianza', 'assets/values/transparency.png'),
-  new Value('Compromiso', 'Planificamos con tus necesidades', 'assets/values/hands.png'),
+  new Value(
+      'Trasparencia', 'Generamos confianza', 'assets/values/transparency.png'),
+  new Value('Compromiso', 'Planificamos con tus necesidades',
+      'assets/values/hands.png'),
   new Value('Servicio', 'Eres nuestra prioridad', 'assets/values/service.png'),
 ];
 
-final NumberFormat globalCurrencyFormat = NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
+final NumberFormat globalCurrencyFormat =
+    NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
 
 btnFontStyle(Color color, {bool bold: false}) => TextStyle(
-  color: color,
-  letterSpacing: 1.5,
-  fontSize: 16.0,
-  fontWeight: bold ? FontWeight.bold : null,
-  fontFamily: 'Raleway',
-);
+      color: color,
+      letterSpacing: 1.5,
+      fontSize: 16.0,
+      fontWeight: bold ? FontWeight.bold : null,
+      fontFamily: 'Raleway',
+    );
 
-essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
+essadeBorderErrorStyle(double borderRadius, Color color, {double width: 1.0}) {
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(borderRadius),
     borderSide: BorderSide(color: color, width: width),
@@ -122,18 +137,17 @@ essadeBorderErrorStyle(double borderRadius, Color color, {double width:1.0}){
 }
 
 iosFontStyle({bool bold = false, double size = 16}) => TextStyle(
-  fontFamily: 'SFProDisplay',
-  fontWeight: bold ? FontWeight.bold : null,
-  fontSize: size
-);
+    fontFamily: 'SFProDisplay',
+    fontWeight: bold ? FontWeight.bold : null,
+    fontSize: size);
 
 androidFontStyle({bool bold = false, double size = 16}) => TextStyle(
     fontFamily: 'Roboto',
     fontWeight: bold ? FontWeight.bold : null,
-    fontSize: size
-);
+    fontSize: size);
 
-Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) async {
+Future<void> showLoadingProgressCircle(
+    BuildContext context, GlobalKey key) async {
   return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -143,8 +157,7 @@ Future<void> showLoadingProgressCircle(BuildContext context, GlobalKey key) asyn
             child: Center(
               key: key,
               child: CircularProgressIndicator(),
-            )
-        );
+            ));
       });
 }
 
@@ -160,10 +173,7 @@ String capitalize(String string) {
   return string[0].toUpperCase() + string.substring(1);
 }
 
-enum PlatformType {
-  iOS,
-  android
-}
+enum PlatformType { iOS, android }
 enum DetailPageType {
   Chat,
   TelephoneDirectory,
@@ -173,15 +183,9 @@ enum DetailPageType {
   Values,
   Principles,
   Policy
-
 }
 
-enum MainAppPages {
-  SignIn,
-  RegisterId,
-  StepperRegister,
-  Container
-}
+enum MainAppPages { SignIn, RegisterId, StepperRegister, Container }
 const Color essadePrimaryColor = Color(0xFF82142d);
 const Color essadeBlack = Color(0xFF262626);
 const Color essadeDarkGray = Color(0xFF85878a);
