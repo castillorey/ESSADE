@@ -78,16 +78,19 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                                   )));
                     },
                   ),
-                  SizedBox(height: 10.0),
-                  LongButtonWidget(
-                      icon: null,
-                      textColor: essadeBlack,
-                      backgroundColor: Colors.white,
-                      text: 'No gracias',
-                      onPressed: () =>
-                          Provider.of<LoginState>(context, listen: false)
-                              .notifyGuestQuoteDisplayed(
-                                  notShowAgain: _notShowChecked)),
+                  SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () => Provider.of<LoginState>(context, listen: false)
+                        .notifyGuestQuoteDisplayed(
+                            notShowAgain: _notShowChecked),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Saltar',
+                        style: essadeParagraph(underlined: true),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 10.0),
                   Visibility(
                     visible: _currentUser != null,

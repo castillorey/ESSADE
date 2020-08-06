@@ -5,38 +5,60 @@ class ProjectsRepository {
 
   ProjectsRepository(this.userId);
 
-  Stream<QuerySnapshot> queryAll(){
+  Stream<QuerySnapshot> queryAll() {
     return Firestore.instance
-        .collection('usuarios').document(userId)
-        .collection('proyectos').snapshots();
+        .collection('usuarios')
+        .document(userId)
+        .collection('proyectos')
+        .snapshots();
   }
 
-  Stream<QuerySnapshot> queryMovements(String projectId){
+  Stream<QuerySnapshot> queryMovements(String projectId) {
     return Firestore.instance
-        .collection('usuarios').document(userId)
-        .collection('proyectos').document(projectId)
-        .collection('movimientos').snapshots();
+        .collection('usuarios')
+        .document(userId)
+        .collection('proyectos')
+        .document(projectId)
+        .collection('movimientos')
+        .snapshots();
   }
 
-  Stream<QuerySnapshot> queryActivities(String projectId){
+  Stream<QuerySnapshot> queryActivities(String projectId) {
     return Firestore.instance
-        .collection('usuarios').document(userId)
-        .collection('proyectos').document(projectId)
-        .collection('actividades').snapshots();
+        .collection('usuarios')
+        .document(userId)
+        .collection('proyectos')
+        .document(projectId)
+        .collection('actividades')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> querySubActivities(
+      String projectId, String activityId) {
+    return Firestore.instance
+        .collection('usuarios')
+        .document(userId)
+        .collection('proyectos')
+        .document(projectId)
+        .collection('actividades')
+        .document(activityId)
+        .collection('subactividades')
+        .snapshots();
   }
 
   Future<DocumentReference> addQuote(String serviceType, String comment) {
-    return Firestore.instance.collection('usuarios')
-        .document(userId).collection('cotizaciones').add({
-      'tipo_servicio': serviceType,
-      'comentario': comment
-    });
+    return Firestore.instance
+        .collection('usuarios')
+        .document(userId)
+        .collection('cotizaciones')
+        .add({'tipo_servicio': serviceType, 'comentario': comment});
   }
 
   Future<DocumentReference> addSuggestion(String comment) {
-    return Firestore.instance.collection('usuarios')
-        .document(userId).collection('sugerencias').add({
-      'comentario': comment
-    });
+    return Firestore.instance
+        .collection('usuarios')
+        .document(userId)
+        .collection('sugerencias')
+        .add({'comentario': comment});
   }
 }
