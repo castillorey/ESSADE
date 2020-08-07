@@ -11,13 +11,12 @@ class QuotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
-          child: _buildQuoteStartPage(context),
-        )
-    );
+      padding: const EdgeInsets.only(top: 20.0, right: 30.0, left: 30.0),
+      child: _buildQuoteStartPage(context),
+    ));
   }
 
-  _buildQuoteStartPage(BuildContext context){
+  _buildQuoteStartPage(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
@@ -26,37 +25,31 @@ class QuotePage extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 20.0),
               child: Text(
-                'Hola mi nombre es Lucho, un gusto saludarte. '
-                    'Yo te acompañaré en tu proceso de cotización',
+                '¡Hola!, Mi nombre es Lucho, un gusto saludarte. ' +
+                    'Yo te acompañaré en tu proceso de cotización.',
                 style: essadeH4(essadeBlack),
                 textAlign: TextAlign.center,
               ),
             ),
             Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset('assets/images/lucho.png', height: screenSizeHeight * 0.35)
-            ),
+                child: Image.asset('assets/images/lucho.png',
+                    height: screenSizeHeight * 0.35)),
             SizedBox(height: 20.0),
-            _buildLargeButton(
-                () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailPage(
+            _buildLargeButton(() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailPage(
                             child: StepperQuotePage(),
                             onBackPressed: () => Navigator.of(context).pop(),
-                          )
-                      )
-                  );
-                },
-                "Comenzar"
-            )
+                          )));
+            }, "Comenzar")
           ],
-        )
-    );
+        ));
   }
 
-  _buildLargeButton(Function onPressed, String text){
+  _buildLargeButton(Function onPressed, String text) {
     return SizedBox(
       width: double.infinity,
       child: RaisedButton(

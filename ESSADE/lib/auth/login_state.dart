@@ -17,6 +17,7 @@ class LoginState with ChangeNotifier {
   bool _loading = false;
   bool _emailVerified = false;
   bool _guestQuoteDisplayed = false;
+  bool _forceGuestQuoteDisplay = false;
 
   LoginState() {
     loginState();
@@ -27,7 +28,7 @@ class LoginState with ChangeNotifier {
   bool isEmailVerified() => _emailVerified;
   User currentUser() => _user;
   bool guestQuoteHasBeenDisplayed() => _guestQuoteDisplayed;
-
+  bool isForcingQuoteDisplayed() => _forceGuestQuoteDisplay;
   bool isBiometricActivated() {
     if (_prefs.containsKey('username')) return true;
 
@@ -125,7 +126,14 @@ class LoginState with ChangeNotifier {
 
   void notifyGuestQuoteDisplayed({bool notShowAgain = false}) {
     _guestQuoteDisplayed = true;
+    _forceGuestQuoteDisplay = false;
     if (notShowAgain) disableGuestQuote();
+    notifyListeners();
+  }
+
+  void forcingDisplayGuestQuote() {
+    _guestQuoteDisplayed = false;
+    _forceGuestQuoteDisplay = true;
     notifyListeners();
   }
 

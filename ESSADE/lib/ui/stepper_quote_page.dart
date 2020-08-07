@@ -20,6 +20,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mailer/smtp_server.dart';
 
 class StepperQuotePage extends StatefulWidget {
+  final bool notShowAgain;
+
+  const StepperQuotePage({Key key, this.notShowAgain}) : super(key: key);
   @override
   _StepperQuotePageState createState() => _StepperQuotePageState();
 }
@@ -39,15 +42,14 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   File _image;
   final picker = ImagePicker();
   File imageFile;
-  String _guestName;
-  String _guestEmail;
+  String _userName;
+  String _userEmail;
 
   @override
   void initState() {
     super.initState();
 
     currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    print('Current User: $currentUser');
     _formSteps = [
       if (currentUser == null)
         WillPopScope(
@@ -64,9 +66,13 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
       )
     ];
     _description = '';
+    _userName = currentUser != null ? currentUser.name : 'Invitado';
+    _userEmail = currentUser != null ? currentUser.email : 'Invitado';
     _currentPageValue = 0;
+
+    print(
+        'Starting _description: $_description, _guestName: $_userName, _guestEmail: $_userEmail');
   }
-  //final GlobalKey<ScaffoldState> _keyLoader = new GlobalKey<ScaffoldState>();
 
   void _nextFormStep() {
     formsPageViewController.nextPage(
@@ -74,13 +80,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
       curve: Curves.ease,
     );
   }
-
-  // void _previousFormStep() {
-  //   formsPageViewController.previousPage(
-  //     duration: Duration(milliseconds: 300),
-  //     curve: Curves.ease,
-  //   );
-  // }
 
   void getChangedPage(int page) {
     setState(() {
@@ -125,7 +124,8 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
     final message = Message()
       ..from = Address(username)
       ..recipients.add('gerencia.essade@gmail.com')
-      //..ccRecipients.addAll(['gerencia.essade@gmail.com'])
+      ..recipients.add('castilloreyeskm@gmail.com')
+      //..ccRecipients.addAll(['castilloreyeskm@gmail.com'])
       //..bccRecipients.add(Address('bccAddress@example.com'))
       ..subject =
           'Nueva Cotización - ${DateFormat('kk:mm:ss \n EEE d MMM').format(DateTime.now())}'
@@ -186,80 +186,82 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
 
   _buildGuestStep(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              //width: MediaQuery.of(context).size.width / 1.5,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      'Empecemos con tus datos personales',
-                      style: essadeCustomFont(
-                          fontSize: 23.0,
-                          fontFamily: 'Raleway',
-                          bold: true,
-                          color: essadeBlack),
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                //width: MediaQuery.of(context).size.width / 1.5,
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        'Empecemos con tus datos personales',
+                        style: essadeCustomFont(
+                            fontSize: 23.0,
+                            fontFamily: 'Raleway',
+                            bold: true,
+                            color: essadeBlack),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0),
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: essadeGray),
-                        borderRadius: BorderRadius.circular(50.0)),
-                    child: Image.asset('assets/images/lucho.png',
-                        height: screenSizeHeight * 0.1),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20.0),
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1.0, color: essadeGray),
+                          borderRadius: BorderRadius.circular(50.0)),
+                      child: Image.asset('assets/images/lucho.png',
+                          height: screenSizeHeight * 0.1),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 10.0),
-            SimpleTextFormFieldWidget(
-              label: '¿Cuál es su nombre?',
-              inputType: TextInputType.text,
-              editingController: nameInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su nombre',
-              hintText: 'Su nombre',
-            ),
-            SizedBox(height: 5.0),
-            SimpleTextFormFieldWidget(
-              label: 'Correo electrónico',
-              inputType: TextInputType.emailAddress,
-              editingController: emailInputController,
-              onChanged: () => _formKey.currentState.validate(),
-              validationText: 'Ingrese su correo electrónico',
-              hintText: 'Su correo electrónico',
-            ),
-            SizedBox(height: 20.0),
-            LongButtonWidget(
-                text: 'Siguiente',
-                icon: null,
-                backgroundColor: essadePrimaryColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  if (_formKey.currentState.validate()) {
-                    setState(() {
-                      _guestName = nameInputController.text;
-                      _guestEmail = emailInputController.text;
-                    });
-                    _nextFormStep();
-                  }
-                })
-          ],
+              SizedBox(height: 10.0),
+              SimpleTextFormFieldWidget(
+                label: '¿Cuál es su nombre?',
+                inputType: TextInputType.text,
+                editingController: nameInputController,
+                onChanged: () => _formKey.currentState.validate(),
+                validationText: 'Ingrese su nombre',
+                hintText: 'Su nombre',
+              ),
+              SizedBox(height: 5.0),
+              SimpleTextFormFieldWidget(
+                label: 'Correo electrónico',
+                inputType: TextInputType.emailAddress,
+                editingController: emailInputController,
+                onChanged: () => _formKey.currentState.validate(),
+                validationText: 'Ingrese su correo electrónico',
+                hintText: 'Su correo electrónico',
+              ),
+              SizedBox(height: 20.0),
+              LongButtonWidget(
+                  text: 'Siguiente',
+                  icon: null,
+                  backgroundColor: essadePrimaryColor,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_formKey.currentState.validate()) {
+                      setState(() {
+                        _userName = nameInputController.text + ' (Invitado)';
+                        _userEmail = emailInputController.text;
+                      });
+                      _nextFormStep();
+                    }
+                  })
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   _buildStepOne(BuildContext context) {
@@ -308,8 +310,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                                 setState(() {
                                   _categorySelected = item;
                                   _nonCategorySelected = false;
-                                  print(
-                                      "Category selected: $_categorySelected");
                                 });
                               },
                             )),
@@ -382,7 +382,9 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                 ],
               ),
               Positioned(
-                bottom: 10.0,
+                  child: Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(bottom: 20.0),
                 child: _buildControlButton(() {
                   FocusScope.of(context).unfocus();
                   if (_categorySelected == '') {
@@ -398,7 +400,7 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                     _nextFormStep();
                   }
                 }, "Siguiente"),
-              )
+              ))
             ],
           ),
         ),
@@ -407,8 +409,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   }
 
   _buildStepTwo(BuildContext context) {
-    var _userName = currentUser != null ? currentUser.name : _guestName;
-    var _userEmail = currentUser != null ? currentUser.email : _guestEmail;
     return Container(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,6 +434,9 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
             onTap: () {
               sendEmail(_userName, _userEmail, _categorySelected, _description,
                   imageFile, 'Por LLamada');
+              if (widget.notShowAgain)
+                Provider.of<LoginState>(context, listen: false)
+                    .disableGuestQuote();
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -498,7 +501,7 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
 
   _buildControlButton(Function onPressed, String text, {bool isLarge = false}) {
     return SizedBox(
-      width: screenSizeHeight * 0.4,
+      width: screenSizeWidth - 120,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: onPressed,
@@ -514,19 +517,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
       ),
     );
   }
-
-  // _buildBackButton() {
-  //   return GestureDetector(
-  //     onTap: () => _previousFormStep(),
-  //     child: Container(
-  //       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
-  //       child: Text(
-  //         'Atrás',
-  //         style: essadeH4(essadePrimaryColor),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   _buildNonCategorySelected() {
     return Container(

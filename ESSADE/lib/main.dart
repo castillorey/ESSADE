@@ -64,8 +64,11 @@ class _MyAppState extends State<MyApp> {
                 }
 
                 if (!state.guestQuoteHasBeenDisplayed() &&
-                    !state.isLoading() &&
-                    state.shouldDisplayGuestQuote()) return QuoteStartPage();
+                        !state.isLoading() &&
+                        state.shouldDisplayGuestQuote() ||
+                    (!state.isLoading() && state.isForcingQuoteDisplayed()))
+                  return QuoteStartPage();
+
                 return LoginPage();
               },
             },

@@ -65,14 +65,12 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                     backgroundColor: essadePrimaryColor,
                     text: 'Comenzar',
                     onPressed: () {
-                      Provider.of<LoginState>(context, listen: false)
-                          .notifyGuestQuoteDisplayed(
-                              notShowAgain: _notShowChecked);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DetailPage(
-                                    child: StepperQuotePage(),
+                                    child: StepperQuotePage(
+                                        notShowAgain: _notShowChecked),
                                     onBackPressed: () =>
                                         Navigator.of(context).pop(),
                                   )));
@@ -93,7 +91,8 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                   ),
                   SizedBox(height: 10.0),
                   Visibility(
-                    visible: _currentUser != null,
+                    visible: Provider.of<LoginState>(context, listen: false)
+                        .shouldDisplayGuestQuote(),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -103,8 +102,6 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                               setState(() {
                                 _notShowChecked = value;
                               });
-                              Provider.of<LoginState>(context, listen: false)
-                                  .disableGuestQuote();
                             },
                           ),
                           Text(
