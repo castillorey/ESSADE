@@ -168,7 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: 40),
-                                if (_isBiometricAvailable)
+                                if (!Platform.isAndroid &&
+                                    _isBiometricAvailable)
                                   Align(
                                     alignment: Alignment.center,
                                     child: _buildBiometricButton(),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:essade/auth/login_state.dart';
 import 'package:essade/models/Value.dart';
 import 'package:essade/ui/settings_biometric_page.dart';
@@ -15,10 +17,8 @@ class AboutPage extends StatefulWidget {
   _AboutPageState createState() => _AboutPageState();
 }
 
-
-
 class _AboutPageState extends State<AboutPage> {
-  String _whoWeAreP1 ;
+  String _whoWeAreP1;
   String _whoWeAreP2;
   String _missionP;
   String _visionP;
@@ -31,13 +31,13 @@ class _AboutPageState extends State<AboutPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     _whoWeAreP1 = essadeWhoWeAreP1;
-     _whoWeAreP2 = essadeWhoWeAreP2;
-     _missionP = essadeMissionP;
-     _visionP = essadeVisionP;
+    _whoWeAreP1 = essadeWhoWeAreP1;
+    _whoWeAreP2 = essadeWhoWeAreP2;
+    _missionP = essadeMissionP;
+    _visionP = essadeVisionP;
 
     _localAuth = LocalAuthentication();
-    _localAuth.canCheckBiometrics.then((result){
+    _localAuth.canCheckBiometrics.then((result) {
       setState(() {
         _isBiometricAvailable = result;
       });
@@ -59,27 +59,20 @@ class _AboutPageState extends State<AboutPage> {
           _buildValues(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/meeting.png', height: screenSizeHeight * 0.4),
+            child: Image.asset('assets/images/meeting.png',
+                height: screenSizeHeight * 0.4),
           ),
-          _buildMoreSettingsItem(
-              'Visita nuestro sitio web',
-              onPressed: () => _launchExternalURL('https://www.essade.com/')
-          ),
+          _buildMoreSettingsItem('Visita nuestro sitio web',
+              onPressed: () => _launchExternalURL('https://www.essade.com/')),
           Divider(height: 5.0, thickness: 0.2, color: essadeGray),
-          if (_isBiometricAvailable)
+          if (!Platform.isAndroid && _isBiometricAvailable)
             _buildBiometricSettingsItem(),
-
           Container(
             color: Color(0xF9F9F9F9),
             child: Column(
-              children: [
-                _buildFollowUs(),
-                _buildLogout()
-              ],
+              children: [_buildFollowUs(), _buildLogout()],
             ),
           )
-
-
         ],
       ),
     );
@@ -93,27 +86,24 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _buildBiometricSettingsItem(){
+  _buildBiometricSettingsItem() {
     return Column(
       children: [
-        _buildMoreSettingsItem(
-            'Configuración biométrica',
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsBiometricPage()));
-            }
-        )
+        _buildMoreSettingsItem('Configuración biométrica', onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SettingsBiometricPage()));
+        })
       ],
     );
   }
 
-  _buildLogout(){
+  _buildLogout() {
     return Container(
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () => Provider.of<LoginState>(context, listen: false).logout(),
+            onTap: () =>
+                Provider.of<LoginState>(context, listen: false).logout(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
@@ -121,12 +111,14 @@ class _AboutPageState extends State<AboutPage> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(Icons.exit_to_app, color: essadeErrorColor, size: 20,),
+                    child: Icon(
+                      Icons.exit_to_app,
+                      color: essadeErrorColor,
+                      size: 20,
+                    ),
                   ),
-                  Text(
-                      'Cerrar sesión',
-                      style: essadeParagraph(color: essadeErrorColor)
-                  ),
+                  Text('Cerrar sesión',
+                      style: essadeParagraph(color: essadeErrorColor)),
                 ],
               ),
             ),
@@ -136,7 +128,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  _buildMoreSettingsItem(String text, {Function onPressed}){
+  _buildMoreSettingsItem(String text, {Function onPressed}) {
     return GestureDetector(
       onTap: () => onPressed(),
       child: Container(
@@ -149,14 +141,18 @@ class _AboutPageState extends State<AboutPage> {
               style: essadeParagraph(color: essadeDarkGray),
             ),
             SizedBox(width: 10),
-            Icon(Icons.keyboard_arrow_right, color: essadeGray, size: 15,),
+            Icon(
+              Icons.keyboard_arrow_right,
+              color: essadeGray,
+              size: 15,
+            ),
           ],
         ),
       ),
     );
   }
 
-  _buildValues(){
+  _buildValues() {
     return Container(
       color: essadePrimaryColor,
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
@@ -168,22 +164,27 @@ class _AboutPageState extends State<AboutPage> {
             style: essadeH2(Colors.white),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top:10.0, bottom: 5.0),
+            padding: const EdgeInsets.only(
+                left: 20.0, right: 20.0, top: 10.0, bottom: 5.0),
             child: Divider(
               height: 5,
               thickness: 2,
               color: Colors.white,
             ),
           ),
-          for(int i = 0; i < _valuesList.length; i+=2)
+          for (int i = 0; i < _valuesList.length; i += 2)
             Container(
               margin: const EdgeInsets.only(top: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildValueItem(_valuesList[i].name, _valuesList[i].description, _valuesList[i].imagePath),
-                  _buildValueItem(_valuesList[i+1].name, _valuesList[i+1].description, _valuesList[i+1].imagePath),
+                  _buildValueItem(_valuesList[i].name,
+                      _valuesList[i].description, _valuesList[i].imagePath),
+                  _buildValueItem(
+                      _valuesList[i + 1].name,
+                      _valuesList[i + 1].description,
+                      _valuesList[i + 1].imagePath),
                 ],
               ),
             )
@@ -192,7 +193,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  _buildValueItem(String title, String p, String imagePath){
+  _buildValueItem(String title, String p, String imagePath) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +217,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  _buildMvParagraphs(String title, String p){
+  _buildMvParagraphs(String title, String p) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Column(
@@ -226,7 +227,8 @@ class _AboutPageState extends State<AboutPage> {
             style: essadeH2(essadeDarkGray),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 80.0, right: 80.0, top:5.0, bottom: 20.0),
+            padding: const EdgeInsets.only(
+                left: 80.0, right: 80.0, top: 5.0, bottom: 20.0),
             child: Divider(
               height: 5,
               thickness: 2,
@@ -238,13 +240,12 @@ class _AboutPageState extends State<AboutPage> {
             textAlign: TextAlign.justify,
             style: essadeParagraph(),
           )
-
         ],
       ),
     );
   }
 
-  _buildWhoWeAre(){
+  _buildWhoWeAre() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Column(
@@ -255,9 +256,9 @@ class _AboutPageState extends State<AboutPage> {
             style: essadeH2(essadeBlack),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/team.png', height: screenSizeHeight * 0.35)
-          ),
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset('assets/images/team.png',
+                  height: screenSizeHeight * 0.35)),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Column(
@@ -281,39 +282,44 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  _buildFollowUs(){
+  _buildFollowUs() {
     return Container(
-      padding: EdgeInsets.only(left: 20.0, top: 20, right:20.0),
+      padding: EdgeInsets.only(left: 20.0, top: 20, right: 20.0),
       child: Column(
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Text('Siguenos en redes sociales', style: essadeParagraph(color: essadeDarkGray)),
+            child: Text('Siguenos en redes sociales',
+                style: essadeParagraph(color: essadeDarkGray)),
           ),
           SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () => _launchExternalURL('https://www.instagram.com/essade.sas/'),
+                onPressed: () =>
+                    _launchExternalURL('https://www.instagram.com/essade.sas/'),
                 icon: Icon(FontAwesomeIcons.instagram),
                 color: essadeDarkGray,
                 iconSize: 20.0,
               ),
               IconButton(
-                onPressed: () => _launchExternalURL('https://www.facebook.com/essade.sas19/'),
+                onPressed: () => _launchExternalURL(
+                    'https://www.facebook.com/essade.sas19/'),
                 icon: Icon(FontAwesomeIcons.facebook),
                 color: essadeDarkGray,
                 iconSize: 20.0,
               ),
               IconButton(
-                onPressed: () => _launchExternalURL('https://twitter.com/Essade_SAS'),
+                onPressed: () =>
+                    _launchExternalURL('https://twitter.com/Essade_SAS'),
                 icon: Icon(FontAwesomeIcons.twitter),
                 color: essadeDarkGray,
                 iconSize: 20.0,
               ),
               IconButton(
-                onPressed: () => _launchExternalURL('https://www.linkedin.com/company/essade-s-a-s/'),
+                onPressed: () => _launchExternalURL(
+                    'https://www.linkedin.com/company/essade-s-a-s/'),
                 icon: Icon(FontAwesomeIcons.linkedin),
                 color: essadeDarkGray,
                 iconSize: 20.0,
@@ -324,5 +330,4 @@ class _AboutPageState extends State<AboutPage> {
       ),
     );
   }
-
 }
