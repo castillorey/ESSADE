@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _launchInstagramTipsURL() async {
-    const url = 'https://www.instagram.com/explore/tags/essadetips/';
+    const url = 'https://www.instagram.com/explore/tags/essadetips/?hl=es-la';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
