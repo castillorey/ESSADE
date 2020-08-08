@@ -85,8 +85,10 @@ final List<String> essadeServices = [
 
 final List<Category> quoteCategories = [
   Category('Consultoría', Icons.business_center),
-  Category('Mantenimiento', Icons.build),
+  Category('Diseño', Icons.brush),
+  Category('Construcción', Icons.home),
   Category('Remodelación', Icons.pan_tool),
+  Category('Mantenimiento', Icons.build),
   Category('Otros', Icons.more_horiz),
 ];
 
@@ -120,6 +122,26 @@ final List<Value> essadeValues = [
 
 final NumberFormat globalCurrencyFormat =
     NumberFormat.simpleCurrency(locale: 'en', decimalDigits: 0);
+
+final Map<String, String> FAQ = {
+  '¿Por qué escoger a ESSADE S.A.S.?':
+      'Somos la alternativa económica y de calidad en el diseño, construcción, remodelación y mantenimiento de obras civiles. Brindamos un servicio exclusivo, confiable e innovador.',
+  '¿Qué servicios ofrecen?':
+      'Ofrecemos el servicio de diseño, construcción, remodelación y mantenimiento de obras civiles. Puedes observar nuestro portafolio de servicios en nuestro website o en la sección "Cotizar" de la App.',
+  '¿Cuáles son sus promociones?':
+      'En el proceso de cotización te brindamos la asesoría, completamente gratis. Síguenos en redes sociales para informarte de nuestras últimas promociones.',
+  '¿Cuál es el proceso de cotización? ¿Tiene costo?':
+      'Si deseas cotizar con nosotros debes comunicarte con nuestro Director Comercial a la línea +57 300 3938174, agendaremos una visita técnica y luego procederemos a enviarte la cotización. El proceso de cotización es completamente gratuito.',
+  '¿Cuánto demora el envío de la cotización?':
+      'El envío de la cotización tendrá un período de 1 a 5 días hábiles dependiendo del servicio.',
+  'He aceptado su cotización. ¿Cuándo inician los trabajos?':
+      'El servicio inicia 2 días hábiles después del pago del anticipo.',
+  '¿Cuál es el horario de atención?':
+      'Nuestro horario de atención en nuestros canales virtuales y telefónicos es de Lunes a Viernes de 7:00am-12:00pn y 1:00pm-5:00pm, los días sábado de 7:00am-12:00pm.',
+  '¿Cómo ESSADE S.A.S se está adaptando al Covid-19?':
+      'Tenemos habilitados todas nuestras plataformas digitales para atender a nuestros clientes.\n\n' +
+          'Todos nuestros colaboradores cuentan con las medidas de protección y prevención para afrontar la emergencia sanitaria.'
+};
 
 btnFontStyle(Color color, {bool bold: false}) => TextStyle(
       color: color,

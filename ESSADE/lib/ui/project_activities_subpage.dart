@@ -181,30 +181,6 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
         ));
   }
 
-  // Widget _activityBadge() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.all(Radius.circular(50)),
-  //         boxShadow: [
-  //           BoxShadow(
-  //               offset: Offset(0, 1), color: Color(0x20000000), blurRadius: 5)
-  //         ]),
-  //     child: Icon(
-  //       Icons.fiber_manual_record,
-  //       size: 20,
-  //       color: essadePrimaryColor,
-  //     ),
-  //   );
-  // }
-
-  // Widget _activityDate(Activity activity) {
-  //   var date = DateFormat.yMMMd().format(activity.start_date.toDate());
-  //   return Container(
-  //       width: 55,
-  //       margin: EdgeInsets.only(left: 8.0, right: 8),
-  //       child: Text(date.toString(), style: essadeH5(essadeGray)));
-  // }
-
   _activityName(Activity activity) {
     return Expanded(
       child: GestureDetector(
@@ -242,7 +218,7 @@ class _ProjectActivitiesSubpageState extends State<ProjectActivitiesSubpage> {
                     ),
                     SizedBox(height: 5.0),
                     Text(
-                      'Progreso: ${activity.progress}',
+                      'Progreso: ${activity.progress}%',
                       style: essadeLightfont(),
                     ),
                     SizedBox(height: 10.0),

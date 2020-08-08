@@ -7,7 +7,6 @@ import 'package:essade/models/User.dart';
 import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/timeline_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProjectMovementsSubpage extends StatefulWidget {
@@ -15,37 +14,41 @@ class ProjectMovementsSubpage extends StatefulWidget {
 
   const ProjectMovementsSubpage({Key key, this.project}) : super(key: key);
   @override
-  _ProjectMovementsSubpageState createState() => _ProjectMovementsSubpageState();
+  _ProjectMovementsSubpageState createState() =>
+      _ProjectMovementsSubpageState();
 }
 
 class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
   Stream<QuerySnapshot> _movementsQuery;
   List<Movement> movements;
 
-
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
-    User _currentUser = Provider.of<LoginState>(context, listen: false).currentUser();
-    _movementsQuery = ProjectsRepository(_currentUser.documentID).queryMovements(widget.project.documentID);
+    User _currentUser =
+        Provider.of<LoginState>(context, listen: false).currentUser();
+    _movementsQuery = ProjectsRepository(_currentUser.documentID)
+        .queryMovements(widget.project.documentID);
 
     return Column(
       children: <Widget>[
         Align(
           alignment: Alignment.topLeft,
-          child: Text('Listado de movimientos', style: essadeH4(essadeDarkGray)),
+          child:
+              Text('Listado de movimientos', style: essadeH4(essadeDarkGray)),
         ),
         StreamBuilder<QuerySnapshot>(
           stream: _movementsQuery,
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-            if(snapshot.hasData){
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
               final documents = snapshot.data.documents;
               movements = [];
-              documents.forEach((movement){
+              documents.forEach((movement) {
                 movements.add(Movement.fromSnapshot(movement));
               });
 
@@ -53,12 +56,11 @@ class _ProjectMovementsSubpageState extends State<ProjectMovementsSubpage> {
                 child: ListView.builder(
                     itemCount: movements.length,
                     padding: EdgeInsets.only(top: 20.0),
-                    itemBuilder: (context, index){
+                    itemBuilder: (context, index) {
                       return TimelineItemWidget(
                         movement: movements[index],
                       );
-                    }
-                ),
+                    }),
               );
             } else {
               return Expanded(

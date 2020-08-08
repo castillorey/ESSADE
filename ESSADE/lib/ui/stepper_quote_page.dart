@@ -303,7 +303,7 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                         ),
                         SizedBox(height: 15.0),
                         Container(
-                            height: 120.0,
+                            height: 110.0,
                             child: QuoteCategoriesSelectWidget(
                               categories: _categories,
                               onItemSelected: (item) {
@@ -319,7 +319,15 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                         ),
                         Divider(
                             thickness: 1.0, color: essadeGray.withOpacity(0.3)),
-                        SizedBox(height: 10.0),
+                        SimpleTextFormFieldWidget(
+                          label: 'Descripción',
+                          inputType: TextInputType.text,
+                          editingController: descriptionController,
+                          onChanged: () => _formKey.currentState.validate(),
+                          validationText: 'Debe agregar una descripción',
+                          hintText: 'Escriba la descripción',
+                          maxLines: 10,
+                        ),
                         Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,15 +373,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                               )
                             ],
                           ),
-                        ),
-                        SimpleTextFormFieldWidget(
-                          label: 'Descripción',
-                          inputType: TextInputType.text,
-                          editingController: descriptionController,
-                          onChanged: () => _formKey.currentState.validate(),
-                          validationText: 'Debe agregar una descripción',
-                          hintText: 'Escriba la descripción',
-                          maxLines: 10,
                         ),
                         SizedBox(height: 80.0),
                       ],
