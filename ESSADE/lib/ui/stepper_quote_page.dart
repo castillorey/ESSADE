@@ -39,7 +39,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
   String _categorySelected = '';
   int _currentPageValue;
   bool _nonCategorySelected = false;
-  File _image;
   final picker = ImagePicker();
   File imageFile;
   String _userName;
@@ -69,9 +68,6 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
     _userName = currentUser != null ? currentUser.name : 'Invitado';
     _userEmail = currentUser != null ? currentUser.email : 'Invitado';
     _currentPageValue = 0;
-
-    print(
-        'Starting _description: $_description, _guestName: $_userName, _guestEmail: $_userEmail');
   }
 
   void _nextFormStep() {
@@ -124,7 +120,7 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
     final message = Message()
       ..from = Address(username)
       ..recipients.add('gerencia.essade@gmail.com')
-      ..recipients.add('castilloreyeskm@gmail.com')
+      //..recipients.add('castilloreyeskm@gmail.com')
       //..ccRecipients.addAll(['castilloreyeskm@gmail.com'])
       //..bccRecipients.add(Address('bccAddress@example.com'))
       ..subject =
@@ -340,12 +336,11 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                               GestureDetector(
                                 onTap: () async {
                                   PickedFile result = await _getImage();
-                                  if (result != null) {
-                                    setState(() {
-                                      _image = File(result.path);
-                                      print("Image Picked: $_image");
-                                    });
-                                  }
+                                  // if (result != null) {
+                                  //   setState(() {
+                                  //     imageFile = File(result.path);
+                                  //   });
+                                  // }
                                 },
                                 child: ConstrainedBox(
                                     constraints: BoxConstraints(
@@ -359,14 +354,14 @@ class _StepperQuotePageState extends State<StepperQuotePage> {
                                                   essadeGray.withOpacity(0.5)),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10.0))),
-                                      child: _image == null
+                                      child: imageFile == null
                                           ? Icon(FontAwesomeIcons.fileImage,
                                               color: essadeDarkGray)
                                           : ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               child: Image.file(
-                                                _image,
+                                                imageFile,
                                                 fit: BoxFit.fitWidth,
                                               )),
                                     )),

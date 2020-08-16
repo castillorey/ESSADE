@@ -1,7 +1,5 @@
-import 'package:essade/models/global.dart';
 import 'package:essade/ui/stepper_quote_page.dart';
 import 'package:essade/utilities/constants.dart';
-import 'package:essade/widgets/quote_form_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'detail_page.dart';
@@ -44,7 +42,14 @@ class QuotePage extends StatelessWidget {
                             child: StepperQuotePage(),
                             onBackPressed: () => Navigator.of(context).pop(),
                           )));
-            }, "Comenzar")
+            }, "Comenzar"),
+            SizedBox(height: 15.0),
+            Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                    onTap: () => launchPortfolio(),
+                    child: Text('Conoce nuestro portafolio',
+                        style: essadeParagraph(underlined: true))))
           ],
         ));
   }

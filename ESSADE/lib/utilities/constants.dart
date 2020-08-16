@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final screenSizeHeight =
     ui.window.physicalSize.height / ui.window.devicePixelRatio;
@@ -142,6 +143,16 @@ final Map<String, String> FAQ = {
       'Tenemos habilitados todas nuestras plataformas digitales para atender a nuestros clientes.\n\n' +
           'Todos nuestros colaboradores cuentan con las medidas de protección y prevención para afrontar la emergencia sanitaria.'
 };
+
+launchPortfolio() async {
+  const url =
+      'https://60609f88-6199-49b0-80e1-3c93c22494fa.filesusr.com/ugd/d8bb6c_507bccd8b9114f3cb9b322ea7b1b0722.pdf';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 btnFontStyle(Color color, {bool bold: false}) => TextStyle(
       color: color,

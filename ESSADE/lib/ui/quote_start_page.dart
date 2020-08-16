@@ -6,6 +6,7 @@ import 'package:essade/utilities/constants.dart';
 import 'package:essade/widgets/long_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'detail_page.dart';
 
@@ -29,6 +30,8 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _shouldDisplayQuote = Provider.of<LoginState>(context, listen: false)
+        .shouldDisplayGuestQuote();
     return DetailPage(
         onBackPressed: null,
         child: Consumer<LoginState>(
@@ -49,8 +52,8 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20.0),
                     child: Text(
-                      'Hola mi nombre es Lucho, un gusto saludarte. '
-                      'Yo te acompañaré en tu proceso de cotización',
+                      '¡Hola!, Mi nombre es Lucho, un gusto saludarte. ' +
+                          'Yo te acompañaré en tu proceso de cotización.',
                       style: essadeH4(essadeBlack),
                       textAlign: TextAlign.center,
                     ),
@@ -90,27 +93,44 @@ class _QuoteStartPageState extends State<QuoteStartPage> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  Visibility(
-                    visible: Provider.of<LoginState>(context, listen: false)
-                        .shouldDisplayGuestQuote(),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Checkbox(
-                            value: _notShowChecked,
-                            onChanged: (value) {
-                              setState(() {
-                                _notShowChecked = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'No volver a mostrar',
-                            style: essadeParagraph(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ]),
-                  )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Align(
+                            alignment: _shouldDisplayQuote
+                                ? Alignment.centerLeft
+                                : Alignment.center,
+                            child: GestureDetector(
+                                onTap: () => launchPortfolio(),
+                                child: Text('Conoce nuestro portafolio',
+                                    style: essadeParagraph(
+                                        color: essadePrimaryColor,
+                                        underlined: true)))),
+                      ),
+                      Visibility(
+                        visible: _shouldDisplayQuote,
+                        child: Expanded(
+                          child: Row(children: [
+                            Checkbox(
+                              value: _notShowChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  _notShowChecked = value;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: Text(
+                                'No volver a mostrar',
+                                style: essadeParagraph(),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               )),
         ));
